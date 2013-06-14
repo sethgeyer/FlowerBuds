@@ -1,0 +1,50 @@
+<html>
+<body>
+
+<p> <a href= "/employees"> Return to Employee Page </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Employee Edit Page</h1>
+    
+   
+    <% if @employee.id == nil
+      action = "new"
+    else
+      action = @employee.id
+    end %>
+    
+    <%=form_tag("/employee_updates/#{action}") do %>
+         
+   
+     
+      <td>Employee ID: <%=@employee.id%></td> <br>
+     <td><%=label_tag "id", "ID:"%>
+          <%=hidden_field_tag "id", @employee.id%>
+          <%=@employee.id%></td> <br>
+      <td><%=label_tag "name", "Name:"%>
+          <%=text_field_tag "name", @employee.name%></td> <br>
+      <td><%=label_tag "status", "Status:"%>
+          <%= select_tag "status", options_for_select(["Active", "Inactive"], @employee.status)%></td><br>
+      <td><%=label_tag "email", "Email:"%>
+          <%= text_field_tag "email", @employee.email%></td><br>
+     <td><%=label_tag "phone_w", "Phone(w):"%>
+          <%= text_field_tag "phone_w", @employee.w_phone%></td><br>
+     <td><%=label_tag "phone_c", "Phone(c):"%>
+          <%= text_field_tag "phone_c", @employee.c_phone%></td><br>
+     <td><%=label_tag "employee_type", "Type:"%>
+          <%= text_field_tag "employee_type", @employee.employee_type%></td><br>
+     <td><%=label_tag "login_name", "Login Name:"%>
+          <%= text_field_tag "login_name", @employee.username%></td><br>
+     <td><%=label_tag "admin_rights", "Admin Rights:"%>
+         <%= select_tag "admin_rights", options_for_select(["", "admin"], @employee.admin_rights)%></td><br>
+    <td>Florist ID:<%=@employee.florist_id%></td><br><br>
+    <td>  <button name= "action" value= "save">Save</button> </td>
+    
+    <%end%>
+    
+   
+    
+
+
+
+
+</body>
+</html>

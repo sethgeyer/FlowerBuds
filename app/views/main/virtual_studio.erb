@@ -1,0 +1,99 @@
+
+
+  
+  <html> 
+  <body> 
+    <p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Virtual Studio</h1>
+    
+<table align="left">
+  <tr><td>Fl ID: <%=@event.customer.florist.id%>    
+  <tr><td>Cust ID: <%=@event.customer.id%>
+  <tr><td>Cust Name: <%=@event.customer.name%>
+  <tr><td><%=label_tag "event_id", "Event ID:"%>
+      <%=hidden_field_tag "event_id", value: @event.id%>
+      <%=@event.id%>
+  <tr><td>Event Name: <a href= "/event_edit/<%=@event.id%>"> <%=@event.name%></a>
+  <tr><td>Images: I need to add this / / / / /  Budget: <%=@event.budget%><br>
+
+     
+      
+  </table>
+      
+      <table align="right">
+    <tr><td>Event Type:<%=@event.event_type%>
+      <tr><td>Feel_of_day: <%=@event.feel_of_day%>
+      <tr><td>Color Palette: <%=@event.color_palette%>
+     <tr><td>Flower Types: <%=@event.flower_types%>
+    <tr><td>Attire: <%=@event.attire%>
+      </table>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr />
+
+Design a single arrangment for each group of arrangements... the system will do the math for each additional arrangement.
+    
+       
+    <script type="text/javascript">
+function newPopup(url) {
+	popupWindow = window.open(
+		url,'popUpWindow','height=300,width=600,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+}
+</script>
+
+<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Specifications</a></p> 
+    
+    <table border='1'>
+      <%= form_tag("/virtual_studio_update") do %>
+  
+      <%=hidden_field_tag "event_id", @event.id%>
+      <th>Products</th>
+      <%for specification in @specifications%>
+        <th><%=specification.item_name%> / <%=specification.id%></th>    
+      <%end%>
+      
+      <tr> 
+      
+      <%for each in @list_of_products%>
+         <%id = Product.where(name: each).first.id%>
+          <td><%=each%> /  Prod ID<%=id%></td> 
+          <% for specification in @specifications%>
+            <td><%x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first%>
+               
+                  <%stem_count=x.product_qty%>
+                  <%=text_field_tag "stemcount_#{x.id}", stem_count%> </td>              
+                
+          <%end%> 
+          <td>            <div class = 'label-spacer'></div>
+      
+     <button name= "update" value= "update"></button>    
+      <button name= "remove" value= <%=id%>><img src="/images/delete.jpeg" width="30" height="30" /></button> </td> 
+      </tr>
+      <%end%> 
+       <div class = 'label-spacer'></div>
+      <button name= "update" value= "update">Save Updates</button>   
+       <%end%>
+    </table>
+    <br>
+    <br>
+    <br>
+    
+                <table>
+    <%= form_tag("/virtual_studio_add_new") do %>
+      <%=hidden_field_tag "event_id", @event.id%>
+      <%= label_tag "new_item", "Add New Item:"%>
+      <%= select_tag "new_item", options_for_select(@dropdown)%>       
+     
+       <div class = 'label-spacer'></div>
+      <button name= "action" value= "save">Add</button>   
+    <%end%>    
+  </table>
+  </body> 
+</html>

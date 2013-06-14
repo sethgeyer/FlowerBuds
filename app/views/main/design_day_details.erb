@@ -1,0 +1,128 @@
+<html> 
+  <body> 
+    
+    <p> <a href= "/event_edit/<%=@event.id%>"> <- </a> </p>    
+    
+    DESIGN DAY DETAILS
+    
+    <h1><%=@event.customer.name%> / <%=@event.name%>  / <i>Florist:<%=@event.employee.name%></h1>
+    <p><b>Name: </b><%= @event.customer.name%>   /    <b>Phone:</b> <%= @event.customer.phone1%>  / <b>Email: </b><%= @event.customer.email%> </p>
+    
+    <hr />    
+
+<h3> Event Details</h3>
+  <table align="right">    
+      <tr><td>Feel of Day:    <%=@event.feel_of_day%>
+      <tr><td>Color Palette:  <%=@event.color_palette%>
+      <tr><td>Flower Types:   <%=@event.flower_types%>
+      <tr><td>Attire:         <%=@event.attire%>
+      <tr><td>Photographer:   
+      <tr><td>Coordinator:    
+  </table>
+  
+<table align="left">    
+      <tr><td>Event Date:     <%=@event.date_of_event%>
+      <tr><td>Event Time:     <%=@event.time%>
+      <tr><td>Setup Time:     <%=@event.delivery_setup_time%>
+       <tr><td> Ceremony Location:
+      <tr><td>Reception Location:
+     
+</table>
+  
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<tr> Event Notes:    <%= @event.notes%> </tr>
+
+<hr />
+     
+<h3> Arrangements & Specifications </h3>  
+  
+  <table border='1'>
+      
+<tr>      
+      <th>Item Name</th>
+      <th>Quantity</th>
+      <th size="200">Specifications</th> 
+    </tr>
+       
+        <% for each in @specifications %>
+           <tr>
+            <td> <%=each.item_name%></td> 
+            <td> <%=each.item_quantity%></td>
+            <td> <%=each.item_specs%></td>
+  
+            
+            <tr> <td><i>images here</i></td> </tr>
+        </tr>
+        <%end%>
+       </table>
+      <th>Total Price: $<%=@event.quote.total_price%>  </th><br>
+      <hr />
+
+
+<h3> Total Items for the Event </h3>  
+    
+  <% for product_type in @list_of_product_types%>
+    <p><b><%=product_type%>
+    <table border='1'>  
+      <tr>
+        <th>Products</th>
+        <th>Total</th>
+      </tr>
+     
+      <tr>
+      <%for id in @list_of_product_ids%>
+        <% product = Product.where(id: id).where(product_type: product_type).first%>
+        <%if product != nil%>
+          <td><%=product.name%></td>
+          <%designed_products =DesignedProduct.where(event_id: @event.id).where(product_type: product_type).where(product_id: id)%>            
+          <%count = 0%>
+            <%for designed_product in designed_products%>
+              <%count = count + (designed_product.product_qty * designed_product.specification.item_quantity)%>
+            <%end%>
+          <td><%=count%></td>  
+        <%end%>
+        </tr>  
+      <%end%>
+    </table>
+    <br>
+  <%end%>
+  <hr />     
+
+<h3> Total Items per Arrangement </h3>
+     
+  <% for product_type in @list_of_product_types%>
+    <p><b><%=product_type%>
+    <table border='1'>
+      <tr>
+        <th>Products</th>
+        <%for specification in @specifications%>
+          <th><%=specification.item_name%> (Tot:<%=specification.item_quantity.round(0)%>)</th>
+        <%end%>
+      </tr>
+     
+      <%for id in @list_of_product_ids%>
+        <tr> 
+        <% product = Product.where(id: id).where(product_type: product_type).first%>
+          <%if product != nil%>
+            <td><%=product.name%></td>
+            <%for specification in @specifications%>
+              <td><%=product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty%></td>
+            <%end%>
+          <%end%>
+        </tr>  
+      <%end%>
+    </table>
+    <br>
+    <%end%>
+    <hr />     
+
+
+
+
+  </body> 
+</html>

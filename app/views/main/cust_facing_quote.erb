@@ -1,0 +1,91 @@
+<html> 
+  <body> 
+    <p> <a href= "/generate_quote/<%=@event.id%>"> <- </a> </p>    
+    
+    <h1><img src="/images/bouquet.jpeg" width="50" height="50" align="left"/><b>Fundingsland Flowers, Inc.</h1>
+  
+  <table align="left">
+      <tr><td>Name:           <%= @event.customer.name%> 
+      <tr><td>Phone:          <%= @event.customer.phone1%>
+      <tr><td>Email:          <%= @event.customer.email%>
+      <tr><td>Address:        <%= @event.customer.address%> <%= @event.customer.city%> <%= @event.customer.state%>
+      </table>
+    
+  <table align="right">
+      <tr><td>Quote Name:     <b><%=@quote.quote_name%>
+      <tr><td>Florist:        <%=@event.employee.name%></td>
+      <tr><td>Phone:          <%=@event.employee.w_phone%>
+      <tr><td>Email:          <%=@event.employee.email%>
+      
+  </table> 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+<hr />    
+
+<h3> Details for <%=@event.name%></h3>
+  <table align="right">    
+      <tr><td>Feel of Day:    <%=@event.feel_of_day%>
+      <tr><td>Color Palette:  <%=@event.color_palette%>
+      <tr><td>Flower Types:   <%=@event.flower_types%>
+      <tr><td>Attire:         <%=@event.attire%>
+       <tr><td>Budget:  <%=@event.budget%>
+  </table>
+  
+<table align="left">    
+      <tr><td>Event Date:     <%=@event.date_of_event%>
+      <tr><td>Event Time:     <%=@event.time%>
+      <tr><td>Setup Time:     <%=@event.delivery_setup_time%>
+      <tr><td> Ceremony Location:
+      <tr><td>Reception Location:
+</table>
+  
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<tr> Event Notes:    <%= @event.notes%> </tr>
+
+<hr />
+     
+<h3> Arrangements for Event </h3>  
+  
+  <table border='1'>
+      
+<tr>      
+      <th>Item Name</th>
+      <th>Quantity</th>
+      <th size="200">Specifications</th> 
+      <th>Price</th>
+    </tr>
+       
+        <% for each in @specifications %>
+           <tr>
+            <td> <%=each.item_name%></td> 
+            <td> <%=each.item_quantity%></td>
+            <td> <%=each.item_specs%></td>
+            <td> $<%=each.quoted_price%></td>
+            
+            <tr> <td><i>images here</i></td> </tr>
+        </tr>
+        <%end%>
+       </table>
+      <th>Total Price: $<%=@event.quote.total_price%>  </th>
+
+<br><br>
+   <p> I agree to the terms and conditions of the contract.  This quote once executed will server as my order form... blah blah blah.</p>
+   <br>
+   <p><b> 
+   Name:      __________________ <br><br>
+   
+   Signature: _____________    Date: __________________ 
+ </p>
+   
+  </body> 
+</html>

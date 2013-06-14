@@ -1,0 +1,139 @@
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended to check this file into your version control system.
+
+ActiveRecord::Schema.define(:version => 20130613133228) do
+
+  create_table "customers", :force => true do |t|
+    t.string   "name"
+    t.string   "phone1"
+    t.string   "phone2"
+    t.string   "email"
+    t.string   "groom_name"
+    t.string   "groom_phone"
+    t.string   "groom_email"
+    t.string   "company_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "notes",        :limit => 500
+    t.integer  "florist_id"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "designed_products", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "specification_id"
+    t.integer  "product_id"
+    t.float    "product_qty"
+    t.string   "product_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "employees", :force => true do |t|
+    t.string   "name"
+    t.string   "status"
+    t.string   "email"
+    t.string   "w_phone"
+    t.string   "c_phone"
+    t.string   "employee_type"
+    t.string   "username"
+    t.string   "password_digest"
+    t.integer  "florist_id"
+    t.string   "admin_rights"
+    t.string   "password"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "events", :force => true do |t|
+    t.string   "event_type"
+    t.string   "name"
+    t.date     "date_of_event"
+    t.string   "time"
+    t.string   "delivery_setup_time"
+    t.string   "notes"
+    t.string   "feel_of_day"
+    t.string   "color_palette"
+    t.string   "flower_types"
+    t.string   "attire"
+    t.integer  "employee_id"
+    t.integer  "customer_id"
+    t.string   "photographer"
+    t.string   "coordinator"
+    t.string   "locations"
+    t.string   "budget"
+    t.string   "event_status"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "florists", :force => true do |t|
+    t.string   "name"
+    t.string   "company_logo"
+    t.string   "company_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "products", :force => true do |t|
+    t.string   "product_type"
+    t.string   "name"
+    t.float    "items_per_bunch"
+    t.float    "cost_per_bunch"
+    t.float    "cost_for_one"
+    t.float    "markup"
+    t.string   "status"
+    t.integer  "florist_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "quotes", :force => true do |t|
+    t.string   "quote_name"
+    t.integer  "event_id"
+    t.float    "total_price"
+    t.float    "markup"
+    t.string   "status"
+    t.date     "wholesale_order_date"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.string   "updated_by"
+  end
+
+  create_table "specifications", :force => true do |t|
+    t.integer  "event_id"
+    t.string   "item_name"
+    t.float    "item_quantity"
+    t.string   "item_specs",          :limit => 1000
+    t.boolean  "in_quote"
+    t.float    "per_item_cost"
+    t.float    "per_item_list_price"
+    t.float    "extended_list_price"
+    t.float    "quoted_price"
+    t.string   "image"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.string   "updated_by"
+  end
+
+end

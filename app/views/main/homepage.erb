@@ -1,0 +1,95 @@
+<html>
+  <body>
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/>Florist Company's Name</h1>
+    
+    
+    <h2> <b>Active Events </b></h2>
+    <p>A List of Active Events (aka: event has not yet been delivered). This does not show "delivered" deals and "lost" proposals</p>
+    
+   <%= form_tag("/homepage") do %>  
+  <p><%=text_field_tag "search_field"%><td>  
+  <%=button_tag "Customer Search", name: "search"%> <- You must search to see if the customer already exists before adding a new customer.</p>
+  <%=button_tag "Logout", name: "loguout"%>
+  <%end%>
+    
+    
+    <table>
+    <th><a href="/admin">Admin</a> </th> 
+    <th> / </th> 
+    <th> / </th>
+    <th><a href="/schedule_order_date">Schedule Wholesale Order Date</a></th>
+    <th> / </th>
+    <th><a href="/employees">Employees</a></th>
+    <th> / </th>
+    <th><a href="/products">Products</a></th>
+    </table>
+    
+    
+    
+    <table border='1'>
+      <tr>
+        <th>ID</th>
+        <th>Customer Name</th>
+        <th>Events</th>
+        <th>Date of Event</th>
+        <th>Quote</th>
+        <th>Quote Status</th>
+        <th>Wholesale Order Date</th>
+        <th>Lead Designer</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Company Name, if appl.</th>
+      </tr>
+        
+          <tr>
+          <% for event in @events %>
+          <td><%= event.customer.id %></td>
+          <td><a href="cust_edit/<%=event.customer.id%>"> <%= event.customer.name %></a></td>
+          <td><a href="event_edit/<%= event.id%>"> <%= event.name %>  </a></td>
+          <td><%=event.date_of_event%></td>
+          <td><%if event.quote != nil%>
+                  <a href="/generate_quote/<%=event.id%>"> <%=event.quote.quote_name%> </a> 
+                <%else%>
+                  No Quote
+                <%end%></td>
+          <td> <%if event.quote !=nil%>
+                  <%=event.quote.status%>
+                  <%else%>
+                  No Quote
+                  <%end%></td>
+    
+          
+          <td> <%if event.quote !=nil%>
+                  <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date%>
+                  <%else%>
+                  <%end%></td>
+          <td><%=event.employee.name%>
+          <td> <%=event.customer.phone1%> </td>
+          <td> <%=event.customer.email%> </td>
+          <td> <%=event.customer.company_name%> </td>
+
+        </tr>
+         <% end %>
+    </table>
+  </body>
+</html>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

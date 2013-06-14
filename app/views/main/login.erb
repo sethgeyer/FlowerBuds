@@ -1,0 +1,30 @@
+<html>
+
+  <body>
+    
+      <img src="images/gerber.jpeg" width="100" height="100"/> <img src="images/yellow_gerber.jpeg" width="100" height="100" /> <img src="images/red_gerber.jpeg" width="100" height="100" />
+
+      <h1> Flower Buds, Inc. </h1>
+      
+      <%= form_tag("/login") do %>
+        <b><%= label_tag "company_id", "Florist ID: " %>
+        <%= text_field_tag "company_id"%>
+        <br>
+        <br>
+       
+        <%= label_tag "username", "Username: " %>
+        <%= text_field_tag "username"%>
+        <br>
+        <br>
+        <%= label_tag "password", "Password: " %>
+        <%= password_field_tag "password"%> 
+        <br>
+        <br>
+        
+        <div class= 'label-spacer'></div>
+        <button name= "action" value= "save">Enter</button>
+        <br>
+      <%end%>
+      
+  </body>
+</html>  

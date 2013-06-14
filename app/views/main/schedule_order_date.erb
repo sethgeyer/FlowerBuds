@@ -1,0 +1,58 @@
+
+
+  <html> 
+  <body> 
+    <p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Booked Events</h1>
+    <p> This page shows all booked events for which an "order date" has not yet been established. <br>
+        Choose an Event(s) and identify the date in which you'll place the order w/ the wholesaler. <br> </p>
+    
+    <table border='1'>
+      <tr>
+        <th>Place Order?</th>
+        <th>Customer Name</th>
+        <th>Event Name</th>
+        <th>Event Date</th>
+        <th>Quote Name</th>
+        <th>Value</th>
+        <th>Quote Status</th>
+        <th>Wholesale Order Date<th>
+        <th>Lead Designer</th>
+      </tr>
+        
+  <%= form_tag("/assign_order_date") do %> 
+  
+        
+          <tr>
+          <% for booked_quote in @booked_quotes %>
+          <td><%=check_box_tag "place_order-#{booked_quote.id}", "false"%>
+              </td>
+              </td>
+          <td><%= booked_quote.event.customer.name %></td>
+          
+          <td> <%=booked_quote.event.name%> </td>
+          <td> <%=booked_quote.event.date_of_event%> </td>
+          <td> <%=booked_quote.quote_name%></td>
+          <td> $<%=booked_quote.total_price%></td>
+          <td> <%=booked_quote.status%></td>
+          <td> <%=booked_quote.wholesale_order_date%></td>
+         
+          <td> <%=booked_quote.event.employee.name%></td>
+        </tr>
+         <% end %>
+    </table>
+  <br>
+  <br>
+   <td><%=label_tag "place_order_on", "Place Order On: *"%>
+  <%= text_field_tag "place_order_on"%></td>
+  
+  
+  <button name="action" value="generate_wholesale_order_list" >Generate Wholesale Order List</button>
+    
+  <%end%>  
+    
+    
+    
+    
+  </body> 
+</html>

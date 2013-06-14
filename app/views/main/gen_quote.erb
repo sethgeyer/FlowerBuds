@@ -1,0 +1,182 @@
+<html> 
+  <body> 
+    <p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Quote Generation Page</h1>
+    
+     <%= form_tag("/save_quote") do %>  
+    <h1>Quote ID: <%=@quote.id%> / / /  Quote Name: *
+    <%= text_field_tag "quote_name", @quote.quote_name%></h1> 
+    
+    
+       
+    <b><%=label_tag "customer_id", "Cust ID:"%>
+    <b><%=hidden_field_tag "customer_id", @event.customer.id%> 
+      <%=@event.customer.id%>/ / / / 
+    Customer Name: <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
+    <br>
+     <b><%=label_tag "event_id", "Event ID:"%>
+      <%=hidden_field_tag "event_id", @event.id%>
+      <%=@event.id%> / / / / 
+    <b><%= label_tag "event_name", "Event Name:"%>
+      <%= hidden_field_tag "event_name", @event.name%>
+      <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a>
+      
+      
+    <b><%= label_tag "event_type", "Event Type:"%>
+      <%= hidden_field_tag "event_type", @event.event_type%>
+      <%=@event.event_type%>
+      <b><%= label_tag "event_date", "Event Date:"%>
+      <%= hidden_field_tag "event_date", @event.date_of_event%>
+      <%=@event.date_of_event%>
+
+      <b><%= label_tag "event_time", "Event Time:"%>
+      <%= hidden_field_tag "event_time", value: @event.time%>
+      <%=@event.time%>
+
+      <br>
+     <b><%= label_tag "setup_time", "Setup Time:"%>
+      <%= hidden_field_tag "setup_time", @event.delivery_setup_time%>
+      <%=@event.delivery_setup_time%>
+      <br>
+      <b><%= label_tag "feel_of_day", "Feel of Day:"%>
+      <%= hidden_field_tag "feel_of_day", @event.feel_of_day%>
+      <%=@event.feel_of_day%>
+      <b><%= label_tag "color_palette", "Color Palette:"%>
+      <%= hidden_field_tag "color_palette", @event.color_palette%>
+     <%=@event.color_palette%>
+     <b><%= label_tag "flower_types", "Flower Type:"%>
+      <%= hidden_field_tag "flower_types", @event.flower_types%>
+     <%=@event.flower_types%>
+      <b><%= label_tag "attire", "Attire:"%>
+      <%= hidden_field_tag "attire", @event.attire%>
+     <%=@event.attire%>
+     <br> 
+     <b><%= label_tag "lead_designer", "Lead Designer:"%>
+      <%= hidden_field_tag "lead_designer", @event.employee.name%>
+     <%=@event.employee.name%>
+      <br>
+      <b><%= label_tag "budget", "Budget:"%>
+      <%= hidden_field_tag "budget", @event.budget%>
+     <%=@event.budget%>
+      <br>
+      
+      <b><%= label_tag "notes", "Event Notes:"%>
+      <%= @event.notes%>
+      <br>
+      
+      <%= label_tag "status", "Status:"%>
+      <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><br>
+     
+  <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
+  
+   <h2> Arrangements for Event </h2>
+  <button name= "save" value= "save">Save & Refresh</button> - Press Save to See Updated Total Markup & Quoted Price
+     
+  
+  <table border='1'>
+       <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+
+      <th>Total Markup: </th>
+      <th>Total Quoted Price:  </th>
+      </tr>
+        <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+            <th></th>
+
+      <th></th>
+      <th><%=@event.quote.markup%> </th>
+      <th>$<%=@event.quote.total_price%>  </th>
+      </tr>
+      
+<tr>      
+      
+      <th>Item Name</th>
+      <th>Quantity</th>
+      <th>Specifications</th> 
+      <th>Per Item Cost</th>
+            <th>Extended Cost</th>
+
+      <th>Per Item List Price</th>
+      <th>Extended List Price</th> 
+      <th>Markup @ List Price
+      <th>Quoted Price</th>
+    </tr>
+       
+        <% for each in @specifications %>
+           <tr>
+           
+            <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
+                 <%=each.item_name%></td> 
+            
+            <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity%>          
+                 <%=each.item_quantity%></td>
+            <td> <%= text_area_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%></td>
+            
+            <% per_arrangement_cost = 0.00 %>
+            
+            <% designed_products = DesignedProduct.where(specification_id: each.id)%>
+            <%for designed_product in designed_products %>
+              <% product_cost = designed_product.product_qty * designed_product.product.cost_for_one %>
+              
+              <% per_arrangement_cost = per_arrangement_cost + product_cost %>
+            <%end%>
+            <td> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
+                 $<%=each.per_item_cost = per_arrangement_cost.round(2)%> </td>
+            <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (each.per_item_cost * each.item_quantity).round(2)%>
+                 $<%= extended_cost = (each.per_item_cost * each.item_quantity).round(2)%></td>
+            
+            <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = (each.per_item_cost * designed_product.product.markup).round(2)%>
+                 $<%= each.per_item_list_price = (each.per_item_cost * designed_product.product.markup).round(2)%></td>
+            <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%>
+                 $<%= each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%></td>
+            <td> <%= markup = (each.extended_list_price / (each.per_item_cost*each.item_quantity)).round(2)%></td>
+            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
+            
+            <tr> <td><i>images here</i> </td> </tr>
+        </tr>
+        <%end%>
+       
+        <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+
+      <th>Total Markup: </th>
+      <th>Total Quoted Price:</th>
+      </tr>
+        <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th><%=@event.quote.markup%> </th>
+      <th>$<%=@event.quote.total_price%>  </th>
+      </tr>
+      
+    
+       </table>
+       
+        
+         
+    <%end%>   
+   
+  </body> 
+</html>

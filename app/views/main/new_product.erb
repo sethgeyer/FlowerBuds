@@ -1,0 +1,64 @@
+<html>
+<head>
+    <style>
+      label[for=florist_id_new],
+      label[for=product_type_new],
+      label[for=product_name_new],
+      label[for=items_per_bunch_new],
+      label[for=cost_per_bunch_new], 
+      label[for=cost_for_one_new],
+      label[for=markup_new],
+      label[for=status_new],
+            {
+        width: 200px;
+        float: left;
+      }
+      .label-spacer {
+        width: 100px;
+        height: 1px;
+        float: left;
+      }
+    </style>
+  </head>
+
+<hl><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/><b>Create a New Products</b></h1>
+<p> This includes all flowers from the wholesaler, vases you will resell, and labor charges. </p>
+
+<body>
+
+         <%= form_tag("/save_new_product") do %>
+          
+          <tr> <%=label_tag "florist_id_new", "Florist ID" %>
+               <%= hidden_field_tag "florist_id_new"%>
+               1</tr>
+         <br><br>       
+          <tr><%=label_tag "product_type_new", "Product Type: *" %>
+              <%= text_field_tag "product_type_new" %></tr>
+          <br><br>
+               
+          <tr><%=label_tag "product_name_new", "Product Name: *" %>
+              <%= text_field_tag "product_name_new"%></tr>
+          <br><br> 
+         <tr><%=label_tag "cost_per_bunch_new", "Cost per Bunch: * $" %>
+              <%= text_field_tag "cost_per_bunch_new"%></tr>
+          <br><br>
+          <tr><%=label_tag "items_per_bunch_new", "Items per Bunch: *" %>
+              <%= text_field_tag "items_per_bunch_new"%></tr>
+          <br><br>
+         
+          <tr><%=label_tag "markup_new", "Markup: * " %>
+              <%= text_field_tag "markup_new"%></tr>
+          <br><br>
+         <tr><%=label_tag "status_new", "Status: " %>
+             <%= hidden_field_tag "status_new", "Active" %>      
+              Active</tr> 
+        <br><br>
+        <div class= 'label-spacer'></div> <button name= "action" value= "new">Save</button>
+
+         <% end %>
+
+  
+
+<p><a href="/products">Back to Products</a></p>
+</body>
+</html>

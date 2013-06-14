@@ -1,0 +1,45 @@
+<html> 
+  <body> 
+    <p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Search</h1>
+    
+  <%= form_tag("/homepage") do %>  
+  <p><%=text_field_tag "search_field"%><td>  
+  <button name= "search" value= "search">Customer Search</button> </p>
+  <%end%>
+  
+  
+   <p> <a href="/cust_new">Add New Customer</a><p>
+    <table border='1'>
+  
+     
+     <th> Florist ID</th>
+     <th> Cust ID </th>
+     <th> Customer Name </th>
+     <th> City </th>
+     <th> State </th>
+     <th> Phone (c) </th>
+     <th> Email </th>
+     <th> Company, if appl. </th>
+     
+     
+      <% for customer in @customers%>
+        <tr>      
+            <td> <%=customer.florist.id%></td>
+            <td> <%=customer.id%></td>
+            <td> <a href="/cust_edit/<%=customer.id%>"><%=customer.name%></a></td>
+            <td> <%=customer.city%></td>
+            <td> <%=customer.state%></td>
+            <td> <%=customer.phone1%></td>
+            <td> <%=customer.email%></td>
+            <td> <%=customer.company_name%></td>
+     
+     
+     
+         </tr>
+      <%end%>
+    </table>
+    
+    
+  </body> 
+</html>

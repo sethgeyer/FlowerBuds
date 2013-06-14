@@ -1,0 +1,67 @@
+<html>
+<body>
+
+<p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Employee Edit Page</h1>
+    
+    
+     <%= form_tag("/employee_post") do %>
+     <button name= "new" value= "new">Add New</button>
+     
+     <table border='1'>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Email</th>
+        <th>Phone(w)</th>             
+        <th>Phone(c)</th>
+        <th>Type</th>
+        <th>Login Name</th>
+      
+        <th>Admin Rights</th>
+        <th>Florist ID</th>
+    
+   
+      <tr>
+      <% for employee in @employees%> 
+      <td><%label_tag "id-#{employee.id}"%>
+          <%=hidden_field_tag "id-#{employee.id}", employee.id%>
+          <%=employee.id%></td>
+      <td><%label_tag "name-#{employee.id}"%>
+          <%=hidden_field_tag "name-#{employee.id}", employee.name%>
+          <%=employee.name%></td>
+      <td><%label_tag "status-#{employee.id}"%>
+          <%= hidden_field_tag "status-#{employee.id}", employee.status%>
+          <%= employee.status%></td>
+      <td><%label_tag "email-#{employee.id}"%>
+          <%= hidden_field_tag "email-#{employee.id}", employee.email%>
+          <%= employee.email %></td>
+     <td><%label_tag "phone_w-#{employee.id}"%>
+          <%= hidden_field_tag "phone_w-#{employee.id}", employee.w_phone%>
+          <%= employee.w_phone %></td>
+     <td><%label_tag "phone_c-#{employee.id}"%>
+          <%= hidden_field_tag "phone_c-#{employee.id}", employee.c_phone%>
+          <%= employee.c_phone%></td>
+     <td><%label_tag "employee_type-#{employee.id}"%>
+          <%= hidden_field_tag "employee_type-#{employee.id}", employee.employee_type%>
+          <%= employee.employee_type%></td>
+     <td><%label_tag "login_name-#{employee.id}"%>
+          <%= hidden_field_tag "login_name-#{employee.id}", employee.username%>
+          <%= employee.username %></td>
+     <td><%label_tag "admin_rights-#{employee.id}"%>
+         <%= hidden_field_tag "admin_rights-#{employee.id}", employee.admin_rights%>
+         <%= employee.admin_rights%></td>
+    <td><%=employee.florist_id%></td>
+    <td>  <button name= "edit" value= <%=employee.id%>>Update</button> </td>
+    
+   </tr> <%end%>
+    
+   
+    
+    <%end%>
+
+
+
+
+</body>
+</html>

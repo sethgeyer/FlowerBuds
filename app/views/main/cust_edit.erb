@@ -1,0 +1,90 @@
+<html> 
+  <body> 
+    <p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Edit Page</h1>
+    <%= form_tag("/cust_edit") do %>
+      <b><%=label_tag "contact_id", "Cust ID:"%>
+      <%=hidden_field_tag "contact_id", @customer.id%> <%= @customer.id%> Florist ID: <%=@customer.florist_id%> 
+      <br>
+      <b><%= label_tag "contact_name", "Contact Name: *"%>
+      <%= text_field_tag "contact_name", @customer.name%>
+      <b><%= label_tag "phone1", "Phone (primary):"%>
+      <%= text_field_tag "phone1", @customer.phone1%>
+      <b><%= label_tag "phone2", "Phone (other):"%>
+      <%= text_field_tag "phone2", @customer.phone2%>
+      <b><%= label_tag "contact_email", "Email: *"%>
+      <%= text_field_tag "contact_email", @customer.email%>
+      <br>
+      <b><%= label_tag "groom_name", "Groom Name (if appl.):"%>
+      <%= text_field_tag "groom_name", @customer.groom_name%>
+      <b><%= label_tag "groom_phone", "Phone:"%>
+      <%= text_field_tag "groom_phone", @customer.groom_phone%>
+      <b><%= label_tag "groom_email", "Email:"%>
+      <%= text_field_tag "groom_email", @customer.groom_email%>
+      <br>
+      <b><%= label_tag "address", "Address"%>
+      <%= text_field_tag "address", @customer.address%>
+      <b><%= label_tag "city", "City:"%>
+      <%= text_field_tag "city", @customer.city%>
+      <b><%= label_tag "state", "State:"%>
+      <%= text_field_tag "state", @customer.state%>
+      <b><%= label_tag "zip", "Zip:"%>
+      <%= text_field_tag "zip", @customer.zip%>
+      <br>
+      <b><%=label_tag "company_name", "Company Name (if appl.):"%>
+      <%= text_field_tag "company_name", @customer.company_name%>
+      <br>
+      <b><%= label_tag "notes", "Special Notes:"%> 
+      <br>
+      <%= text_area_tag "notes", @customer.notes, rows: 3, cols: 120%>
+      <div class = 'label-spacer'></div>
+      <button name= "save" value= "save">Save Updates</button>       
+   
+    <br>
+    <hr/>
+
+  <h2> Events </h2>
+    <%id = @customer.id%>
+    <p> <a href="/event_new/<%=id%>"> Create New Event </a> </p>
+    <table border='1'>
+      <th>FloristID</th>
+      <th>CustID</th>
+      <th>Event ID</th>
+      <th>Event Type</th>
+      <th>Event Name</th>
+      <th>Event Date</th>
+      <th>Quote Name</th>
+      <th>Quote Status</th>
+      <th>Lead Designer</th>
+      <th>Notes</th>
+      
+      <% for event in @customer.events %>
+        <tr>      
+            <td> <%=@customer.florist.id%></td>
+            <td> <%=event.customer.id%></td>
+            <td> <%=event.id%></td>
+            <td> <%=event.event_type%> </td>
+            <td> <a href="/event_edit/<%=event.id%>"> <%=event.name%> </a></td>
+            <td> <%=event.date_of_event%> </td>
+             <%if event.quote != nil%>
+                    <td><a href="/generate_quote/<%=event.id%>"> <%=event.quote.quote_name%> </a></td>
+                    <td><%=event.quote.status%></td>
+                 <%else%>
+                    <td>No Quote</td>
+                    <td>No Quote</td>
+                <%end%>
+                        
+            <td> <%= event.employee.name %> </td>
+            <td> <%=event.notes%> </td>
+            <td> <div class = 'label-spacer'></div> 
+              <button name="delete" value= <%=event.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
+          </tr>
+        </tr>
+      <%end%>
+    </table>
+    
+    
+    
+     <%end%>
+  </body> 
+</html>

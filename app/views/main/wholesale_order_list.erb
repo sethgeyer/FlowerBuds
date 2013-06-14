@@ -1,0 +1,113 @@
+
+
+  <html> 
+  <body> 
+    <p> <a href= "/home"> Return to Home </a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Wholesaler Order List for <%=params["place_order_on"]%></h1>
+    
+    <h3>Events You're Shopping For</h3>
+    <table border='1'>
+      <tr>
+        <th>Florist</th>
+        <th>Lead Designer</th>
+        <th>Customer Name</th>
+        <th>Event ID </th>
+
+        <th>Event Name</th>
+        <th>Event Date</th>
+        <th>Quote Name</th>
+        <th>Quote Status</th>
+        <th>Wholesale Order Date</th>
+        
+      </tr>
+              
+          <tr>
+          <% for order in @orders %>
+          <td><%=order.event.customer.florist.name%>
+          <td> <%=order.event.employee.name%></td>
+          <td><%= order.event.customer.name %></td>
+          <td> <%=order.event.id%></td>          
+          <td> <%=order.event.name%> </td>
+          <td> <%=order.event.date_of_event%> </td>
+          <td> <a href="/generate_quote/<%=order.event_id%>"> <%=order.quote_name%></td>
+          <td> <%=order.status%></td>
+          <td> <%=order.wholesale_order_date%></td>
+                 </tr>
+         <% end %>
+    </table>
+  <p> Note: If there is a last second cancellation, select the Quote Name link to change the Quote Status.  Doing so, will clear the <br> event from the Wholesaler Grocery List.</p> 
+  
+  
+    <h3>Items You're Shopping For</h3>     
+     <table border='1'>
+      <tr>
+      <th>Type</th>
+      <th>Products</th>
+      <% for order in @orders%>
+        <th><%=order.event.name%></th>
+      <%end%>
+      <th>Total</th>
+      
+      <th>Sold in Bundles of</th>
+      <th>Purchase This Many Bundles</thd>
+      <th>Leftover</th>
+      </tr>
+     
+      <tr>
+      
+      <% for product_id in @list_of_product_ids%>
+      <td><%=type= Product.where(id: product_id).first.product_type%>
+      <td><%= name = Product.where(id: product_id).first.name%>/<%=product_id%></td>
+            <%total_count = 0%>
+            <% for order in @orders%>
+            <%designed_products =DesignedProduct.where(product_id: product_id).where(event_id: order.event_id)%>
+            <%count = 0%>
+            <%for designed_product in designed_products%>
+            <%count = count + (designed_product.product_qty * designed_product.specification.item_quantity)%>
+            <%end%>
+            <td><%=count%></td>
+            <%total_count =  total_count + count%> 
+            <%end%>
+            <td><%=total_count%></td>
+      <td><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch%></td>
+      <td><%= purchase = (total_count / items_per_bunch).ceil%>
+      <td><%= ((purchase*items_per_bunch) - total_count).to_i%> 
+      </tr>   
+      <%end%>
+      
+      
+      
+      </table>
+  </body> 
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

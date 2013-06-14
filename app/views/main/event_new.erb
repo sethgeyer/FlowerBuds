@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <style>
+      label[for=florist_id],
+      label[for=customer_id],
+      label[for=event_type],
+      label[for=event_name],
+      label[for=event_date],
+      label[for=event_time],
+      label[for=setup_time],
+      label[for=feel_of_day],
+      label[for=color_palette],
+      label[for=flower_types],
+      label[for=attire],
+      label[for=lead_designer],
+      label[for=third_party_name],
+      label[for=third_party_role],
+      label[for=site_name],
+      label[for=site_type]{
+        width: 130px;
+        float: left;
+      }
+      .label-spacer {
+        width: 100px;
+        height: 1px;
+        float: left;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p> <a href= "/home"> Return to Home </a></p>
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/> Create a New Event </h1>
+    
+    <%= form_tag("/event_new") do%>
+    <h2>Customer Name: <%= @customer.name %></h2>
+   
+   
+   <b><%=label_tag "florist_id", "FL ID:"%>
+    <b><%=hidden_field_tag "florist_id",@customer.florist.id%>
+    <%=@customer.florist.id%>
+    <br>
+    <b><%=label_tag "customer_id", "Cust ID:"%>
+    <b><%=hidden_field_tag "customer_id", @customer.id%>
+    <%=@customer.id%>
+    <br>   
+    <b><%= label_tag "event_type", "Type:" %>
+    <b><%= text_field_tag "event_type"%>
+    <br>
+    <b><%=label_tag "event_name", "Event Name: *"%>
+    <b><%=text_field_tag "event_name"%>
+    <br>
+    <b><%=label_tag "event_date", "Event Date: *"%>
+    <b><%=text_field_tag "event_date"%>    
+    <br>
+    <b><%=label_tag "event_time", "Event Time: *" %>
+    <b><%=text_field_tag "event_time"%>
+    <b>
+    <b><%= label_tag "budget","Budget:"%>
+    <b><%= text_field_tag "budget"%>
+    <br>
+    <b><%=label_tag "setup_time", "Setup Time: *"%>
+    <b><%=text_field_tag "setup_time"%>
+    <br>
+    <b><%=label_tag "feel_of_day", "Feel of Day:"%>
+    <b><%=text_field_tag "feel_of_day"%>
+    <br>
+    <b><%=label_tag "color_palette", "Color Palette:"%>
+    <b><%=text_field_tag "color_palette"%>
+    <br>
+    <b><%=label_tag "flower_types", "Flower Types:"%>
+    <b><%=text_field_tag "flower_types"%>
+    <br>
+    <b><%=label_tag "attire", "Attire:"%>
+    <b><%=text_field_tag "attire"%>
+    <br>    
+    <b><%=label_tag "lead_designer", "Lead Designer:*"%>
+    <b><%=select_tag "lead_designer", options_for_select(@employee_list)%>
+    <br>
+    <b><%=label_tag "third_party_name", "3rd Party Name:"%>
+    <b><%=text_field_tag "third_party_name"%>
+    <br>    
+    <b><%=label_tag "third_party_role", "Role:"%>
+    <b><%=text_field_tag "third_party_role"%>
+    <br>    
+    <b><%=label_tag "site_name", "Site Name:"%>
+    <b><%=text_field_tag "site_name"%>
+    <br>    
+    <b><%=label_tag "site_type", "Type:"%>
+    <b><%=text_field_tag "site_type"%>
+    <br>
+    <b><%= label_tag "notes", "Event Notes:"%>
+    <%= text_area_tag "notes"%>
+     <br>
+     <div class = 'label-spacer'></div>
+      <button name= "action" value= "save">Save Updates</button>       
+
+    <%end%>
+    
+  </body>
+</html>
+    
+    
+    
+    
+    
+    
+    
