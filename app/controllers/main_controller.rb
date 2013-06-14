@@ -1,6 +1,7 @@
 class MainController < ApplicationController
 use Rack::Session::Cookie, secret: SecureRandom.hex 
 
+###
 
 ######### LOGIN
   def login
