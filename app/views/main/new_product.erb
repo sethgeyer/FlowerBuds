@@ -21,7 +21,7 @@
     </style>
   </head>
 
-<hl><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/><b>Create a New Products</b></h1>
+<hl><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/><b>Create a New Product</b></h1>
 <p> This includes all flowers from the wholesaler, vases you will resell, and labor charges. </p>
 
 <body>
@@ -29,8 +29,7 @@
          <%= form_tag("/save_new_product") do %>
           
           <tr> <%=label_tag "florist_id_new", "Florist ID" %>
-               <%= hidden_field_tag "florist_id_new"%>
-               1</tr>
+               <%=@florist.id%>%></tr>
          <br><br>       
           <tr><%=label_tag "product_type_new", "Product Type: *" %>
               <%= text_field_tag "product_type_new" %></tr>

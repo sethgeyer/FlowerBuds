@@ -2,7 +2,8 @@
   <body> 
     
     <p> <a href= "/event_edit/<%=@event.id%>"> <- </a> </p>    
-    
+        <p> <%=@event.florist_id%><%=@event.customer.florist.name%></p>
+
     DESIGN DAY DETAILS
     
     <h1><%=@event.customer.name%> / <%=@event.name%>  / <i>Florist:<%=@event.employee.name%></h1>

@@ -1,7 +1,8 @@
 <html> 
   <body> 
+  <p> <%=@customer.florist_id%><%=@customer.florist.name%></p>
     <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Edit Page</h1>
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Edit</h1>
     <%= form_tag("/cust_edit") do %>
       <b><%=label_tag "contact_id", "Cust ID:"%>
       <%=hidden_field_tag "contact_id", @customer.id%> <%= @customer.id%> Florist ID: <%=@customer.florist_id%> 

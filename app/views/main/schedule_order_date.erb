@@ -10,6 +10,7 @@
     <table border='1'>
       <tr>
         <th>Place Order?</th>
+        <th>Florist_id</th>
         <th>Customer Name</th>
         <th>Event Name</th>
         <th>Event Date</th>
@@ -28,6 +29,7 @@
           <td><%=check_box_tag "place_order-#{booked_quote.id}", "false"%>
               </td>
               </td>
+          <td><%=booked_quote.florist_id%></td>
           <td><%= booked_quote.event.customer.name %></td>
           
           <td> <%=booked_quote.event.name%> </td>

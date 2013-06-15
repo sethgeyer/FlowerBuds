@@ -1,6 +1,8 @@
 <html>
   <body>
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/>Florist Company's Name</h1>
+    
+    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><%= Florist.where(id: session["found_florist_id"]).first.name%></h1>
     
     
     <h2> <b>Active Events </b></h2>
@@ -28,7 +30,7 @@
     
     <table border='1'>
       <tr>
-        <th>ID</th>
+        <th>CustID</th>
         <th>Customer Name</th>
         <th>Events</th>
         <th>Date of Event</th>

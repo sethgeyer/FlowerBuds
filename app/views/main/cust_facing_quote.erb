@@ -1,8 +1,10 @@
 <html> 
   <body> 
+    <p> <%=@event.florist_id%><%=@event.customer.florist.name%></p>
+
     <p> <a href= "/generate_quote/<%=@event.id%>"> <- </a> </p>    
     
-    <h1><img src="/images/bouquet.jpeg" width="50" height="50" align="left"/><b>Fundingsland Flowers, Inc.</h1>
+    <h1><img src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="50" height="50" align="left"/><b><%= Florist.where(id: session["found_florist_id"]).first.name%></h1>
   
   <table align="left">
       <tr><td>Name:           <%= @event.customer.name%> 

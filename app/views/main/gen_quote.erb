@@ -1,7 +1,10 @@
 <html> 
   <body> 
+  <p> <%=@event.florist_id%><%=@event.florist.name%></p>
+
+    
     <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Quote Generation Page</h1>
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Generate Quote</h1>
     
      <%= form_tag("/save_quote") do %>  
     <h1>Quote ID: <%=@quote.id%> / / /  Quote Name: *

@@ -25,9 +25,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ######### DISPLAY HOMEPAGE
   def home
     if session["found_user_id"] != nil
-      @customers = Customer.where(florist_id: session["found_florist_id"]).order("name")  #This NEEDS TO BE UPDTATED TO TIE IN TO LOGIN INFO.
-      @events = Event.where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
-      @florist = Florist.where(name: "Fundingsland Flowers").first                #This NEEDS TO BE UPDTATED TO TIE IN TO LOGIN INFO.
+      @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
       render(:homepage) and return
     else
       render(:login) and return
@@ -158,7 +156,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     new_event.flower_types = params["flower_types"]
     new_event.attire = params["attire"]
     new_event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
-                                                                            #As well, you need to resolve the 3rd party and Site info
+    new_event.florist_id = session["found_florist_id"]                                                                        #As well, you need to resolve the 3rd party and Site info
     new_event.budget = params["budget"]
     new_event.notes = params["notes"]
     new_event.customer_id = params["customer_id"]  # How Do I make non-editable elements of a form. IE:  Shouldn't be able to edit ID #s
@@ -222,6 +220,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_spec.item_name = ""
       new_spec.item_quantity = 1
       new_spec.item_specs = ""
+      new_spec.florist_id = session["found_florist_id"] 
       new_spec.save!
     end
     redirect_to "/event_edit/#{params["event_id"]}"
@@ -257,6 +256,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
             new_dp.product_id = id
             new_dp.event_id = @event.id
             new_dp.product_qty = 0
+            new_dp.florist_id = session["found_florist_id"]
             new_dp.product_type = Product.where(name: each).first.product_type
             new_dp.save!
           else
@@ -288,6 +288,7 @@ end
       new_dp.specification_id = specification.id
       new_dp.product_qty = 0
       new_dp.product_type = Product.where(name: new_item).first.product_type
+      new_dp.florist_id = session["found_florist_id"]
       new_dp.product_id = Product.where(name: new_item).first.id
       new_dp.event_id = event_id
       new_dp.save!
@@ -317,6 +318,7 @@ end
           new.specification_id = specification.id
           new.product_qty = 0
           new.product_type = Product.where(id: each.product_id).first.product_type
+          new.florist_id = session["found_florist_id"]
           new.product_id = each.product_id
           new.event_id = event_id
           new.save! 
@@ -359,6 +361,7 @@ end
       new_quote = Quote.new
       new_quote.event_id = event_id
       new_quote.status = "Open Proposal"
+      new_quote.florist_id = session["found_florist_id"] 
       new_quote.save!
       event = Event.where(id: event_id).first
       event.event_status = "Open Proposal"
@@ -422,6 +425,7 @@ end
       new_quote = Quote.new
       new_quote.event_id = event_id
       new_quote.status = "Open Proposal"
+      new_quote.florist_id = session["found_florist_id"] 
       new_quote.save!
       event = Event.where(id: event_id).first
       event.event_status = "Open Proposal"
@@ -523,6 +527,7 @@ end
 
 ### GET Handler from products.erb
   def new_product
+    @florist = Florist.where(id: session["found_florist_id"]).first
     render(:new_product) and return
   end  
   
@@ -536,7 +541,7 @@ end
     newbie.cost_for_one =(params["cost_per_bunch_new"].to_f) / (params["items_per_bunch_new"].to_f)
     newbie.markup = params["markup_new"].to_f
     newbie.status = params["status_new"]
-    newbie.florist_id = params["florist_id"]
+    newbie.florist_id = session["found_florist_id"]
     newbie.save!
     redirect_to "/products" and return
   end
@@ -544,7 +549,8 @@ end
 ######### EMPLOYEES
 ### GET Handler from homepage.erb
   def employees
-    @employees = Employee.order("status",  "name") 
+    @employees = Employee.order("status",  "name")
+    @florist = Florist.where(id: session["found_florist_id"]).first 
     render(:employees) and return
   end
 
@@ -572,6 +578,7 @@ end
   def employee_updates
     if params["employee_id"] == "new"
       employee = Employee.new
+      employee.florist_id = session["found_florist_id"]
     else
       employee = Employee.where(id: params["id"]).first
     end
@@ -583,7 +590,6 @@ end
     employee.employee_type = params["employee_type"]
     employee.username = params["username"]
     employee.admin_rights = params["admin_rights"]
-    #####  employee.florist_id = "fix"     ----------- this needs to be linked to a session ID
     employee.save!
     redirect_to "/employees" and return
   end

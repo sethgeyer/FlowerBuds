@@ -3,13 +3,14 @@
     
    <p><a href="/home">Back to Home</a></p>
    
-     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Products Edit Page</h1>
+     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Edit Products</h1>
  <%= form_tag("/products_update") do %>  
    
    <p> <a href="/new_product">Add a New Product</a>
    
     <table border='1'>
-        <th>ID</th>
+        <th>ProductID</th>
+        <th>FloristID</th>
         <th>Type</th>
         <th>Name</th>
         <th>Cost/Bunch</th>
@@ -24,6 +25,8 @@
         <% for product in @products%>  
           <td> <%= hidden_field_tag "product_id", product.id%>
                <%=product.id%></td>
+          <td> <%=hidden_field_tag "florist_id", product.florist_id%>
+               <%=product.florist_id%></td>
           <td><%= hidden_field_tag "product_type", product.product_type%>
                <%=product.product_type%></td>
           <td><%= hidden_field_tag "product_name", product.name%>

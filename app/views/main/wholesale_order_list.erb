@@ -23,7 +23,7 @@
               
           <tr>
           <% for order in @orders %>
-          <td><%=order.event.customer.florist.name%>
+          <td><%=order.event.florist_id%>
           <td> <%=order.event.employee.name%></td>
           <td><%= order.event.customer.name %></td>
           <td> <%=order.event.id%></td>          

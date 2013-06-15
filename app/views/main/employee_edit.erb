@@ -1,8 +1,9 @@
 <html>
 <body>
+    <p> <%=@employee.florist_id%><%=@employee.florist.name%></p>
 
-<p> <a href= "/employees"> Return to Employee Page </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Employee Edit Page</h1>
+<p> <a href= "/employees"> Return to Employee</a> </p>    
+    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Employee Edit</h1>
     
    
     <% if @employee.id == nil
@@ -31,8 +32,8 @@
           <%= text_field_tag "phone_c", @employee.c_phone%></td><br>
      <td><%=label_tag "employee_type", "Type:"%>
           <%= text_field_tag "employee_type", @employee.employee_type%></td><br>
-     <td><%=label_tag "login_name", "Login Name:"%>
-          <%= text_field_tag "login_name", @employee.username%></td><br>
+     <td><%=label_tag "username", "Login Name:"%>
+          <%= text_field_tag "username", @employee.username%></td><br>
      <td><%=label_tag "admin_rights", "Admin Rights:"%>
          <%= select_tag "admin_rights", options_for_select(["", "admin"], @employee.admin_rights)%></td><br>
     <td>Florist ID:<%=@employee.florist_id%></td><br><br>
