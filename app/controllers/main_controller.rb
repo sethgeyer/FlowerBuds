@@ -55,7 +55,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   
 ######### SEARCH RESULTS  
   def search_results
-    @customers = Customer.where("name ilike ?","%#{params["customer"]}%")
+    @customers = Customer.where("name ilike ?","%#{params["customer"]}%") 
     render(:search_results) and return
   end  
 
@@ -580,7 +580,7 @@ end
       employee = Employee.new
       employee.florist_id = session["found_florist_id"]
     else
-      employee = Employee.where(id: params["id"]).first
+      employee = Employee.where(id: params["employee_id"]).first
     end
     employee.name = params["name"]
     employee.status = params["status"]
