@@ -6,6 +6,7 @@
     <p> <a href= "/home"> Return to Home </a> </p>    
     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Event Edit</h1>
     
+     <%=error_messages_for @event%>
        
     <%= form_tag("/event_edit") do %>    
     <b><%=label_tag "customer_id","Cust ID:"%>
@@ -16,16 +17,15 @@
      <b><%=label_tag "event_id", "Event ID:"%>
       <%=hidden_field_tag "event_id", @event.id%>
       <%=@event.id%> / / / / 
-    <b><%= label_tag "event_name", "Event Name:"%>
+    <b><%= label_tag "event_name", "Event Name: *"%>
       <%= text_field_tag "event_name", @event.name%>
-    <b><%= label_tag "event_type", "Event Type:"%>
-      <%= text_field_tag "event_type", @event.event_type%>
+   
       <b><%= label_tag "event_date", "Event Date: *"%>
       <%= text_field_tag "event_date", @event.date_of_event%>
-      <b><%= label_tag "event_time", "Event Time: *"%>
+      <b><%= label_tag "event_time", "Event Time:"%>
       <%= text_field_tag "event_time", @event.time%>
       <br>
-     <b><%= label_tag "setup_time", "Setup Time: *"%>
+     <b><%= label_tag "setup_time", "Setup Time:"%>
       <%= text_field_tag "setup_time", @event.delivery_setup_time%>
       <br>
       <b><%= label_tag "feel_of_day", "Feel of Day:"%>
@@ -37,7 +37,19 @@
       <b><%= label_tag "attire", "Attire:"%>
       <%= text_field_tag "attire", @event.attire%>
      <br> 
-     <b><%= label_tag "lead_designer", "Lead Designer:"%>
+      <b><%= label_tag "coordinator", "Coordinator:"%>
+      <%= text_field_tag "coordinator", @event.coordinator%>
+      <br>
+      <b><%= label_tag "photographer", "Photographer:"%>
+      <%= text_field_tag "photographer", @event.photographer%>
+      <br>
+      <b><%= label_tag "locations", "Locations(s):"%>
+      <%= text_field_tag "locations", @event.locations%>
+      <br>
+     
+     
+     
+     <b><%= label_tag "lead_designer", "Lead Designer: *"%>
       <%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name)%>
       <br>
       <b><%= label_tag "budget", "Budget:"%>
@@ -46,7 +58,7 @@
       
       <b><%= label_tag "notes", "Event Notes:"%>
       <%= text_area_tag "notes", @event.notes, rows: 2, cols: 130%> <br><br>
-     
+     <p> * required field <p>
  <td><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" /></a>Virtual Studio
  <td><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Build Quote
  <td><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Design Day Details
@@ -60,8 +72,8 @@
       <th>Cust ID</th>
       <th>Event ID</th>
       <th>Spec ID</th>
-      <th>Item Name</th>
-      <th>Quantity</th>
+      <th>Item Name *</th>
+      <th>Quantity *</th>
       <th>Specifications</th>       
        
         <% for each in @specifications %>

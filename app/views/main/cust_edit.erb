@@ -1,11 +1,16 @@
 <html> 
   <body> 
-  <p> <%=@customer.florist_id%><%=@customer.florist.name%></p>
+  
     <p> <a href= "/home"> Return to Home </a> </p>    
     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Edit</h1>
+    <%= error_messages_for @customer %>
+   
+    <p> <%=@customer.florist_id%><%=@customer.florist.name%></p>
+    
     <%= form_tag("/cust_edit") do %>
-      <b><%=label_tag "contact_id", "Cust ID:"%>
-      <%=hidden_field_tag "contact_id", @customer.id%> <%= @customer.id%> Florist ID: <%=@customer.florist_id%> 
+      <b><%=label_tag "customer_id", "Cust ID:"%>
+      <%=hidden_field_tag "customer_id", @customer.id%> <%=@customer.id%>
+      Florist ID: <%=@customer.florist_id%> 
       <br>
       <b><%= label_tag "contact_name", "Contact Name: *"%>
       <%= text_field_tag "contact_name", @customer.name%>
@@ -34,7 +39,7 @@
       <br>
       <b><%=label_tag "company_name", "Company Name (if appl.):"%>
       <%= text_field_tag "company_name", @customer.company_name%>
-      <br>
+      <p> * required field <p>
       <b><%= label_tag "notes", "Special Notes:"%> 
       <br>
       <%= text_area_tag "notes", @customer.notes, rows: 3, cols: 120%>

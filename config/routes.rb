@@ -12,7 +12,7 @@ App::Application.routes.draw do
   post "/cust_edit"                           => "main#cust_edit"
 
   get "/event_new/:cust_id"                   => "main#event_new"
-  post "/event_new"                           => "main#create_new_event"
+  post "/create_new_event/:customer_id"              => "main#create_new_event"
   get "/event_edit/:event_id"                 => "main#event_edit"
   post "/event_edit"                          => "main#event_and_specs_edit"
 
@@ -31,9 +31,11 @@ App::Application.routes.draw do
   get "/design_day_details/:event_id"         => "main#design_day_details"
   
   get "/products"                             => "main#products"
-  post "/products_update"                     => "main#products_update"
-  get "/new_product"                          => "main#new_product"
-  post "/save_new_product"                    => "main#save_new_product"
+  post "/product_post"                        => "main#product_post"
+  get "/product/:product_id"                  => "main#product"
+  #post "/save_new_product"                    => "main#save_new_product"
+  post "product_updates/:product_id"           => "main#product_updates"
+  
   get "/employees"                            => "main#employees"
   post "/employee_post"                       => "main#employee_post"
   get "/employee/:employee_id"                => "main#employee"

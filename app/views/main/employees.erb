@@ -20,40 +20,33 @@
         <th>Phone(c)</th>
         <th>Type</th>
         <th>Login Name</th>
-      
+        <th>Password</th>
         <th>Admin Rights</th>
         
     
    
       <tr>
       <% for employee in @employees%> 
-      <td><%label_tag "id"%>
-          <%=hidden_field_tag "id", employee.id%>
+      <td><%=hidden_field_tag "id", employee.id%>
           <%=employee.id%></td>
       <td><%=employee.florist_id%></td>
-      <td><%label_tag "name"%>
-          <%=hidden_field_tag "name", employee.name%>
+      <td><%=hidden_field_tag "name", employee.name%>
           <%=employee.name%></td>
-      <td><%label_tag "status"%>
-          <%= hidden_field_tag "status", employee.status%>
+      <td><%= hidden_field_tag "status", employee.status%>
           <%= employee.status%></td>
-      <td><%label_tag "email"%>
-          <%= hidden_field_tag "email", employee.email%>
+      <td><%= hidden_field_tag "email", employee.email%>
           <%= employee.email %></td>
-     <td><%label_tag "phone_w"%>
-          <%= hidden_field_tag "phone_w", employee.w_phone%>
+     <td><%= hidden_field_tag "phone_w", employee.w_phone%>
           <%= employee.w_phone %></td>
-     <td><%label_tag "phone_c"%>
-          <%= hidden_field_tag "phone_c", employee.c_phone%>
+     <td><%= hidden_field_tag "phone_c", employee.c_phone%>
           <%= employee.c_phone%></td>
-     <td><%label_tag "employee_type"%>
-          <%= hidden_field_tag "employee_type", employee.employee_type%>
+     <td><%= hidden_field_tag "employee_type", employee.employee_type%>
           <%= employee.employee_type%></td>
-     <td><%label_tag "username"%>
-          <%= hidden_field_tag "username", employee.username%>
+     <td><%= hidden_field_tag "username", employee.username%>
           <%= employee.username %></td>
-     <td><%label_tag "admin_rights"%>
-         <%= hidden_field_tag "admin_rights", employee.admin_rights%>
+    <td><%= hidden_field_tag "password", employee.password%>
+          <%= employee.password %></td>
+     <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
          <%= employee.admin_rights%></td>
    
     <td>  <button name= "edit" value= <%=employee.id%>>Update</button> </td>

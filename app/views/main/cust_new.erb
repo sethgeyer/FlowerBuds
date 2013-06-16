@@ -25,7 +25,7 @@
     </style>
   </head>
 
-
+<%= error_messages_for @new_customer%>
 
 <body>
 
@@ -36,43 +36,43 @@
 
 <%= form_tag("/create_new_customer") do %>
   <b><%= label_tag "new_contact_name", "New Contact Name: *"%>
-  <%= text_field_tag "new_contact_name"%>
+  <%= text_field_tag "new_contact_name", @new_customer.name%>
   <br>
   <b><%=label_tag "company_name", "Company Name (if appl.):"%>
-  <%= text_field_tag "company_name"%>
+  <%= text_field_tag "company_name", @new_customer.company_name%>
   <br>
   <b><%= label_tag "phone1", "Phone (primary):"%>
-  <%= text_field_tag "phone1"%>
+  <%= text_field_tag "phone1", @new_customer.phone1%>
   <br>
   <b><%= label_tag "phone2", "Phone (other):"%>
-  <%= text_field_tag "phone2"%>
+  <%= text_field_tag "phone2", @new_customer.phone2%>
   <br>
   <b><%= label_tag "contact_email", "Email: *"%>
-  <%= text_field_tag "contact_email"%>
+  <%= text_field_tag "contact_email", @new_customer.email%>
   <br>  
   <b><%= label_tag "groom_name", "Groom Name (if appl.):"%>
-  <%= text_field_tag "groom_name"%>
+  <%= text_field_tag "groom_name", @new_customer.groom_name%>
   <br>
   <b><%= label_tag "groom_phone", "Phone:"%>
-  <%= text_field_tag "groom_phone"%>
+  <%= text_field_tag "groom_phone", @new_customer.groom_phone%>
   <br>
   <b><%= label_tag "groom_email", "Email:"%>
-  <%= text_field_tag "groom_email"%>
+  <%= text_field_tag "groom_email", @new_customer.groom_email%>
   <br>
   <b><%= label_tag "address", "Address"%>
-  <%= text_field_tag "address"%>
+  <%= text_field_tag "address", @new_customer.address%>
   <br>
   <b><%= label_tag "city", "City:"%>
-  <%= text_field_tag "city"%>
+  <%= text_field_tag "city", @new_customer.city%>
   <br>   
   <b><%= label_tag "state", "State:"%>
-  <%= text_field_tag "state"%>
+  <%= text_field_tag "state", @new_customer.state%>
   <br>
   <b><%= label_tag "zip", "Zip:"%>
-  <%= text_field_tag "zip"%>
+  <%= text_field_tag "zip", @new_customer.zip%>
   <br>
   <b><%= label_tag "notes", "Special Notes:"%>
-  <%= text_area_tag "notes"%>
+  <%= text_area_tag "notes", @new_customer.notes%>
   <br>
 <div class= 'label-spacer'></div>
 <button name= "action" value= "save">Create</button>

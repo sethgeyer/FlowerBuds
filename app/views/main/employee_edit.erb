@@ -1,10 +1,12 @@
 <html>
 <body>
-    <p> <%=@employee.florist_id%><%=@employee.florist.name%></p>
+   
 
 <p> <a href= "/employees"> Return to Employee</a> </p>    
     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Employee Edit</h1>
     
+    
+    <%= error_messages_for @employee %>
    
     <% if @employee.id == nil
       action = "new"
@@ -15,11 +17,9 @@
     <%=form_tag("/employee_updates/#{action}") do %>
          
    
-     
-      <td>Employee ID: <%=@employee.id%></td> <br>
-      <td><%=label_tag "name", "Name:"%>
+      <td><%=label_tag "name", "Name: *"%>
           <%=text_field_tag "name", @employee.name%></td> <br>
-      <td><%=label_tag "status", "Status:"%>
+      <td><%=label_tag "status", "Status: *"%>
           <%= select_tag "status", options_for_select(["Active", "Inactive"], @employee.status)%></td><br>
       <td><%=label_tag "email", "Email:"%>
           <%= text_field_tag "email", @employee.email%></td><br>
@@ -29,11 +29,14 @@
           <%= text_field_tag "phone_c", @employee.c_phone%></td><br>
      <td><%=label_tag "employee_type", "Type:"%>
           <%= text_field_tag "employee_type", @employee.employee_type%></td><br>
-     <td><%=label_tag "username", "Login Name:"%>
+     <td><%=label_tag "username", "Username: *"%>
           <%= text_field_tag "username", @employee.username%></td><br>
+      <td><%=label_tag "password", "Password: *"%>
+          <%= text_field_tag "password", @employee.password%></td><br>
      <td><%=label_tag "admin_rights", "Admin Rights:"%>
          <%= select_tag "admin_rights", options_for_select(["", "admin"], @employee.admin_rights)%></td><br>
     <td>Florist ID:<%=@employee.florist_id%></td><br><br>
+   <p> * required field <p>
     <td>  <button name= "action" value= "save">Save</button> </td>
     
     <%end%>
