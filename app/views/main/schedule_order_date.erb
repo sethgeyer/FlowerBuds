@@ -10,6 +10,7 @@
     <table border='1'>
       <tr>
         <th>Place Order?</th>
+        <th>Lead Designer</th>
         <th>Florist_id</th>
         <th>Customer Name</th>
         <th>Event Name</th>
@@ -17,8 +18,8 @@
         <th>Quote Name</th>
         <th>Value</th>
         <th>Quote Status</th>
-        <th>Wholesale Order Date<th>
-        <th>Lead Designer</th>
+        <th>Wholesale Order Date</th>
+       
       </tr>
         
   <%= form_tag("/assign_order_date") do %> 
@@ -29,6 +30,7 @@
           <td><%=check_box_tag "place_order-#{booked_quote.id}", "false"%>
               </td>
               </td>
+          <td> <%=booked_quote.event.employee.name%></td>
           <td><%=booked_quote.florist_id%></td>
           <td><%= booked_quote.event.customer.name %></td>
           
@@ -39,7 +41,6 @@
           <td> <%=booked_quote.status%></td>
           <td> <%=booked_quote.wholesale_order_date%></td>
          
-          <td> <%=booked_quote.event.employee.name%></td>
         </tr>
          <% end %>
     </table>
