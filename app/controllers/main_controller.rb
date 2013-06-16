@@ -106,8 +106,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   
 ###POST Handler from cust_edit.erb  
   def cust_edit             
+    cust_id = params["customer_id"]
     if params["save"]
-      cust_id = params["customer_id"]
       @customer = Customer.where(id: cust_id).first  #NEEDS TO BE TIED TO LOGIN INFO
       @customer.name = params["contact_name"]
       @customer.company_name = params["company_name"]
@@ -202,7 +202,6 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ###POST Handler from event_edit.erb
   def event_and_specs_edit
     #Updates to Event Section
-    if params["save"]
       @event = Event.where(id: params["event_id"]).first
       @event.name = params["event_name"]
       @event.date_of_event = params["event_date"]
@@ -231,9 +230,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         each.item_name = params["spec_item-#{each.id}"]
         each.item_quantity = params["spec_qty-#{each.id}"]
         each.item_specs = params["spec_notes-#{each.id}"]
-        each.save!      
+        each.save      
       end
-    elsif params["delete"]
+    if params["delete"]
         spec_id = params["delete"]
         spec = Specification.where(id: spec_id).first
         spec.destroy
@@ -244,11 +243,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     elsif params["add"]
       new_spec = Specification.new
       new_spec.event_id = params["ev_id"]
-      new_spec.item_name = ""
       new_spec.item_quantity = 1
-      new_spec.item_specs = ""
+      new_spec.item_name = ""
       new_spec.florist_id = session["found_florist_id"] 
       new_spec.save!
+    else #do nothing
     end
     redirect_to "/event_edit/#{params["event_id"]}"
  
@@ -386,6 +385,7 @@ end
     end
     if Quote.where(event_id: event_id).first == nil
       new_quote = Quote.new
+      new_quote.quote_name = @event.name
       new_quote.event_id = event_id
       new_quote.status = "Open Proposal"
       new_quote.florist_id = session["found_florist_id"] 

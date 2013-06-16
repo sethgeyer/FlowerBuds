@@ -40,7 +40,7 @@
       <b><%=label_tag "company_name", "Company Name (if appl.):"%>
       <%= text_field_tag "company_name", @customer.company_name%>
       <p> * required field <p>
-      <b><%= label_tag "notes", "Special Notes:"%> 
+      <b><%= label_tag "notes", "Customer Notes:"%> 
       <br>
       <%= text_area_tag "notes", @customer.notes, rows: 3, cols: 120%>
       <div class = 'label-spacer'></div>
@@ -56,20 +56,18 @@
       <th>FloristID</th>
       <th>CustID</th>
       <th>Event ID</th>
-      <th>Event Type</th>
       <th>Event Name</th>
       <th>Event Date</th>
       <th>Quote Name</th>
       <th>Quote Status</th>
       <th>Lead Designer</th>
-      <th>Notes</th>
+      <th>Event Notes</th>
       
       <% for event in @customer.events %>
         <tr>      
             <td> <%=@customer.florist.id%></td>
             <td> <%=event.customer.id%></td>
             <td> <%=event.id%></td>
-            <td> <%=event.event_type%> </td>
             <td> <a href="/event_edit/<%=event.id%>"> <%=event.name%> </a></td>
             <td> <%=event.date_of_event%> </td>
              <%if event.quote != nil%>

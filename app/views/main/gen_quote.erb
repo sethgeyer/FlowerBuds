@@ -7,8 +7,8 @@
     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Generate Quote</h1>
     
      <%= form_tag("/save_quote") do %>  
-    <h1>Quote ID: <%=@quote.id%> / / /  Quote Name: *
-    <%= text_field_tag "quote_name", @quote.quote_name%></h1> 
+    <h2>Quote Name: *
+    <%= text_field_tag "quote_name", @quote.quote_name%></h2> 
     
     
        
@@ -23,11 +23,6 @@
     <b><%= label_tag "event_name", "Event Name:"%>
       <%= hidden_field_tag "event_name", @event.name%>
       <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a>
-      
-      
-    <b><%= label_tag "event_type", "Event Type:"%>
-      <%= hidden_field_tag "event_type", @event.event_type%>
-      <%=@event.event_type%>
       <b><%= label_tag "event_date", "Event Date:"%>
       <%= hidden_field_tag "event_date", @event.date_of_event%>
       <%=@event.date_of_event%>
