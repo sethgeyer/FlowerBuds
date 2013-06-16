@@ -291,7 +291,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     end
   
   ## Generate dropdown list for adding new products to the Virtual Studio Page
-    products = Product.order("name")
+    products = Product.where(status: "Active").where(florist_id: session["found_florist_id"]).order("name")
     dropdown = []
     for product in products
       dropdown << product.name
@@ -489,7 +489,7 @@ end
   def wholesale_order_list
     @orders = Quote.where(status: "Ordered").where(wholesale_order_date: params["place_order_on"])
     @list_of_event_ids = []
-    @list_of_product_types = @designed_products.uniq.pluck(:product_type)
+    #@list_of_product_types = @designed_products.uniq.pluck(:product_type)
     for order in @orders
       @list_of_event_ids << order.event_id
     end
