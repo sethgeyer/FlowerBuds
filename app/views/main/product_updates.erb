@@ -1,0 +1,73 @@
+<html>
+<head>
+    <style>
+      label[for=florist_id_new],
+      label[for=product_type_new],
+      label[for=product_name_new],
+      label[for=items_per_bunch_new],
+      label[for=cost_per_bunch_new], 
+      label[for=cost_for_one_new],
+      label[for=markup_new],
+      label[for=status_new],
+            {
+        width: 200px;
+        float: left;
+      }
+      .label-spacer {
+        width: 100px;
+        height: 1px;
+        float: left;
+      }
+    </style>
+  </head>
+
+<hl><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/><b>Create/Edit Products</b></h1>
+<p> This includes all flowers from the wholesaler, vases you will resell, and labor charges. </p>
+
+<body>
+
+<%=error_messages_for @product%>
+
+   <% if @product.id == nil 
+        id = "new"%>
+        <h2> Create New Product</h2>
+      <%else
+        id = @product.id%>
+        <h2> Edit Product</h2>
+      <%end %>
+         <%= form_tag("/product_updates/#{id}") do %>
+      
+          <tr><%=label_tag "product_id", "Product ID:" %>
+              <%= hidden_field_tag "product_id" %>
+              <%= @product.id%></tr>
+          
+         <br><br>       
+          <tr><%=label_tag "product_type", "Product Type: *" %>
+              <%= select_tag "product_type", options_for_select(["", "1. Fresh (ie: Flowers)", "2. Hard (ie: Vases)", "3. Rentals (ie: 3rd Party Rentals)", "4. Labor (ie: Designer, Delivery Guy)"], @product.product_type) %></tr>
+          <br><br>
+               
+          <tr><%=label_tag "product_name", "Product Name: *" %>
+              <%= text_field_tag "product_name", @product.name%></tr>
+          <br><br> 
+         <tr><%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>
+              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
+          <br><br>
+          <tr><%=label_tag "items_per_bunch", "Items per Bunch: *" %>
+              <%= text_field_tag "items_per_bunch", @product.items_per_bunch%></tr>
+          <br><br>
+         
+          <tr><%=label_tag "markup", "Markup: * " %>
+              <%= text_field_tag "markup", @product.markup%></tr>
+          <br><br>
+         <tr><%=label_tag "status", "Status: *" %>
+             <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 
+        <br><br>
+        <div class= 'label-spacer'></div> <button name= "action" value= "new">Save</button>
+
+         <% end %>
+
+        * Required Fields
+
+<p><a href="/products">Back to Products</a></p>
+</body>
+</html>

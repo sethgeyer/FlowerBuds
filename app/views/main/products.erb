@@ -4,13 +4,14 @@
    <p><a href="/home">Back to Home</a></p>
    
      <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Edit Products</h1>
- <%= form_tag("/products_update") do %>  
+ <%= form_tag("/product_post/") do %>  
    
-   <p> <a href="/new_product">Add a New Product</a>
+   <button name= "new" value= "new">Add New</button>
    
     <table border='1'>
         <th>ProductID</th>
         <th>FloristID</th>
+        <th></th>
         <th>Type</th>
         <th>Name</th>
         <th>Cost/Bunch</th>
@@ -19,6 +20,7 @@
         <th>Markup</th>
         <th>Status</th>
         <th>Last Updated</th>
+        <th>Updated by</th>
       
         
         <tr>
@@ -27,25 +29,30 @@
                <%=product.id%></td>
           <td> <%=hidden_field_tag "florist_id", product.florist_id%>
                <%=product.florist_id%></td>
+          <td>  <button name= "edit" value= <%=product.id%>>Edit</button> </td>
           <td><%= hidden_field_tag "product_type", product.product_type%>
                <%=product.product_type%></td>
           <td><%= hidden_field_tag "product_name", product.name%>
                <%=product.name%></td>
-          <td>$<%= text_field_tag "cost_per_bunch_#{product.id}", product.cost_per_bunch%>
-
-          <td><%= text_field_tag "items_per_bunch_#{product.id}", product.items_per_bunch %></td>
-                <td><%= hidden_field_tag "cost_for_one_#{product.id}", product.cost_for_one %>
+          <td><%= hidden_field_tag "cost_per_bunch", product.cost_per_bunch%>
+              $ <%= product.cost_per_bunch%> </td>
+          <td><%= hidden_field_tag "items_per_bunch", product.items_per_bunch %>
+              $ <%= product.items_per_bunch%></td>
+          <td><%= hidden_field_tag "cost_for_one", product.cost_for_one %>
               $<%=product.cost_for_one %></td>
-          <td><%= text_field_tag "markup_#{product.id}", product.markup %></td>
-          <td><%= text_field_tag "status_#{product.id}", product.status %></td>       
-          <td><%= hidden_field_tag "updated_at_#{product.id}", product.updated_at%>
-                  <%=product.updated_at%></td>   
+          <td><%= hidden_field_tag "markup", product.markup %>
+              <%=product.markup%></td>
+          <td><%= hidden_field_tag "status", product.status %>
+              <%=product.status%></td>
+                 
+          <td><%= hidden_field_tag "updated_at", product.updated_at%>
+                  <%=product.updated_at%></td>
+          <td><%= hidden_field_tag "updated_by", product.updated_by%>
+                  <%=product.updated_by%></td>   
           </tr>
          <% end %>
-
     </table>
-    <div class= 'label-spacer'></div> <button name= "action" value= "save">Save</button>
-    <br>
+   
     
   
  
