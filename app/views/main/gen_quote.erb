@@ -122,20 +122,23 @@
             <td> <%= text_area_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%></td>
             
             <% per_arrangement_cost = 0.00 %>
+            <% per_arrangement_list_price = 0.00%>
             
             <% designed_products = DesignedProduct.where(specification_id: each.id)%>
             <%for designed_product in designed_products %>
               <% product_cost = designed_product.product_qty * designed_product.product.cost_for_one %>
-              
+              <% product_list_price = product_cost * designed_product.product.markup%>
               <% per_arrangement_cost = per_arrangement_cost + product_cost %>
+              <% per_arrangement_list_price = per_arrangement_list_price + product_list_price%>
             <%end%>
+            
             <td> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
                  $<%=each.per_item_cost = per_arrangement_cost.round(2)%> </td>
             <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (each.per_item_cost * each.item_quantity).round(2)%>
                  $<%= extended_cost = (each.per_item_cost * each.item_quantity).round(2)%></td>
             
-            <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = (each.per_item_cost * designed_product.product.markup).round(2)%>
-                 $<%= each.per_item_list_price = (each.per_item_cost * designed_product.product.markup).round(2)%></td>
+            <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = per_arrangement_list_price.round(2)%>
+                 $<%= each.per_item_list_price = per_arrangement_list_price.round(2)%></td>
             <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%>
                  $<%= each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%></td>
             <td> <%= markup = (each.extended_list_price / (each.per_item_cost*each.item_quantity)).round(2)%></td>
