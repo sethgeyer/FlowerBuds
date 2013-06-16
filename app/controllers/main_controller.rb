@@ -63,55 +63,69 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ###GET Request from search_results.erb
   def cust_new   
+    @new_customer =Customer.new
     render(:cust_new) and return  
   end
 
-  def create_new_customer   #Post Request from cust_new.erb
-    new_customer = Customer.new
-    new_customer.name = params["new_contact_name"]
-    new_customer.company_name = params["company_name"]
-    new_customer.phone1 = params["phone1"]
-    new_customer.phone2 = params["phone2"]
-    new_customer.email = params["contact_email"]
-    new_customer.groom_name = params["groom_name"]
-    new_customer.groom_phone = params["groom_phone"]
-    new_customer.groom_email = params["groom_email"]
-    new_customer.address = params["address"]
-    new_customer.city = params["city"]
-    new_customer.state = params["state"]
-    new_customer.notes = params["notes"]
-    new_customer.florist_id = 1 #NEEDS TO BE TIED TO LOGIN INFO"
-    new_customer.save!
-    redirect_to "/cust_edit/#{new_customer.id}" and return
+###POST Request from cust_new.erb 
+  def create_new_customer   
+    @new_customer = Customer.new
+    @new_customer.name = params["new_contact_name"]
+    @new_customer.company_name = params["company_name"]
+    @new_customer.phone1 = params["phone1"]
+    @new_customer.phone2 = params["phone2"]
+    @new_customer.email = params["contact_email"]
+    @new_customer.groom_name = params["groom_name"]
+    @new_customer.groom_phone = params["groom_phone"]
+    @new_customer.groom_email = params["groom_email"]
+    @new_customer.address = params["address"]
+    @new_customer.city = params["city"]
+    @new_customer.state = params["state"]
+    @new_customer.zip = params["zip"]
+    @new_customer.notes = params["notes"]
+    @new_customer.florist_id = session["found_florist_id"]
+    if @new_customer.save
+      redirect_to "/cust_edit/#{@new_customer.id}" and return
+    else
+      render(:cust_new) and return
+    end
   end
 
 ######### EDIT CUSTOMER
 
 ###GET Handler from cust_new.erb, search_results.erb, or homepage.erb
   def edit_customer          
-    cust_id = params["customer_id"]
-    @customer = Customer.where(id: cust_id).first
-    render(:cust_edit) and return
+    if session["found_user_id"] != nil
+      cust_id = params["customer_id"]
+      @customer = Customer.where(florist_id: session["found_florist_id"]).where(id: cust_id).first
+      render(:cust_edit) and return
+    else
+      render(:login) and return
+    end
   end
   
 ###POST Handler from cust_edit.erb  
   def cust_edit             
     if params["save"]
-      cust_id = params["contact_id"]
-      existing_customer = Customer.where(id: cust_id).first  #NEEDS TO BE TIED TO LOGIN INFO
-      existing_customer.name = params["contact_name"]
-      existing_customer.company_name = params["company_name"]
-      existing_customer.phone1 = params["phone1"]
-      existing_customer.phone2 = params["phone2"]
-      existing_customer.email = params["contact_email"]
-      existing_customer.groom_name = params["groom_name"]
-      existing_customer.groom_phone = params["groom_phone"]
-      existing_customer.groom_email = params["groom_email"]
-      existing_customer.address = params["address"]
-      existing_customer.city = params["city"]
-      existing_customer.state = params["state"]
-      existing_customer.notes = params["notes"]
-      existing_customer.save!
+      cust_id = params["customer_id"]
+      @customer = Customer.where(id: cust_id).first  #NEEDS TO BE TIED TO LOGIN INFO
+      @customer.name = params["contact_name"]
+      @customer.company_name = params["company_name"]
+      @customer.phone1 = params["phone1"]
+      @customer.phone2 = params["phone2"]
+      @customer.email = params["contact_email"]
+      @customer.groom_name = params["groom_name"]
+      @customer.groom_phone = params["groom_phone"]
+      @customer.groom_email = params["groom_email"]
+      @customer.address = params["address"]
+      @customer.city = params["city"]
+      @customer.state = params["state"]
+      @customer.zip = params["zip"]
+      @customer.notes = params["notes"]
+        if @customer.save
+        else
+          render(:cust_edit) and return
+        end
     elsif params["delete"]
       event = Event.where(id: params["delete"]).first
       event.destroy
@@ -127,7 +141,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       else
       end    
     end
-    redirect_to "/cust_edit/#{params["contact_id"]}" and return
+    redirect_to "/cust_edit/#{cust_id}" and return
   end
   
 ######### EVENT NEW
@@ -136,33 +150,43 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def event_new
     cust_id = params["cust_id"]
     @customer = Customer.where(id: cust_id).first
-    @employee_list = [""]
-    for employee in Employee.order("name")
-      @employee_list[@employee_list.size] = employee.name
-    end
+    @event = Event.new
+    @employee_list = [""] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
     render(:event_new) and return
   end
 
 ### POST Handler from event_new.erb
   def create_new_event
-    new_event = Event.new
-    new_event.event_type = params["event_type"]
-    new_event.name = params["event_name"]
-    new_event.date_of_event = params["event_date"]
-    new_event.time = params["event_time"]
-    new_event.delivery_setup_time = params["setup_time"]
-    new_event.feel_of_day = params["feel_of_day"]
-    new_event.color_palette = params["color_palette"]
-    new_event.flower_types = params["flower_types"]
-    new_event.attire = params["attire"]
-    new_event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
-    new_event.florist_id = session["found_florist_id"]                                                                        #As well, you need to resolve the 3rd party and Site info
-    new_event.budget = params["budget"]
-    new_event.notes = params["notes"]
-    new_event.customer_id = params["customer_id"]  # How Do I make non-editable elements of a form. IE:  Shouldn't be able to edit ID #s
-    new_event.event_status = "Open Proposal"
-    new_event.save!
-    redirect_to "/event_edit/#{new_event.id}" and return
+   
+    @event = Event.new
+    @event.name = params["event_name"]
+    @event.date_of_event = params["event_date"]
+    @event.time = params["event_time"]
+    @event.delivery_setup_time = params["setup_time"]
+    @event.feel_of_day = params["feel_of_day"]
+    @event.color_palette = params["color_palette"]
+    @event.flower_types = params["flower_types"]
+    @event.attire = params["attire"]
+    @event.photographer = params["photographer"]
+    @event.coordinator = params["coordinator"]
+    @event.locations = params["locations"]
+      if params["lead_designer"] != ""
+        @event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
+      else
+        @event.employee_id = nil
+      end
+    @event.florist_id = session["found_florist_id"]                                                                        #As well, you need to resolve the 3rd party and Site info
+    @event.budget = params["budget"]
+    @event.notes = params["notes"]
+    @event.customer_id = params["customer_id"]  # How Do I make non-editable elements of a form. IE:  Shouldn't be able to edit ID #s
+    @event.event_status = "Open Proposal"
+    if @event.save
+      redirect_to "/event_edit/#{@event.id}" and return
+    else
+      @customer = Customer.where(id: params["customer_id"]).first
+      @employee_list = [""] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
+      render(:event_new) and return
+    end
   end
 
 ########## EDIT EVENT
@@ -171,10 +195,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     event_id = params["event_id"]
     @event = Event.where(id: event_id).first
     @specifications = @event.specifications.order("id")
-    @employee_list = []
-    for employee in Employee.order("name")
-      @employee_list[@employee_list.size] = employee.name
-    end
+    @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
     render(:event_edit) and return
   end
   
@@ -182,23 +203,29 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def event_and_specs_edit
     #Updates to Event Section
     if params["save"]
-      edit_event = Event.where(id: params["event_id"]).first
-      edit_event.event_type = params["event_type"]
-      edit_event.name = params["event_name"]
-      edit_event.date_of_event = params["event_date"]
-      edit_event.time = params["event_time"]
-      edit_event.delivery_setup_time = params["setup_time"]
-      edit_event.feel_of_day = params["feel_of_day"]
-      edit_event.color_palette = params["color_palette"]
-      edit_event.flower_types = params["flower_types"]
-      edit_event.attire = params["attire"]
-      edit_event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
+      @event = Event.where(id: params["event_id"]).first
+      @event.name = params["event_name"]
+      @event.date_of_event = params["event_date"]
+      @event.time = params["event_time"]
+      @event.delivery_setup_time = params["setup_time"]
+      @event.feel_of_day = params["feel_of_day"]
+      @event.color_palette = params["color_palette"]
+      @event.flower_types = params["flower_types"]
+      @event.attire = params["attire"]
+      @event.photographer = params["photographer"]
+      @event.coordinator = params["coordinator"]
+      @event.locations = params["locations"]
+      @event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
                                                                             #As well, you need to resolve the 3rd party and Site info
-      edit_event.notes = params["notes"]
-      edit_event.budget = params["budget"]
-      edit_event.customer_id = params["customer_id"]  
-      edit_event.save!
-  
+      @event.notes = params["notes"]
+      @event.budget = params["budget"]
+      @event.customer_id = params["customer_id"]  
+      if @event.save == false
+        @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
+        @specifications = @event.specifications.order("id")
+        render(:event_edit) and return
+      else # do nothing
+      end
     #Updates to Event Specifications Section
       for each in Specification.where(event_id: params["event_id"])  
         each.item_name = params["spec_item-#{each.id}"]
@@ -462,6 +489,7 @@ end
   def wholesale_order_list
     @orders = Quote.where(status: "Ordered").where(wholesale_order_date: params["place_order_on"])
     @list_of_event_ids = []
+    @list_of_product_types = @designed_products.uniq.pluck(:product_type)
     for order in @orders
       @list_of_event_ids << order.event_id
     end
@@ -505,46 +533,56 @@ end
 ### GET Handler from homepage.erb
   def products
     @products = Product.order("status", "product_type", "name") 
+    @florist = Florist.where(id: session["found_florist_id"]).first 
+
     render(:products) and return
   end
-  
+
 ### POST Handler from products.erb
-  def products_update
-    #if params["action"] == "save"
-    for product in Product.all
-      product.items_per_bunch = params["items_per_bunch_#{product.id}"].to_f
-      product.cost_per_bunch = params["cost_per_bunch_#{product.id}"].to_f
-      if params["items_per_bunch_#{product.id}"].to_f > 0.0
-        product.cost_for_one = (params["cost_per_bunch_#{product.id}"].to_f) / (params["items_per_bunch_#{product.id}"].to_f)
-      else
-      end
-      product.markup = params["markup_#{product.id}"].to_f
-      product.status = params["status_#{product.id}"]
-      product.save!
+  def product_post
+    if params["new"] 
+      redirect_to "/product/new" and return
+    else
+      redirect_to "/product/#{params["edit"]}" and return
     end
-    redirect_to "/products" and return
   end
 
-### GET Handler from products.erb
-  def new_product
-    @florist = Florist.where(id: session["found_florist_id"]).first
-    render(:new_product) and return
-  end  
-  
-### POST Handler from new_product.erb
-  def save_new_product
-    newbie = Product.new
-    newbie.product_type= params["product_type_new"]
-    newbie.name = params["product_name_new"]
-    newbie.items_per_bunch = params["items_per_bunch_new"].to_f
-    newbie.cost_per_bunch = params["cost_per_bunch_new"].to_f
-    newbie.cost_for_one =(params["cost_per_bunch_new"].to_f) / (params["items_per_bunch_new"].to_f)
-    newbie.markup = params["markup_new"].to_f
-    newbie.status = params["status_new"]
-    newbie.florist_id = session["found_florist_id"]
-    newbie.save!
-    redirect_to "/products" and return
+### GET Handler from product_post.erb
+  def product
+    id = params["product_id"]
+    if id == "new"
+      @product = Product.new
+    else
+      @product = Product.where(id: id).first
+    end
+    render(:product_updates) and return
   end
+
+### POST Handler from new_product.erb
+  def product_updates
+    if params["product_id"] == "new"
+      @product = Product.new
+      @product.florist_id = session["found_florist_id"]
+    else
+      @product = Product.where(id: params["product_id"]).first
+    end
+    @product.product_type= params["product_type"]
+    @product.name = params["product_name"]
+    @product.items_per_bunch = params["items_per_bunch"].to_f
+    @product.cost_per_bunch = params["cost_per_bunch"].to_f
+    @product.cost_for_one =(params["cost_per_bunch"].to_f) / (params["items_per_bunch"].to_f)
+    @product.markup = params["markup"].to_f
+    @product.status = params["status"]
+    @product.updated_by = Employee.where(id: session["found_user_id"]).first.name
+    @product.florist_id = session["found_florist_id"]
+    if @product.save
+      redirect_to "/products" and return
+    else
+      render(:product_updates) and return
+    end
+  end
+
+
 
 ######### EMPLOYEES
 ### GET Handler from homepage.erb
@@ -577,21 +615,25 @@ end
 ### POST Handler from employee_edit.erb
   def employee_updates
     if params["employee_id"] == "new"
-      employee = Employee.new
-      employee.florist_id = session["found_florist_id"]
+      @employee = Employee.new
+      @employee.florist_id = session["found_florist_id"]
     else
-      employee = Employee.where(id: params["employee_id"]).first
+      @employee = Employee.where(id: params["employee_id"]).first
     end
-    employee.name = params["name"]
-    employee.status = params["status"]
-    employee.email = params["email"]
-    employee.w_phone = params["phone_w"]
-    employee.c_phone = params["phone_c"]
-    employee.employee_type = params["employee_type"]
-    employee.username = params["username"]
-    employee.admin_rights = params["admin_rights"]
-    employee.save!
-    redirect_to "/employees" and return
+    @employee.name = params["name"]
+    @employee.status = params["status"]
+    @employee.email = params["email"]
+    @employee.w_phone = params["phone_w"]
+    @employee.c_phone = params["phone_c"]
+    @employee.employee_type = params["employee_type"]
+    @employee.username = params["username"]
+    @employee.password = params["password"]
+    @employee.admin_rights = params["admin_rights"]
+    if @employee.save
+      redirect_to "/employees" and return
+    else
+      render(:employee_edit) and return
+    end
   end
 
 end
