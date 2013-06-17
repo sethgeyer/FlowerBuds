@@ -1,4 +1,4 @@
-<html>
+
   <head>
     <style>
       label[for=florist_id],
@@ -29,82 +29,75 @@
   </head>
 
   <body>
-    <p> <a href= "/home"> Return to Home </a></p>
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/> Create a New Event </h1>
+    
+    <h3>Create a New Event for <%=@customer.name%> </h3>
     
     <%= form_tag("/create_new_event/#{@customer.id}") do%>
-    <h2>Customer Name: <%= @customer.name %></h2>
-   
+     
    <%=error_messages_for @event%>
    
    
-   <b><%=label_tag "florist_id", "FL ID:"%>
-    <b><%=hidden_field_tag "florist_id",@customer.florist_id%>
-    <%=@customer.florist_id%>
-    <br>
-    <b><%=label_tag "customer_id", "Cust ID:"%>
-    <b><%=hidden_field_tag "customer_id", @customer.id%>
-    <%=@customer.id%>
-    <br>   
-    
-    <b><%=label_tag "event_name", "Event Name: *"%>
-    <b><%=text_field_tag "event_name", @event.name%>
-    <br>
-    <b><%=label_tag "event_date", "Event Date: *"%>
-    <b><%=text_field_tag "event_date", @event.date_of_event%>    
-    <br>
-    <b><%=label_tag "event_time", "Event Time:" %>
-    <b><%=text_field_tag "event_time", @event.time%>
-    <b>
-    <br>
-    <b><%= label_tag "budget","Budget:"%>
-    <b><%= text_field_tag "budget", @event.budget%>
-    <br>
-    <b><%=label_tag "setup_time", "Setup Time:"%>
-    <b><%=text_field_tag "setup_time", @event.delivery_setup_time%>
-    <br>
-    <b><%=label_tag "feel_of_day", "Feel of Day:"%>
-    <b><%=text_field_tag "feel_of_day", @event.feel_of_day%>
-    <br>
-    <b><%=label_tag "color_palette", "Color Palette:"%>
-    <b><%=text_field_tag "color_palette", @event.color_palette%>
-    <br>
-    <b><%=label_tag "flower_types", "Flower Types:"%>
-    <b><%=text_field_tag "flower_types", @event.flower_types%>
-    <br>
-    <b><%=label_tag "attire", "Attire:"%>
-    <b><%=text_field_tag "attire", @event.attire%>
-    <br>
-    <b><%= label_tag "coordinator", "Coordinator:"%>
-      <%= text_field_tag "coordinator", @event.coordinator%>
-      <br>
-      <b><%= label_tag "photographer", "Photographer:"%>
-      <%= text_field_tag "photographer", @event.photographer%>
-      <br>
-      <b><%= label_tag "locations", "Locations(s):"%>
-      <%= text_field_tag "locations", @event.locations%>    
-    <br>    
-    <% if Employee.where(id: @event.employee_id).first != nil
+
+   <% if Employee.where(id: @event.employee_id).first != nil
         name = Employee.where(id: @event.employee_id).first.name
        else
         name = ""
        end %> 
-    <b><%=label_tag "lead_designer", "Lead Designer:*"%>
-    <b><%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
+    <%=label_tag "lead_designer", "Lead Designer:*"%>
+    <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
     <br>
-    <b><%= label_tag "notes", "Event Notes:"%>
-    <%= text_area_tag "notes", @event.notes%>
-    <p> * required field <p>
-     <br>
-     <div class = 'label-spacer'></div>
-      <button name= "action" value= "save">Save Updates</button>       
+   
+   
+         
+    
+    <%=label_tag "event_name", "Event Name: *"%>
+    <%=text_field_tag "event_name", @event.name%>
+    <br>
+    <%=label_tag "event_date", "Event Date: *"%>
+    <%=text_field_tag "event_date", @event.date_of_event%>    
+    <br>
+    <%=label_tag "event_time", "Event Time:" %>
+    <%=text_field_tag "event_time", @event.time%>
+    <br>
+    <%=label_tag "setup_time", "Setup Time:"%>
+    <%=text_field_tag "setup_time", @event.delivery_setup_time%>
+    <br>
+     <%= label_tag "budget","Budget:"%>
+    <%= text_field_tag "budget", @event.budget%>
+    <br>
+    <%=label_tag "feel_of_day", "Feel of Day:"%>
+    <%=text_field_tag "feel_of_day", @event.feel_of_day%>
+    <br>
+    <%=label_tag "color_palette", "Color Palette:"%>
+    <%=text_field_tag "color_palette", @event.color_palette%>
+    <br>
+    <%=label_tag "flower_types", "Flower Types:"%>
+    <%=text_field_tag "flower_types", @event.flower_types%>
+    <br>
+    <%=label_tag "attire", "Attire:"%>
+    <%=text_field_tag "attire", @event.attire%>
+    <br>
+    <%= label_tag "coordinator", "Coordinator:"%>
+      <%= text_field_tag "coordinator", @event.coordinator%>
+      <br>
+      <%= label_tag "photographer", "Photographer:"%>
+      <%= text_field_tag "photographer", @event.photographer%>
+      <br>
+      <%= label_tag "locations", "Locations(s):"%>
+      <%= text_field_tag "locations", @event.locations%>    
+    <br>    
+    
+    <%= label_tag "notes", "Event Notes:"%>
+    <%= text_area_tag "notes", @event.notes%><br><br>
+     <button name= "action" value= "save">Save</button>
+    <%=hidden_field_tag "florist_id",@customer.florist_id%>
+    <%=hidden_field_tag "customer_id", @customer.id%>
 
+     <br>
+    
     <%end%>
     
-  </body>
-</html>
-    
-    
+ 
     
     
     

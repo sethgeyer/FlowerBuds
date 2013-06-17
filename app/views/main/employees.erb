@@ -1,37 +1,35 @@
-<html>
-<body>
+<h3>Employees</h3>
 
-
-
-<p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Employee Edit</h1>
-    
-    
      <%= form_tag("/employee_post") do %>
      <button name= "new" value= "new">Add New</button>
      
      <table border='1'>
-        <th>EmployeeID</th>
-        <th>Florist ID</th>
+        <th></th>       
+        <th>EmpID</th>
         <th>Name</th>
+        <th>Login Name</th>
+        <th>Password</th>
         <th>Status</th>
         <th>Email</th>
         <th>Phone(w)</th>             
         <th>Phone(c)</th>
         <th>Type</th>
-        <th>Login Name</th>
-        <th>Password</th>
+        
         <th>Admin Rights</th>
         
     
    
       <tr>
       <% for employee in @employees%> 
+    <td>  <button name= "edit" value= <%=employee.id%>>Edit</button> </td>
       <td><%=hidden_field_tag "id", employee.id%>
           <%=employee.id%></td>
-      <td><%=employee.florist_id%></td>
       <td><%=hidden_field_tag "name", employee.name%>
           <%=employee.name%></td>
+     <td><%= hidden_field_tag "username", employee.username%>
+          <%= employee.username %></td>
+    <td><%= hidden_field_tag "password", employee.password%>
+          <%= employee.password %></td>
       <td><%= hidden_field_tag "status", employee.status%>
           <%= employee.status%></td>
       <td><%= hidden_field_tag "email", employee.email%>
@@ -42,23 +40,13 @@
           <%= employee.c_phone%></td>
      <td><%= hidden_field_tag "employee_type", employee.employee_type%>
           <%= employee.employee_type%></td>
-     <td><%= hidden_field_tag "username", employee.username%>
-          <%= employee.username %></td>
-    <td><%= hidden_field_tag "password", employee.password%>
-          <%= employee.password %></td>
+     
      <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
          <%= employee.admin_rights%></td>
    
-    <td>  <button name= "edit" value= <%=employee.id%>>Update</button> </td>
     
    </tr> <%end%>
     
    
     
     <%end%>
-
-
-
-
-</body>
-</html>

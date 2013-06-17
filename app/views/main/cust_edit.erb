@@ -1,57 +1,51 @@
-<html> 
-  <body> 
-  
-    <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Edit</h1>
+   
+    <h3>Customer Edit</h3>
     <%= error_messages_for @customer %>
    
-    <p> <%=@customer.florist_id%><%=@customer.florist.name%></p>
     
     <%= form_tag("/cust_edit") do %>
-      <b><%=label_tag "customer_id", "Cust ID:"%>
+      <%=label_tag "customer_id", "Cust ID:"%>
       <%=hidden_field_tag "customer_id", @customer.id%> <%=@customer.id%>
-      Florist ID: <%=@customer.florist_id%> 
       <br>
-      <b><%= label_tag "contact_name", "Contact Name: *"%>
+      <%= label_tag "contact_name", "Contact Name: *"%>
       <%= text_field_tag "contact_name", @customer.name%>
-      <b><%= label_tag "phone1", "Phone (primary):"%>
-      <%= text_field_tag "phone1", @customer.phone1%>
-      <b><%= label_tag "phone2", "Phone (other):"%>
-      <%= text_field_tag "phone2", @customer.phone2%>
-      <b><%= label_tag "contact_email", "Email: *"%>
+      <%= label_tag "contact_email", "Email: *"%>
       <%= text_field_tag "contact_email", @customer.email%>
+      <%= label_tag "phone1", "Phone (primary):"%>
+      <%= text_field_tag "phone1", @customer.phone1%>
+      <%= label_tag "phone2", "Phone (other):"%>
+      <%= text_field_tag "phone2", @customer.phone2%>
       <br>
-      <b><%= label_tag "groom_name", "Groom Name (if appl.):"%>
+      <%= label_tag "groom_name", "Groom Name (if appl.):"%>
       <%= text_field_tag "groom_name", @customer.groom_name%>
-      <b><%= label_tag "groom_phone", "Phone:"%>
+      <%= label_tag "groom_phone", "Phone:"%>
       <%= text_field_tag "groom_phone", @customer.groom_phone%>
-      <b><%= label_tag "groom_email", "Email:"%>
+      <%= label_tag "groom_email", "Email:"%>
       <%= text_field_tag "groom_email", @customer.groom_email%>
       <br>
-      <b><%= label_tag "address", "Address"%>
+      <%= label_tag "address", "Address"%>
       <%= text_field_tag "address", @customer.address%>
-      <b><%= label_tag "city", "City:"%>
+      <%= label_tag "city", "City:"%>
       <%= text_field_tag "city", @customer.city%>
-      <b><%= label_tag "state", "State:"%>
+      <%= label_tag "state", "State:"%>
       <%= text_field_tag "state", @customer.state%>
-      <b><%= label_tag "zip", "Zip:"%>
+      <%= label_tag "zip", "Zip:"%>
       <%= text_field_tag "zip", @customer.zip%>
       <br>
-      <b><%=label_tag "company_name", "Company Name (if appl.):"%>
+      <%=label_tag "company_name", "Company Name (if appl.):"%>
       <%= text_field_tag "company_name", @customer.company_name%>
-      <p> * required field <p>
-      <b><%= label_tag "notes", "Customer Notes:"%> 
+     
+      <%= label_tag "notes", "Customer Notes:"%> 
       <br>
       <%= text_area_tag "notes", @customer.notes, rows: 3, cols: 120%>
       <div class = 'label-spacer'></div>
       <button name= "save" value= "save">Save Updates</button>       
-   
     <br>
     <hr/>
 
-  <h2> Events </h2>
+  <h3> Events </h3>
     <%id = @customer.id%>
-    <p> <a href="/event_new/<%=id%>"> Create New Event </a> </p>
+    <td> <a href="/event_new/<%=id%>"> Create New Event </a> </td>
     <table border='1'>
       <th>FloristID</th>
       <th>CustID</th>
@@ -90,5 +84,4 @@
     
     
      <%end%>
-  </body> 
-</html>
+ 

@@ -1,7 +1,5 @@
-<html> 
-  <body> 
-    <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Customer Search</h1>
+
+    <h3>Customer Search Results</h3>
     
   <%= form_tag("/homepage") do %>  
   <p><%=text_field_tag "search_field"%><td>  
@@ -10,9 +8,7 @@
   
   
    <p> <a href="/cust_new">Add New Customer</a><p>
-    <table border='1'>
-  
-     
+    <table border='1'>   
      <th> Florist ID</th>
      <th> Cust ID </th>
      <th> Customer Name </th>
@@ -39,7 +35,4 @@
          </tr>
       <%end%>
     </table>
-    
-    
-  </body> 
-</html>
+   

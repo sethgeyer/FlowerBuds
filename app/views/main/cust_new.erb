@@ -1,4 +1,4 @@
-<html>
+
 <head>
     <style>
       label[for=new_contact_name],
@@ -29,55 +29,50 @@
 
 <body>
 
-<hl><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/><b>Create a New Customer</b></h1>
-<br>
-<br>
-<br>
+<h3>Create a New Customer</b></h3>
+
 
 <%= form_tag("/create_new_customer") do %>
-  <b><%= label_tag "new_contact_name", "New Contact Name: *"%>
+  <%= label_tag "new_contact_name", "New Contact Name: *"%>
   <%= text_field_tag "new_contact_name", @new_customer.name%>
   <br>
-  <b><%=label_tag "company_name", "Company Name (if appl.):"%>
-  <%= text_field_tag "company_name", @new_customer.company_name%>
-  <br>
-  <b><%= label_tag "phone1", "Phone (primary):"%>
-  <%= text_field_tag "phone1", @new_customer.phone1%>
-  <br>
-  <b><%= label_tag "phone2", "Phone (other):"%>
-  <%= text_field_tag "phone2", @new_customer.phone2%>
-  <br>
-  <b><%= label_tag "contact_email", "Email: *"%>
+  <%= label_tag "contact_email", "Email: *"%>
   <%= text_field_tag "contact_email", @new_customer.email%>
   <br>  
-  <b><%= label_tag "groom_name", "Groom Name (if appl.):"%>
+  <%=label_tag "company_name", "Company Name (if appl.):"%>
+  <%= text_field_tag "company_name", @new_customer.company_name%>
+  <br>
+  <%= label_tag "phone1", "Phone (primary):"%>
+  <%= text_field_tag "phone1", @new_customer.phone1%>
+  <br>
+  <%= label_tag "phone2", "Phone (other):"%>
+  <%= text_field_tag "phone2", @new_customer.phone2%>
+  <br>
+  
+  <%= label_tag "groom_name", "Groom Name (if appl.):"%>
   <%= text_field_tag "groom_name", @new_customer.groom_name%>
   <br>
-  <b><%= label_tag "groom_phone", "Phone:"%>
+  <%= label_tag "groom_phone", "Phone:"%>
   <%= text_field_tag "groom_phone", @new_customer.groom_phone%>
   <br>
-  <b><%= label_tag "groom_email", "Email:"%>
+  <%= label_tag "groom_email", "Email:"%>
   <%= text_field_tag "groom_email", @new_customer.groom_email%>
   <br>
-  <b><%= label_tag "address", "Address"%>
+  <%= label_tag "address", "Address"%>
   <%= text_field_tag "address", @new_customer.address%>
   <br>
-  <b><%= label_tag "city", "City:"%>
+  <%= label_tag "city", "City:"%>
   <%= text_field_tag "city", @new_customer.city%>
   <br>   
-  <b><%= label_tag "state", "State:"%>
+  <%= label_tag "state", "State:"%>
   <%= text_field_tag "state", @new_customer.state%>
   <br>
-  <b><%= label_tag "zip", "Zip:"%>
+  <%= label_tag "zip", "Zip:"%>
   <%= text_field_tag "zip", @new_customer.zip%>
   <br>
-  <b><%= label_tag "notes", "Customer Notes:"%>
+  <%= label_tag "notes", "Customer Notes:"%>
   <%= text_area_tag "notes", @new_customer.notes%>
   <br>
-<div class= 'label-spacer'></div>
 <button name= "action" value= "save">Create</button>
 <%end%>
 
-<p><a href="/home">Back to Home</a></p>
-</body>
-</html>

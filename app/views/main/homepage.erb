@@ -1,22 +1,14 @@
-<html>
-  <body>
-    
-    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><%= Florist.where(id: session["found_florist_id"]).first.name%></h1>
-    
-    
-    <h2> <b>Active Events </b></h2>
-    <p>A List of Active Events (aka: event has not yet been delivered). This does not show "delivered" deals and "lost" proposals</p>
-    
-   <%= form_tag("/homepage") do %>  
-  <p><%=text_field_tag "search_field"%><td>  
+ <%= form_tag("/homepage") do %>
+   
+    <h3> <b>Active Events </b></h3>
+      <p>A List of Active Events (aka: event has not yet been delivered). This does not show "delivered" deals and "lost" proposals</p>
+      <p><%=text_field_tag "search_field"%><td>  
   <%=button_tag "Customer Search", name: "search"%> <- You must search to see if the customer already exists before adding a new customer.</p>
-  <%=button_tag "Logout", name: "loguout"%>
+ <%=button_tag "Logout", name: "logout"%>
   <%end%>
     
     
-    <table>
-   
+    <table>  
     <th><a href="/schedule_order_date">Schedule Wholesale Order Date</a></th>
     <th> / </th>
     <th><a href="/employees">Employees</a></th>
@@ -71,25 +63,4 @@
         </tr>
          <% end %>
     </table>
-  </body>
-</html>  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 

@@ -1,65 +1,26 @@
-<html> 
-  <body> 
-  <p> <%=@event.florist_id%><%=@event.florist.name%></p>
-
-    
-    <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Generate Quote</h1>
     
      <%= form_tag("/save_quote") do %>  
-    <h2>Quote Name: *
-    <%= text_field_tag "quote_name", @quote.quote_name%></h2> 
+    <h3>Quote Name: *<%= text_field_tag "quote_name", @quote.quote_name%></h3> 
     
-    
-       
-    <b><%=label_tag "customer_id", "Cust ID:"%>
-    <b><%=hidden_field_tag "customer_id", @event.customer.id%> 
-      <%=@event.customer.id%>/ / / / 
+    <%=hidden_field_tag "customer_id", @event.customer.id%> 
     Customer Name: <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
     <br>
-     <b><%=label_tag "event_id", "Event ID:"%>
-      <%=hidden_field_tag "event_id", @event.id%>
-      <%=@event.id%> / / / / 
-    <b><%= label_tag "event_name", "Event Name:"%>
-      <%= hidden_field_tag "event_name", @event.name%>
-      <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a>
-      <b><%= label_tag "event_date", "Event Date:"%>
-      <%= hidden_field_tag "event_date", @event.date_of_event%>
-      <%=@event.date_of_event%>
-
-      <b><%= label_tag "event_time", "Event Time:"%>
-      <%= hidden_field_tag "event_time", value: @event.time%>
-      <%=@event.time%>
-
+      <%=hidden_field_tag "event_id", @event.id%> 
+      Event Name: <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a>
+      Event Date: <%=@event.date_of_event%>
+      Event Time: <%=@event.time%>
+      Setup Time: <%=@event.delivery_setup_time%>
       <br>
-     <b><%= label_tag "setup_time", "Setup Time:"%>
-      <%= hidden_field_tag "setup_time", @event.delivery_setup_time%>
-      <%=@event.delivery_setup_time%>
-      <br>
-      <b><%= label_tag "feel_of_day", "Feel of Day:"%>
-      <%= hidden_field_tag "feel_of_day", @event.feel_of_day%>
-      <%=@event.feel_of_day%>
-      <b><%= label_tag "color_palette", "Color Palette:"%>
-      <%= hidden_field_tag "color_palette", @event.color_palette%>
-     <%=@event.color_palette%>
-     <b><%= label_tag "flower_types", "Flower Type:"%>
-      <%= hidden_field_tag "flower_types", @event.flower_types%>
-     <%=@event.flower_types%>
-      <b><%= label_tag "attire", "Attire:"%>
-      <%= hidden_field_tag "attire", @event.attire%>
-     <%=@event.attire%>
+      Budget: <%=@event.budget%>
+      Feel of Day: <%=@event.feel_of_day%>
+      Color Palette: <%=@event.color_palette%>
+      Flower Type: <%=@event.flower_types%>
+      Attire: <%=@event.attire%>
      <br> 
-     <b><%= label_tag "lead_designer", "Lead Designer:"%>
-      <%= hidden_field_tag "lead_designer", @event.employee.name%>
-     <%=@event.employee.name%>
-      <br>
-      <b><%= label_tag "budget", "Budget:"%>
-      <%= hidden_field_tag "budget", @event.budget%>
-     <%=@event.budget%>
+     Lead Designer: <%=@event.employee.name%>
       <br>
       
-      <b><%= label_tag "notes", "Event Notes:"%>
-      <%= @event.notes%>
+      Event Notes: <%= @event.notes%>
       <br>
       
       <%= label_tag "status", "Status:"%>
@@ -67,8 +28,8 @@
      
   <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
   
-   <h2> Arrangements for Event </h2>
-  <button name= "save" value= "save">Save & Refresh</button> - Press Save to See Updated Total Markup & Quoted Price
+   <h3> Arrangements & Quotable Items for Event </h3>
+  <button name= "save" value= "save">Save & Recalc</button> - Press Save to See Updated Total Markup & Quoted Price
      
   
   <table border='1'>
@@ -93,7 +54,7 @@
             <th></th>
 
       <th></th>
-      <th><%=@event.quote.markup%> </th>
+      <th><%=@event.quote.markup%> x </th>
       <th>$<%=@event.quote.total_price%>  </th>
       </tr>
       
@@ -142,10 +103,13 @@
                  $<%= each.per_item_list_price = per_arrangement_list_price.round(2)%></td>
             <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%>
                  $<%= each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%></td>
-            <td> <%= markup = (each.extended_list_price / (each.per_item_cost*each.item_quantity)).round(2)%></td>
+            <td> <%= markup = (each.extended_list_price / (each.per_item_cost*each.item_quantity)).round(2)%> x</td>
             <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
             
-            <tr> <td><i>images here</i> </td> </tr>
+            <tr> 
+            <td>
+            <td>
+            <td><i>images here</i> </td> </tr>
         </tr>
         <%end%>
        
@@ -169,7 +133,7 @@
       <th></th>
       <th></th>
       <th></th>
-      <th><%=@event.quote.markup%> </th>
+      <th><%=@event.quote.markup%> x </th>
       <th>$<%=@event.quote.total_price%>  </th>
       </tr>
       
@@ -179,6 +143,4 @@
         
          
     <%end%>   
-   
-  </body> 
-</html>
+  

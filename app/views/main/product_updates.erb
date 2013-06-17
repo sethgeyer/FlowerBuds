@@ -1,4 +1,4 @@
-<html>
+
 <head>
     <style>
       label[for=florist_id_new],
@@ -21,23 +21,19 @@
     </style>
   </head>
 
-<hl><img src="/images/blue_flower.jpeg" width="50" height="40" align= "left"/><b>Create/Edit Products</b></h1>
+<h3><b>Create/Edit Products</b></h3>
 <p> This includes all flowers from the wholesaler, vases you will resell, and labor charges. </p>
-
-<body>
 
 <%=error_messages_for @product%>
 
    <% if @product.id == nil 
         id = "new"%>
-        <h2> Create New Product</h2>
       <%else
         id = @product.id%>
-        <h2> Edit Product</h2>
       <%end %>
          <%= form_tag("/product_updates/#{id}") do %>
       
-          <tr><%=label_tag "product_id", "Product ID:" %>
+          <tr>
               <%= hidden_field_tag "product_id" %>
               <%= @product.id%></tr>
           
@@ -66,8 +62,5 @@
 
          <% end %>
 
-        * Required Fields
 
 <p><a href="/products">Back to Products</a></p>
-</body>
-</html>

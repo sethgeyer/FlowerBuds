@@ -1,76 +1,60 @@
-<html> 
-  <body> 
-  
-      <p> <%=@event.florist_id%><%=@event.florist.name%></p>
 
-    <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Event Edit</h1>
+    <h3>Event Edit</h3>
     
      <%=error_messages_for @event%>
        
     <%= form_tag("/event_edit") do %>    
-    <b><%=label_tag "customer_id","Cust ID:"%>
-    <b><%=hidden_field_tag "customer_id", @event.customer.id%> 
-      <%=@event.customer.id%>/ / / / 
-    Customer Name: <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
-    <br>
-     <b><%=label_tag "event_id", "Event ID:"%>
-      <%=hidden_field_tag "event_id", @event.id%>
-      <%=@event.id%> / / / / 
-    <b><%= label_tag "event_name", "Event Name: *"%>
-      <%= text_field_tag "event_name", @event.name%>
-   
-      <b><%= label_tag "event_date", "Event Date: *"%>
-      <%= text_field_tag "event_date", @event.date_of_event%>
-      <b><%= label_tag "event_time", "Event Time:"%>
-      <%= text_field_tag "event_time", @event.time%>
+      <%=hidden_field_tag "customer_id", @event.customer.id%> 
+      
+    Customer Name: <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a> <br>
+    <%=hidden_field_tag "event_id", @event.id%>
+    <%= label_tag "event_name", "Event Name: *"%>
+    <%= text_field_tag "event_name", @event.name%>
+    <%= label_tag "event_date", "Event Date: *"%>
+    <%= text_field_tag "event_date", @event.date_of_event%>
+    <%= label_tag "event_time", "Event Time:"%>
+    <%= text_field_tag "event_time", @event.time%>
+    <%= label_tag "setup_time", "Setup Time:"%>
+    <%= text_field_tag "setup_time", @event.delivery_setup_time%>
       <br>
-     <b><%= label_tag "setup_time", "Setup Time:"%>
-      <%= text_field_tag "setup_time", @event.delivery_setup_time%>
-      <br>
-      <b><%= label_tag "feel_of_day", "Feel of Day:"%>
+    <%= label_tag "budget", "Budget:"%>
+    <%= text_field_tag "budget", @event.budget%>  
+      <%= label_tag "feel_of_day", "Feel of Day:"%>
       <%= text_field_tag "feel_of_day", @event.feel_of_day%>
-      <b><%= label_tag "color_palette", "Color Palette:"%>
+      <%= label_tag "color_palette", "Color Palette:"%>
       <%= text_field_tag "color_palette", @event.color_palette%>
-     <b><%= label_tag "flower_types", "Flower Type:"%>
+     <%= label_tag "flower_types", "Flower Type:"%>
       <%= text_field_tag "flower_types", @event.flower_types%>
-      <b><%= label_tag "attire", "Attire:"%>
+      <%= label_tag "attire", "Attire:"%>
       <%= text_field_tag "attire", @event.attire%>
      <br> 
-      <b><%= label_tag "coordinator", "Coordinator:"%>
+      <%= label_tag "coordinator", "Coordinator:"%>
       <%= text_field_tag "coordinator", @event.coordinator%>
-      <br>
-      <b><%= label_tag "photographer", "Photographer:"%>
+      <%= label_tag "photographer", "Photographer:"%>
       <%= text_field_tag "photographer", @event.photographer%>
-      <br>
-      <b><%= label_tag "locations", "Locations(s):"%>
+      <%= label_tag "locations", "Locations(s):"%>
       <%= text_field_tag "locations", @event.locations%>
       <br>
-     
-     
-     
-     <b><%= label_tag "lead_designer", "Lead Designer: *"%>
+     <%= label_tag "lead_designer", "Lead Designer: *"%>
       <%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name)%>
       <br>
-      <b><%= label_tag "budget", "Budget:"%>
-      <%= text_field_tag "budget", @event.budget%>
-      <br>
       
-      <b><%= label_tag "notes", "Event Notes:"%>
+      
+      <%= label_tag "notes", "Event Notes:"%>
       <%= text_area_tag "notes", @event.notes, rows: 2, cols: 130%> <br><br>
-     <p> * required field <p>
- <td><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" /></a>Virtual Studio
- <td><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Build Quote
- <td><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Design Day Details
- 
+      
+ <hr />
+ <td><button name= "save" value= "save">Save Updates</button>
+ <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" /></a>Virtual Studio
+ <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Build Quote
+ <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Design Day Details
+ <hr />
 
 
- <h2> Arrangments for Event </h2>
+ <h3> Arrangments & Quotable Items for Event </h3>
     
       <table border='1'>
-      <th>Fl ID</th>
-      <th>Cust ID</th>
-      <th>Event ID</th>
+  
       <th>Spec ID</th>
       <th>Item Name *</th>
       <th>Quantity *</th>
@@ -78,9 +62,6 @@
        
         <% for each in @specifications %>
            <tr>
-            <th><%= @event.florist_id%>
-            <th> <%= @event.customer.id%></th>
-            <th> <%= @event.id%></th>
             <td> <%= hidden_field_tag "spec_id", each.id%>
                 <%=each.id%></td> 
             <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
@@ -91,18 +72,21 @@
               <button name= "save" value= "save"></button>       
               <button name="delete" value= <%=each.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
             </tr>
-            <tr> <td><%= file_field_tag "spec_images-#{each.id}"%></td></tr>
+            <tr> 
+            <td>
+            <td>
+            <td>
+            <td><%= file_field_tag "spec_images-#{each.id}"%></td></tr>
         <%end%>
         <%= hidden_field_tag "ev_id", @event.id%>
         <div class = 'label-spacer'></div>
         <button name="add" value= "add">Add New Arrangement & Save</button> 
   
-   <div class = 'label-spacer'></div> 
-      <button name= "save" value= "save">Save Updates</button>       
+  
+             
     <%end%> 
     
     
     </table>
  
-  </body> 
-</html>
+ 

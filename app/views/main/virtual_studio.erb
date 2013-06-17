@@ -1,27 +1,17 @@
-
-
-  
-  <html> 
-  <body> 
-    <p> <a href= "/home"> Return to Home </a> </p>    
-    <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Virtual Studio</h1>
+    <h3>Virtual Studio</h3>
     
 <table align="left">
-  <tr><td>Fl ID: <%=@event.florist._id%>    
-  <tr><td>Cust ID: <%=@event.customer.id%>
+  
   <tr><td>Cust Name: <%=@event.customer.name%>
-  <tr><td><%=label_tag "event_id", "Event ID:"%>
-      <%=hidden_field_tag "event_id", value: @event.id%>
-      <%=@event.id%>
+  <tr><td><%=hidden_field_tag "event_id", value: @event.id%>
   <tr><td>Event Name: <a href= "/event_edit/<%=@event.id%>"> <%=@event.name%></a>
-  <tr><td>Images: I need to add this / / / / /  Budget: <%=@event.budget%><br>
+  <tr><td>Budget: <%=@event.budget%><br>
 
-     
       
   </table>
       
       <table align="right">
-    <tr><td>Event Type:<%=@event.event_type%>
+   
       <tr><td>Feel_of_day: <%=@event.feel_of_day%>
       <tr><td>Color Palette: <%=@event.color_palette%>
      <tr><td>Flower Types: <%=@event.flower_types%>
@@ -34,42 +24,29 @@
 <br>
 <br>
 <br>
-<br>
-<br>
 <hr />
 
-Design a single arrangment for each group of arrangements... the system will do the math for each additional arrangement.
-    
-       
-    <script type="text/javascript">
-function newPopup(url) {
-	popupWindow = window.open(
-		url,'popUpWindow','height=300,width=600,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
-}
-</script>
+<p>Design a single arrangment for each type of arrangement.  Include stems, design time, vases, rented items, etc. </p>
 
-<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Specifications</a></p> 
-    
     <table border='1'>
       <%= form_tag("/virtual_studio_update") do %>
   
       <%=hidden_field_tag "event_id", @event.id%>
-      <th>Products</th>
+      <th>Items to Include</th>
       <%for specification in @specifications%>
-        <th><%=specification.item_name%> / <%=specification.id%></th>    
+        <th><%=specification.item_name%></th>    
       <%end%>
       
       <tr> 
       
       <%for each in @list_of_products%>
          <%id = Product.where(name: each).first.id%>
-          <td><%=each%> /  Prod ID<%=id%></td> 
+          <td><%=each%></td> 
           <% for specification in @specifications%>
             <td><%x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first%>
                
                   <%stem_count=x.product_qty%>
-                  <%=text_field_tag "stemcount_#{x.id}", stem_count%> </td>              
-                
+                  <%=text_field_tag "stemcount_#{x.id}", stem_count%> </td>               
           <%end%> 
           <td>            <div class = 'label-spacer'></div>
       
@@ -82,8 +59,7 @@ function newPopup(url) {
    
     </table>
     <br>
-    <br>
-    <br>
+    
     
                 <table>
    
@@ -94,5 +70,15 @@ function newPopup(url) {
       <button name= "add" value= "add">Add</button><- single click please. 
     <%end%>    
   </table>
-  </body> 
-</html>
+  
+  
+  <script type="text/javascript">
+function newPopup(url) {
+	popupWindow = window.open(
+		url,'popUpWindow','height=300,width=600,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+}
+</script>
+
+<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Specifications</a></p> 
+    
+ 

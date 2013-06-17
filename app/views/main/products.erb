@@ -1,16 +1,11 @@
-<html>
-  <body>
-    
-   <p><a href="/home">Back to Home</a></p>
-   
-     <h1><img src="/images/blue_flower.jpeg" width="50" height="40" align="left"/><b>Edit Products</h1>
+
+   <h3>Edit Products List</h3>
  <%= form_tag("/product_post/") do %>  
    
    <button name= "new" value= "new">Add New</button>
    
     <table border='1'>
         <th>ProductID</th>
-        <th>FloristID</th>
         <th></th>
         <th>Type</th>
         <th>Name</th>
@@ -27,8 +22,6 @@
         <% for product in @products%>  
           <td> <%= hidden_field_tag "product_id", product.id%>
                <%=product.id%></td>
-          <td> <%=hidden_field_tag "florist_id", product.florist_id%>
-               <%=product.florist_id%></td>
           <td>  <button name= "edit" value= <%=product.id%>>Edit</button> </td>
           <td><%= hidden_field_tag "product_type", product.product_type%>
                <%=product.product_type%></td>
@@ -58,10 +51,3 @@
  
 <%end%>
 
-
-
-    
-    
-
-  </body>
-</html>  
