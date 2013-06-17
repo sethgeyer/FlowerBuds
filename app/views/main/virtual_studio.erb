@@ -79,20 +79,19 @@ function newPopup(url) {
       <%end%> 
        <div class = 'label-spacer'></div>
       <button name= "update" value= "update">Save Updates</button>   
-       <%end%>
+   
     </table>
     <br>
     <br>
     <br>
     
                 <table>
-    <%= form_tag("/virtual_studio_add_new") do %>
+   
       <%=hidden_field_tag "event_id", @event.id%>
       <%= label_tag "new_item", "Add New Item:"%>
       <%= select_tag "new_item", options_for_select(@dropdown)%>       
-     
        <div class = 'label-spacer'></div>
-      <button name= "action" value= "save">Add</button>   
+      <button name= "add" value= "add">Add</button><- single click please. 
     <%end%>    
   </table>
   </body> 

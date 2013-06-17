@@ -17,7 +17,7 @@ App::Application.routes.draw do
   post "/event_edit"                          => "main#event_and_specs_edit"
 
   get "/virtual_studio/:event_id"             => "main#virtual_studio"
-  post "/virtual_studio_add_new"              => "main#virtual_studio_add_new_product"
+  #post "/virtual_studio_add_new"              => "main#virtual_studio_add_new_product"
   post "/virtual_studio_update"               => "main#virtual_studio_update"
   get "/popup_specs/:event_id"                => "main#popup_specs"
   
@@ -43,11 +43,3 @@ App::Application.routes.draw do
 end
 
 
-=begin
-App::Application.routes.draw do
-  get  "/"              => redirect("/credit_card")
-  get  "/credit_card"   => "cart#edit_credit_card"
-  post "/credit_card"   => "cart#update_credit_card"
-  get  "/thank_you"     => "cart#thank_you"
-end
-=end
