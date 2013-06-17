@@ -7,13 +7,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 OPEN_PAGES = ["/", "/login", "logout"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil
-    render(:login) and return
+    render(:login, layout:false) and return
   end
 end
 
 ######### LOGIN
   def login
-    render(:login) and return    
+    render(:login, layout:false) and return    
   end
 
   def logged_in
@@ -27,7 +27,7 @@ end
       else
       end
     end
-    render(:login) and return
+    render(:login, layout:false) and return
   end
 
 ######### DISPLAY HOMEPAGE
@@ -53,7 +53,7 @@ end
 
   def logout
     session.clear
-    render(:login) and return
+    render(:login, layout:false) and return
   end  
   
   
@@ -464,7 +464,7 @@ end
     else
     end
     @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
-    render(:cust_facing_quote) and return
+    render(:cust_facing_quote, layout:false) and return
   end
   
 ######### WHOLESALE ORDERS & DESIGN DAY DETAILS
@@ -516,7 +516,7 @@ end
     @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
-    @list_of_product_types = @designed_products.uniq.pluck(:product_type)
+    @list_of_product_types = @designed_products.uniq.pluck(:product_type).sort!
 
     count = 0
     for each in @designed_products
@@ -530,14 +530,13 @@ end
     if Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil
       redirect "/generate_quote/#{params["event_id"]}"
     end
-    render(:design_day_details) and return
+    render(:design_day_details, layout:false) and return
   end
 
 ######### PRODUCTS
 ### GET Handler from homepage.erb
   def products
     @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") 
-    @florist = Florist.where(id: session["found_florist_id"]).first 
 
     render(:products) and return
   end
@@ -592,7 +591,6 @@ end
 ### GET Handler from homepage.erb
   def employees
     @employees = Employee.where(florist_id: session["found_florist_id"]).order("status",  "name")
-    @florist = Florist.where(id: session["found_florist_id"]).first 
     render(:employees) and return
   end
 
