@@ -3,6 +3,14 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ###
 
+######### SESSION SECURITY
+OPEN_PAGES = ["/", "/login", "logout"]
+before_filter do
+  if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil
+    render(:login) and return
+  end
+end
+
 ######### LOGIN
   def login
     render(:login) and return    
@@ -24,12 +32,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ######### DISPLAY HOMEPAGE
   def home
-    if session["found_user_id"] != nil
       @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
       render(:homepage) and return
-    else
-      render(:login) and return
-    end
   end
   
 
@@ -55,7 +59,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   
 ######### SEARCH RESULTS  
   def search_results
-    @customers = Customer.where("name ilike ?","%#{params["customer"]}%") 
+    @customers = Customer.where(florist_id: session["found_florist_id"]).where("name ilike ?","%#{params["customer"]}%") 
     render(:search_results) and return
   end  
 
@@ -95,13 +99,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ###GET Handler from cust_new.erb, search_results.erb, or homepage.erb
   def edit_customer          
-    if session["found_user_id"] != nil
       cust_id = params["customer_id"]
       @customer = Customer.where(florist_id: session["found_florist_id"]).where(id: cust_id).first
       render(:cust_edit) and return
-    else
-      render(:login) and return
-    end
   end
   
 ###POST Handler from cust_edit.erb  
@@ -149,7 +149,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from cust_edit.erb
   def event_new
     cust_id = params["cust_id"]
-    @customer = Customer.where(id: cust_id).first
+    @customer = Customer.where(florist_id: session["found_florist_id"]).where(id: cust_id).first
     @event = Event.new
     @employee_list = [""] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
     render(:event_new) and return
@@ -193,7 +193,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ###GET Handler from event_new.erb
   def event_edit
     event_id = params["event_id"]
-    @event = Event.where(id: event_id).first
+    @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
     @specifications = @event.specifications.order("id")
     @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
     render(:event_edit) and return
@@ -259,11 +259,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ###GET Handler from event_edit.erb
   def virtual_studio
     event_id = params["event_id"]    
-    @event= Event.where(id: event_id).first  
+    @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
     @specifications = @event.specifications.order("id")
   
   #Creates a list of used products for the specification 
-    designedproducts = DesignedProduct.where(event_id: event_id)
+    designedproducts = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
     used_products = []
     for each in designedproducts
       used_products << each.product.name
@@ -303,25 +303,15 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     render(:virtual_studio) and return
 end
 
+=begin
 ### POST Handler from virtual_studio.erb
   # Creates a new designed_product for each specification based on the product selected.  
   def virtual_studio_add_new_product
     event_id = params["event_id"]
-    new_item = params["new_item"]
-    specifications = Specification.where(event_id: event_id)
-    for specification in specifications
-      new_dp = DesignedProduct.new
-      new_dp.specification_id = specification.id
-      new_dp.product_qty = 0
-      new_dp.product_type = Product.where(name: new_item).first.product_type
-      new_dp.florist_id = session["found_florist_id"]
-      new_dp.product_id = Product.where(name: new_item).first.id
-      new_dp.event_id = event_id
-      new_dp.save!
-    end  
+    
     redirect_to "/virtual_studio/#{event_id}" and return
   end
-  
+=end
   
 ### POST Handler from virtual_studio.erb
   # Updates Virtual Studio Page based on updates made by user. 
@@ -329,14 +319,6 @@ end
     event_id = params["event_id"]
     specifications = Specification.where(event_id: event_id).order("id")
     designedproducts = DesignedProduct.where(event_id: event_id)
-    if params["remove"]
-      removed_product_id = params["remove"]
-      removed_items = DesignedProduct.where(event_id: event_id).where(product_id: removed_product_id)
-      for each_item in removed_items
-        each_item.destroy
-      end
-    else
-    end
     for each in designedproducts
       for specification in specifications
         if DesignedProduct.where(product_id: each.product_id).where(specification_id: specification.id).first == nil
@@ -356,6 +338,28 @@ end
         end
       end
     end  
+    
+    if params["add"]
+      new_item = params["new_item"]
+      specifications = Specification.where(event_id: event_id)
+      for specification in specifications
+        new_dp = DesignedProduct.new
+        new_dp.specification_id = specification.id
+        new_dp.product_qty = 0
+        new_dp.product_type = Product.where(name: new_item).first.product_type
+        new_dp.florist_id = session["found_florist_id"]
+        new_dp.product_id = Product.where(name: new_item).first.id
+        new_dp.event_id = event_id
+        new_dp.save!
+      end         
+    elsif params["remove"]
+      removed_product_id = params["remove"]
+      removed_items = DesignedProduct.where(event_id: event_id).where(product_id: removed_product_id)
+      for each_item in removed_items
+        each_item.destroy
+      end
+    else # do nothing
+    end
     redirect_to "/virtual_studio/#{event_id}" and return
   end
   
@@ -364,7 +368,7 @@ end
   def popup_specs
     event_id = params["event_id"]
     @event_id = event_id
-    @specifications = Specification.where(event_id: event_id).order("id")
+    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).order("id")
     render(:popup_specs) and return
   end 
   
@@ -373,29 +377,29 @@ end
 ### GET handler from event_edit.erb
   def quote_generation
     event_id = params["event_id"]
-    @event = Event.where(id: event_id).first
+    @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
     @specifications = @event.specifications.order("id")
     count = 0
-    for each in DesignedProduct.where(event_id: event_id)
+    for each in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
       count = count + each.product_qty
     end
-    if DesignedProduct.where(event_id: event_id).first == nil || count < 1.0
+    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count < 1.0
       redirect_to "/virtual_studio/#{event_id}" and return
     else
     end
-    if Quote.where(event_id: event_id).first == nil
+    if Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
       new_quote = Quote.new
       new_quote.quote_name = @event.name
       new_quote.event_id = event_id
       new_quote.status = "Open Proposal"
       new_quote.florist_id = session["found_florist_id"] 
       new_quote.save!
-      event = Event.where(id: event_id).first
+      event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
       event.event_status = "Open Proposal"
       event.save!
     else
     end
-    @quote = Quote.where(event_id: event_id).first
+    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
     render(:gen_quote) and return
   end
 
@@ -442,37 +446,37 @@ end
 ### GET Handler from gen_quote.erb
   def generate_cust_facing_quote
     event_id = params["event_id"]
-    @event = Event.where(id: event_id).first
+    @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
     @specifications = @event.specifications.order("id")
-    if DesignedProduct.where(event_id: event_id).first == nil
+    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
       redirect_to "/virtual_studio/#{event_id}" and return
     else
     end
-    if Quote.where(event_id: event_id).first == nil
+    if Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
       new_quote = Quote.new
       new_quote.event_id = event_id
       new_quote.status = "Open Proposal"
       new_quote.florist_id = session["found_florist_id"] 
       new_quote.save!
-      event = Event.where(id: event_id).first
+      event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
       event.event_status = "Open Proposal"
       event.save!
     else
     end
-    @quote = Quote.where(event_id: event_id).first
+    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
     render(:cust_facing_quote) and return
   end
   
 ######### WHOLESALE ORDERS & DESIGN DAY DETAILS
 ###GET Handler from homepage.erb
   def schedule_order_date
-    @booked_quotes = Quote.where(status: "Booked")
+    @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked")
     render(:schedule_order_date) and return
   end
   
 ###POST Handler from schedule_order_date.erb
   def assign_order_date
-    @booked_quotes = Quote.where(status: "Booked")
+    @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked")
     for booked_quote in @booked_quotes
       if params["place_order-#{booked_quote.id}"]
         booked_quote.status = "Ordered"
@@ -487,7 +491,7 @@ end
 ###GET Handler from schedule_order_date.erb
   #Creates a "grocery list" of all products, etc. that will need to be ordered from the wholesaler.
   def wholesale_order_list
-    @orders = Quote.where(status: "Ordered").where(wholesale_order_date: params["place_order_on"])
+    @orders = Quote.where(florist_id: session["found_florist_id"]).where(status: "Ordered").where(wholesale_order_date: params["place_order_on"])
     @list_of_event_ids = []
     #@list_of_product_types = @designed_products.uniq.pluck(:product_type)
     for order in @orders
@@ -496,7 +500,7 @@ end
 
     list_of_product_ids = []
     for each_id in @list_of_event_ids   
-      for designed_product in DesignedProduct.where(event_id: each_id).order("product_type")
+      for designed_product in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: each_id).order("product_type")
         list_of_product_ids << designed_product.product_id
       end
     end
@@ -507,10 +511,10 @@ end
 ####GET Handler from event_edit.erb
   #Creates an order details summary for the individual event (to be used on the day of the design work).
   def design_day_details
-    @event = Event.where(id: params["event_id"]).first
-    @quote = Quote.where(event_id: params["event_id"]).first
-    @specifications = Specification.where(event_id: params["event_id"])
-    @designed_products = DesignedProduct.where(event_id: params["event_id"])
+    @event = Event.where(florist_id: session["found_florist_id"]).where(id: params["event_id"]).first
+    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first
+    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
+    @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
     @list_of_product_types = @designed_products.uniq.pluck(:product_type)
 
@@ -519,11 +523,11 @@ end
       count = count + each.product_qty
     end
 
-    if DesignedProduct.where(event_id: params["event_id"]).first == nil || count < 1.0
+    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil || count < 1.0
       redirect "/virtual_studio/#{params["event_id"]}"
     end
 
-    if Quote.where(event_id: params["event_id"]).first == nil
+    if Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil
       redirect "/generate_quote/#{params["event_id"]}"
     end
     render(:design_day_details) and return
@@ -532,7 +536,7 @@ end
 ######### PRODUCTS
 ### GET Handler from homepage.erb
   def products
-    @products = Product.order("status", "product_type", "name") 
+    @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") 
     @florist = Florist.where(id: session["found_florist_id"]).first 
 
     render(:products) and return
@@ -553,7 +557,7 @@ end
     if id == "new"
       @product = Product.new
     else
-      @product = Product.where(id: id).first
+      @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
     end
     render(:product_updates) and return
   end
@@ -587,7 +591,7 @@ end
 ######### EMPLOYEES
 ### GET Handler from homepage.erb
   def employees
-    @employees = Employee.order("status",  "name")
+    @employees = Employee.where(florist_id: session["found_florist_id"]).order("status",  "name")
     @florist = Florist.where(id: session["found_florist_id"]).first 
     render(:employees) and return
   end
@@ -607,7 +611,7 @@ end
     if id == "new"
       @employee = Employee.new
     else
-      @employee = Employee.where(id: id).first
+      @employee = Employee.where(florist_id: session["found_florist_id"]).where(id: id).first
     end
     render(:employee_edit) and return
   end

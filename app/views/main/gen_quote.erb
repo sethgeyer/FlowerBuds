@@ -119,7 +119,8 @@
             
             <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity%>          
                  <%=each.item_quantity%></td>
-            <td> <%= text_area_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%></td>
+            <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%>
+                <%= each.item_specs%></td>
             
             <% per_arrangement_cost = 0.00 %>
             <% per_arrangement_list_price = 0.00%>

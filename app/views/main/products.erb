@@ -37,11 +37,11 @@
           <td><%= hidden_field_tag "cost_per_bunch", product.cost_per_bunch%>
               $ <%= product.cost_per_bunch%> </td>
           <td><%= hidden_field_tag "items_per_bunch", product.items_per_bunch %>
-              $ <%= product.items_per_bunch%></td>
+              <%= product.items_per_bunch%></td>
           <td><%= hidden_field_tag "cost_for_one", product.cost_for_one %>
               $<%=product.cost_for_one %></td>
           <td><%= hidden_field_tag "markup", product.markup %>
-              <%=product.markup%></td>
+              <%=product.markup%> x</td>
           <td><%= hidden_field_tag "status", product.status %>
               <%=product.status%></td>
                  
