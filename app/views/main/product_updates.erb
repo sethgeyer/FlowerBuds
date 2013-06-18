@@ -34,10 +34,7 @@
          <%= form_tag("/product_updates/#{id}") do %>
       
           <tr>
-              <%= hidden_field_tag "product_id" %>
-              <%= @product.id%></tr>
-          
-         <br><br>       
+             
           <tr><%=label_tag "product_type", "Product Type: *" %>
               <%= select_tag "product_type", options_for_select(["", "1. Fresh (ie: Flowers)", "2. Hard (ie: Vases)", "3. Rentals (ie: 3rd Party Rentals)", "4. Labor (ie: Designer, Delivery Guy)"], @product.product_type) %></tr>
           <br><br>

@@ -7,8 +7,7 @@
         <th></th>       
         <th>EmpID</th>
         <th>Name</th>
-        <th>Login Name</th>
-        <th>Password</th>
+        <th>Username</th>
         <th>Status</th>
         <th>Email</th>
         <th>Phone(w)</th>             
@@ -28,8 +27,6 @@
           <%=employee.name%></td>
      <td><%= hidden_field_tag "username", employee.username%>
           <%= employee.username %></td>
-    <td><%= hidden_field_tag "password", employee.password%>
-          <%= employee.password %></td>
       <td><%= hidden_field_tag "status", employee.status%>
           <%= employee.status%></td>
       <td><%= hidden_field_tag "email", employee.email%>
@@ -40,7 +37,6 @@
           <%= employee.c_phone%></td>
      <td><%= hidden_field_tag "employee_type", employee.employee_type%>
           <%= employee.employee_type%></td>
-     
      <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
          <%= employee.admin_rights%></td>
    

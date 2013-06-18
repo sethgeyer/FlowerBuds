@@ -1,9 +1,11 @@
 
    <h3>Edit Products List</h3>
  <%= form_tag("/product_post/") do %>  
-   
-   <button name= "new" value= "new">Add New</button>
-   
+  
+    <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
+      <button name= "new" value= "new">Add New</button>
+    <%else%>
+    <%end%>
     <table border='1'>
         <th>ProductID</th>
         <th></th>
@@ -22,7 +24,11 @@
         <% for product in @products%>  
           <td> <%= hidden_field_tag "product_id", product.id%>
                <%=product.id%></td>
-          <td>  <button name= "edit" value= <%=product.id%>>Edit</button> </td>
+          <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
+            <td>  <button name= "edit" value= <%=product.id%>>Edit</button> </td>
+            <%else%>
+            <td></td>
+            <%end%>
           <td><%= hidden_field_tag "product_type", product.product_type%>
                <%=product.product_type%></td>
           <td><%= hidden_field_tag "product_name", product.name%>

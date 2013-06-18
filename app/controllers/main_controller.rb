@@ -11,6 +11,12 @@ before_filter do
   end
 end
 
+
+######### PAGE_VIEW_PERMISSIONS
+ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
+EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
+PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
+
 ######### LOGIN
   def login
     render(:login, layout:false) and return    
@@ -20,7 +26,7 @@ end
     found_florist = Florist.where(company_id: params["company_id"]).first
     if found_florist != nil
       found_user = Employee.where(username: params["username"]).where(florist_id: found_florist.id).first
-      if found_user && params["password"] == found_user.password
+      if found_user && found_user.authenticate(params["password"])
         session["found_user_id"] = found_user.id
         session["found_florist_id"] = found_florist.id
         redirect_to "/home" and return
@@ -537,7 +543,7 @@ end
 ### GET Handler from homepage.erb
   def products
     @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") 
-
+    @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
     render(:products) and return
   end
 
@@ -552,24 +558,29 @@ end
 
 ### GET Handler from product_post.erb
   def product
-    id = params["product_id"]
-    if id == "new"
-      @product = Product.new
+    if PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
+      id = params["product_id"]
+      if id == "new"
+        @product = Product.new
+      else
+        @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
+      end
+      render(:product_updates) and return
     else
-      @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
+      redirect_to "/products" and return
     end
-    render(:product_updates) and return
+  
   end
 
 ### POST Handler from new_product.erb
   def product_updates
     if params["product_id"] == "new"
       @product = Product.new
-      @product.florist_id = session["found_florist_id"]
+      @product.florist_id = session["found_florist_id"]      
     else
       @product = Product.where(id: params["product_id"]).first
     end
-    @product.product_type= params["product_type"]
+     @product.product_type= params["product_type"]
     @product.name = params["product_name"]
     @product.items_per_bunch = params["items_per_bunch"].to_f
     @product.cost_per_bunch = params["cost_per_bunch"].to_f
@@ -582,7 +593,7 @@ end
       redirect_to "/products" and return
     else
       render(:product_updates) and return
-    end
+    end    
   end
 
 
@@ -590,8 +601,12 @@ end
 ######### EMPLOYEES
 ### GET Handler from homepage.erb
   def employees
+    if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
     @employees = Employee.where(florist_id: session["found_florist_id"]).order("status",  "name")
     render(:employees) and return
+    else
+    redirect_to "/employee/#{session["found_user_id"]}" and return
+    end
   end
 
 ### POST Handler from employees.erb
@@ -606,6 +621,8 @@ end
 ### GET Handler from employees.erb
   def employee
     id = params["employee_id"]
+    @ADMIN_RIGHTS = ADMIN_RIGHTS
+    @EMPLOYEES_VIEW_MUST_HAVE = EMPLOYEES_VIEW_MUST_HAVE 
     if id == "new"
       @employee = Employee.new
     else
@@ -630,9 +647,14 @@ end
     @employee.employee_type = params["employee_type"]
     @employee.username = params["username"]
     @employee.password = params["password"]
+    @employee.password_confirmation = params["password_confirmation"]
     @employee.admin_rights = params["admin_rights"]
     if @employee.save
-      redirect_to "/employees" and return
+      if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
+        redirect_to "/employees" and return
+      else
+        redirect_to "/home" and return
+      end
     else
       render(:employee_edit) and return
     end
