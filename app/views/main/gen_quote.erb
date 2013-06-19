@@ -24,7 +24,8 @@
       <br>
       
       <%= label_tag "status", "Status:"%>
-      <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><br>
+      <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><tr> 
+      Estimated Profit: $<%=@event.quote.total_price.round(0)- (@event.quote.total_price/@event.quote.markup).round(0)%><br><br>
      
   <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
   
@@ -40,7 +41,7 @@
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
+      <th>Total Cost:</th>
 
       <th>Total Markup: </th>
       <th>Total Quoted Price:  </th>
@@ -53,9 +54,9 @@
       <th></th>
             <th></th>
 
-      <th></th>
+      <th>$<%=(@event.quote.total_price/@event.quote.markup).round(0)%></th>
       <th><%=@event.quote.markup%> x </th>
-      <th>$<%=@event.quote.total_price%>  </th>
+      <th>$<%=@event.quote.total_price.round(0)%>  </th>
       </tr>
       
 <tr>      
@@ -120,7 +121,7 @@
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
+      <th>Total Cost:</th>
 
       <th>Total Markup: </th>
       <th>Total Quoted Price:</th>
@@ -132,12 +133,11 @@
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
+      <th>$<%=(@event.quote.total_price/@event.quote.markup).round(0)%></th>
       <th><%=@event.quote.markup%> x </th>
-      <th>$<%=@event.quote.total_price%>  </th>
+      <th>$<%=@event.quote.total_price.round(0)%>  </th>
       </tr>
       
-    
        </table>
        
         
