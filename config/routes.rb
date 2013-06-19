@@ -40,6 +40,11 @@ App::Application.routes.draw do
   post "/employee_post"                       => "main#employee_post"
   get "/employee/:employee_id"                => "main#employee"
   post "/employee_updates/:employee_id"       => "main#employee_updates"
+  
+  get "/florists"                           => "admin#florists"
+  post "/florists_post"                     => "admin#florists_post"
+  get "/florists/:florist_id"               => "admin#florist"
+  post "florist_updates/:florist_id"         => "admin#florist_updates"
 end
 
 

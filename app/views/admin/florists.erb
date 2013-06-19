@@ -1,0 +1,74 @@
+
+     
+      </h1>     ADMIN VIEW </h1>
+      
+      <th><a href="/home">Return to Home</a></th>
+     
+     <h3> Edit Florists </h3>
+     
+      <%= form_tag("/florists_post") do %>
+        
+      <button name= "new" value= "new">Add New</button>
+        <table border='1'>
+        <th>ID:</th>
+        <th></th>
+        <th>Name: *</th>
+        <th>Company ID: *</th>
+        <th>Status: *</th>
+        <th>Primary POC: *</th>
+        <th>Email: *</th>             
+        <th>Phone (w):</th>
+        <th>Phone (c):</th>
+        <th>City:</th>
+        <th>State:</th>
+        <th>Zip:</th>  
+        <th>Company Logo: *</th>      
+        
+        
+        <tr>
+        
+        
+        <% for florist in @florists%>  
+          <td> <%= hidden_field_tag "florist_id", florist.id%>
+               <%=florist.id%></td>
+          <td>  <button name= "edit" value= <%=florist.id%>>Edit</button> </td>
+          <td><%= hidden_field_tag "name", florist.name%>
+               <%=florist.name%></td>
+          <td><%= hidden_field_tag "company_id", florist.company_id%>
+               <%=florist.company_id%></td>
+          <td><%= hidden_field_tag "status", florist.status%>
+              <%= florist.status%> </td>
+          <% if Employee.where(florist_id: florist.id).where(primary_poc: "yes").first != nil%>
+          <td><%= hidden_field_tag "primary_poc", Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.name %>
+              <%= Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.name%></td>
+          <td><%= hidden_field_tag "poc_email", Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.email %>
+              <%=Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.email %></td>
+          <td><%= hidden_field_tag "poc_phone_w", Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.w_phone %>
+              <%=Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.w_phone  %></td>
+              <td><%= hidden_field_tag "poc_phone_c", Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.c_phone %>
+              <%=Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.c_phone %></td>
+              <td><%= hidden_field_tag "city", florist.city %>
+              <%=florist.city %></td>
+              <td><%= hidden_field_tag "state", florist.state %>
+              <%=florist.state %></td>
+              <td><%= hidden_field_tag "zip", florist.zip %>
+              <%=florist.zip %></td>
+               <td><%= hidden_field_tag "company_logo", florist.company_logo %>
+              <%=florist.company_logo %></td>
+          <%else%>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <%end%>
+          
+          </tr>
+         <% end %>
+    </table>
+   
+    
+        
+        
+        
+        
+      <%end%>
+      
+      
+    

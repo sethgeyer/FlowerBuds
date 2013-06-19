@@ -1,0 +1,82 @@
+Here you go.
+
+
+<head>
+    <style>
+      label[for=name],
+      label[for=company_id],
+      label[for=status],
+      label[for=primary_poc],
+       label[for=poc_email],
+      label[for=poc_phone_w],
+      label[for=poc_phone_c],
+      label[for=city],
+      label[for=state],
+      label[for=zip],
+      label[for=company_logo]
+            {
+        width: 150px;
+        float: left;
+      }
+      .label-spacer {
+        width: 50px;
+        height: 1px;
+        float: left;
+      }
+    </style>
+  </head>
+
+<h3><b>Create/Edit Florists</b></h3>
+
+<%=error_messages_for @employee%>
+<%=error_messages_for @florist%>
+
+   <% if @florist.id == nil 
+        id = "new"%>
+      <%else
+        id = @florist.id%>
+      <%end %>
+         <%= form_tag("/florist_updates/#{id}") do %>
+                      
+        <tr><%=label_tag "name", "Florist Name: *" %>
+            <%= text_field_tag "name", @florist.name%><br>
+        <tr><%=label_tag "company_id", "Company Login ID: *" %>
+            <%= text_field_tag "company_id", @florist.company_id%><br>             
+        <tr><%=label_tag "company_logo", "Company Logo: *" %>
+        <%= text_field_tag "company_logo", @florist.company_logo %><br> 
+
+        <tr><%=label_tag "status", "Status: *" %>
+            <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%><br>
+        
+        <tr>
+          <td><%=label_tag "primary_poc", "Primary POC: *" %> <%= text_field_tag "primary_poc", @employee.name%></td>
+            <td><%=label_tag "username", "Username: *"%>
+            <%=text_field_tag "username", @employee.username%>
+            <td><%=label_tag "password", "Password: *"%>
+            <%=password_field_tag "password", @employee.password%>
+              <td><%=label_tag "password_confirmation", "Confirm Password: *"%>
+            <%=password_field_tag "password_confirmation", @employee.password_confirmation%>
+            <td><%=label_tag "admin_rights", "Admin Rights: *"%>
+            <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights)%>
+            
+            </tr>
+        <br>
+        <tr><%=label_tag "poc_email", "Email: *" %>
+            <%= text_field_tag "poc_email", @employee.email %><br>
+        <tr><%=label_tag "poc_phone_w", "Phone (w):" %>
+            <%= text_field_tag "poc_phone_w", @employee.w_phone %><br>
+        <tr><%=label_tag "poc_phone_c", "Phone (c):" %>
+            <%= text_field_tag "poc_phone_c", @employee.c_phone %><br>
+        <tr><%=label_tag "city", "City:" %>
+            <%= text_field_tag "city", @florist.city %><br>
+        <tr><%=label_tag "state", "State:" %>
+            <%= text_field_tag "state", @florist.state %><br>
+        <tr><%=label_tag "zip", "Zip:" %>
+            <%= text_field_tag "zip", @florist.zip %><br>
+                  
+        <div class= 'label-spacer'></div> <button name= "action" value= "save">Save</button>
+
+         <% end %>
+
+
+<p><a href="/florists">Back to Florists</a></p>
