@@ -5,6 +5,12 @@
       <p><%=text_field_tag "search_field"%><td>  
   <%=button_tag "Customer Search", name: "search"%> <- You must search to see if the customer already exists before adding a new customer.</p>
  <%=button_tag "Logout", name: "logout"%>
+ 
+  <%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
+    <%=button_tag "Admin Access", name: "admin_access"%>
+  <%else%>
+  <%end%>
+  
   <%end%>
     
     
