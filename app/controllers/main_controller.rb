@@ -23,7 +23,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
   end
 
   def logged_in
-    found_florist = Florist.where(company_id: params["company_id"]).first
+    found_florist = Florist.where(status: "Active").where(company_id: params["company_id"]).first
     if found_florist != nil
       found_user = Employee.where(username: params["username"]).where(florist_id: found_florist.id).first
       if found_user && found_user.authenticate(params["password"])
@@ -52,6 +52,8 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
         customer = "add_new_customer"
       end
       redirect_to "/search/#{customer}" and return
+    elsif params["admin_access"]
+      redirect_to "/florists" and return
     else 
       redirect_to "/logout" and return
     end
