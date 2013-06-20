@@ -71,13 +71,7 @@
             <td> <div class = 'label-spacer'></div> 
               <button name= "save" value= "save"></button>       
               <button name="delete" value= <%=each.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
-            </tr>
-            <tr> 
-            <td>
-            <td>
-            <td>
-            <td><%= file_field_tag "spec_images-#{each.id}"%></td></tr>
-        <%end%>
+                    <%end%>
         <%= hidden_field_tag "ev_id", @event.id%>
         <div class = 'label-spacer'></div>
         <button name="add" value= "add">Add New Arrangement & Save</button> 
