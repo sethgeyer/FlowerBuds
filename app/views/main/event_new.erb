@@ -54,7 +54,7 @@
     <%=text_field_tag "event_name", @event.name%>
     <br>
     <%=label_tag "event_date", "Event Date: *"%>
-    <%=text_field_tag "event_date", @event.date_of_event%>    
+    <%=date_select :event_date, :element%>    
     <br>
     <%=label_tag "event_time", "Event Time:" %>
     <%=text_field_tag "event_time", @event.time%>

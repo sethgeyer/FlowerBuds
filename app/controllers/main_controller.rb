@@ -4,7 +4,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ###
 
 ######### SESSION SECURITY
-OPEN_PAGES = ["/", "/login", "logout"]
+OPEN_PAGES = ["/", "/login", "logout", "/about_us"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil
     render(:login, layout:false) and return
@@ -35,6 +35,15 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     end
     render(:login, layout:false) and return
   end
+  
+ 
+ 
+ ############ ABOUT US
+ def about_us
+ render(:about_us, layout:false) and return
+ end 
+  
+  
 
 ######### DISPLAY HOMEPAGE
   def home
@@ -168,7 +177,10 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
    
     @event = Event.new
     @event.name = params["event_name"]
-    @event.date_of_event = params["event_date"]
+    #@event.date_of_event = params["event_date"]
+    @event.date_of_event = Date.civil(params[:event_date]["element(1i)"].to_i, params[:event_date]["element(2i)"].to_i, params[:event_date]["element(3i)"].to_i)
+
+    
     @event.time = params["event_time"]
     @event.delivery_setup_time = params["setup_time"]
     @event.feel_of_day = params["feel_of_day"]
@@ -323,7 +335,7 @@ end
       for specification in specifications
         if params["stemcount_#{each.id}"].to_f != each.product_qty
           each.product_qty = params["stemcount_#{each.id}"]
-          #each.product_type = Product.where(id: each.product_id).first.product_type  
+          each.product_type = Product.where(id: each.product_id).first.product_type  
           each.save!
         end
       end
@@ -470,7 +482,9 @@ end
     for booked_quote in @booked_quotes
       if params["place_order-#{booked_quote.id}"]
         booked_quote.status = "Ordered"
+        #booked_quote.wholesale_order_date = Date.civil(params[:place_order_on]["element(1i)"].to_i, params[:place_order_on]["element(2i)"].to_i, params[:place_order_on]["element(3i)"].to_i)
         booked_quote.wholesale_order_date = params["place_order_on"]
+        
         booked_quote.save!
       else
       end
