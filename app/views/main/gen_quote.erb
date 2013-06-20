@@ -25,8 +25,10 @@
       
       <%= label_tag "status", "Status:"%>
       <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><tr> 
-      Estimated Profit: $<%=@event.quote.total_price.round(0)- (@event.quote.total_price/@event.quote.markup).round(0)%><br><br>
-     
+      Estimated Profit: <% if @event.quote.markup != nil%>
+        $<%=profit = @event.quote.total_price.round(2)- (@event.quote.total_price/@event.quote.markup).round(2)%><br><br>
+        <%else%> -
+        <%end%>
   <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
   
    <h3> Arrangements & Quotable Items for Event </h3>
@@ -54,9 +56,13 @@
       <th></th>
             <th></th>
 
-      <th>$<%=(@event.quote.total_price/@event.quote.markup).round(0)%></th>
+      <% if @event.quote.markup != nil%>
+      <th>$<%=total_cost = (@event.quote.total_price/@event.quote.markup).round(2)%></th>
+      <%else%>
+          <%= total_cost = 0%>
+      <%end%>
       <th><%=@event.quote.markup%> x </th>
-      <th>$<%=@event.quote.total_price.round(0)%>  </th>
+      <th>$<%=@event.quote.total_price%>  </th>
       </tr>
       
 <tr>      
@@ -107,10 +113,7 @@
             <td> <%= markup = (each.extended_list_price / (each.per_item_cost*each.item_quantity)).round(2)%> x</td>
             <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
             
-            <tr> 
-            <td>
-            <td>
-            <td><i>images here</i> </td> </tr>
+           
         </tr>
         <%end%>
        
@@ -133,9 +136,9 @@
       <th></th>
       <th></th>
       <th></th>
-      <th>$<%=(@event.quote.total_price/@event.quote.markup).round(0)%></th>
+      <th>$<%=total_cost%></th>
       <th><%=@event.quote.markup%> x </th>
-      <th>$<%=@event.quote.total_price.round(0)%>  </th>
+      <th>$<%=@event.quote.total_price%>  </th>
       </tr>
       
        </table>
