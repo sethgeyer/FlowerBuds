@@ -66,7 +66,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @florist.city = params["city"]
     @florist.state = params["state"]
     @florist.zip = params["zip"]
-    @florist.company_logo = params["company_logo"]
+    @florist.company_logo = "logo_#{@florist.company_id}.jpeg"
     @florist.updated_by = Employee.where(id: session["found_user_id"]).first.name
     if @florist.save
       @employee.florist_id = @florist.id

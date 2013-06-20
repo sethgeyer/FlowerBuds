@@ -15,7 +15,7 @@ Here you go.
       label[for=zip],
       label[for=company_logo]
             {
-        width: 150px;
+        width: 170px;
         float: left;
       }
       .label-spacer {
@@ -37,14 +37,15 @@ Here you go.
         id = @florist.id%>
       <%end %>
          <%= form_tag("/florist_updates/#{id}") do %>
-                      
+        <tr><img src="/images/<%=@florist.company_logo%>" width="40" height="40" align="left"/> <br><br><br>             
         <tr><%=label_tag "name", "Florist Name: *" %>
             <%= text_field_tag "name", @florist.name%><br>
         <tr><%=label_tag "company_id", "Company Login ID: *" %>
             <%= text_field_tag "company_id", @florist.company_id%><br>             
         <tr><%=label_tag "company_logo", "Company Logo: *" %>
-        <%= text_field_tag "company_logo", @florist.company_logo %><br> 
-
+        <%= hidden_field_tag "company_logo", @florist.company_logo %>
+        <%=@florist.company_logo%><br> 
+        
         <tr><%=label_tag "status", "Status: *" %>
             <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%><br>
         

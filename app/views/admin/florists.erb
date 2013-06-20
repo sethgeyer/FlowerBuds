@@ -10,6 +10,7 @@
         
       <button name= "new" value= "new">Add New</button>
         <table border='1'>
+        <th></th>
         <th>ID:</th>
         <th></th>
         <th>Name: *</th>
@@ -29,6 +30,7 @@
         
         
         <% for florist in @florists%>  
+          <td><img src="/images/<%=florist.company_logo%>" width="30" height="30" align="left"/>
           <td> <%= hidden_field_tag "florist_id", florist.id%>
                <%=florist.id%></td>
           <td>  <button name= "edit" value= <%=florist.id%>>Edit</button> </td>
