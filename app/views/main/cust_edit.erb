@@ -7,7 +7,7 @@
       <%=label_tag "customer_id", "Cust ID:"%>
       <%=hidden_field_tag "customer_id", @customer.id%> <%=@customer.id%>
       <br>
-      <%= label_tag "contact_name", "Contact Name: *"%>
+      <%= label_tag "contact_name", "Customer Name: *"%>
       <%= text_field_tag "contact_name", @customer.name%>
       <%= label_tag "contact_email", "Email: *"%>
       <%= text_field_tag "contact_email", @customer.email%>
@@ -74,8 +74,11 @@
                         
             <td> <%= event.employee.name %> </td>
             <td> <%=event.notes%> </td>
+            <% if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
             <td> <div class = 'label-spacer'></div> 
               <button name="delete" value= <%=event.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
+              <%else%>
+              <%end%>
           </tr>
         </tr>
       <%end%>
