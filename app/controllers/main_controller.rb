@@ -311,15 +311,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     render(:virtual_studio) and return
 end
 
-=begin
-### POST Handler from virtual_studio.erb
-  # Creates a new designed_product for each specification based on the product selected.  
-  def virtual_studio_add_new_product
-    event_id = params["event_id"]
-    
-    redirect_to "/virtual_studio/#{event_id}" and return
-  end
-=end
+
   
 ### POST Handler from virtual_studio.erb
   # Updates Virtual Studio Page based on updates made by user. 
@@ -329,20 +321,10 @@ end
     designedproducts = DesignedProduct.where(event_id: event_id)
     for each in designedproducts
       for specification in specifications
-        if DesignedProduct.where(product_id: each.product_id).where(specification_id: specification.id).first == nil
-          new = DesignedProduct.new
-          new.specification_id = specification.id
-          new.product_qty = 0
-          new.product_type = Product.where(id: each.product_id).first.product_type
-          new.florist_id = session["found_florist_id"]
-          new.product_id = each.product_id
-          new.event_id = event_id
-          new.save! 
-        else
-          update = DesignedProduct.where(id: each.id).first     
-          update.product_qty = params["stemcount_#{each.id}"]
-          update.product_type = Product.where(id: each.product_id).first.product_type  
-          update.save!
+        if params["stemcount_#{each.id}"].to_f != each.product_qty
+          each.product_qty = params["stemcount_#{each.id}"]
+          #each.product_type = Product.where(id: each.product_id).first.product_type  
+          each.save!
         end
       end
     end  
