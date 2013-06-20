@@ -1,10 +1,25 @@
 
-    <p> <a href= "/generate_quote/<%=@event.id%>"> <- </a> </p>    
+    <br><br><br><br><br><br><br><br><br><br>  
     
-    <h1><img src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="50" height="50" align="left"/><b><%= Florist.where(id: session["found_florist_id"]).first.name%></h1>
+    <h1 align="middle"><a href= "/generate_quote/<%=@event.id%>"><img align="middle" src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="100" height="100" align="left"/></a><b></h1>
+    
+    <h1 align="middle"><%= Florist.where(id: session["found_florist_id"]).first.name%></h1><br><br>
   
+  
+  <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>
+  
+  <h2 align="middle"> "<%= @event.name%>" </h2>
+  
+  <h2 align="middle"> <%= @event.date_of_event%> </h2>
+  
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  
+  HR {page-break-after: always;}
+  
+  <h3> Contact Information</h3>
+
   <table align="left">
-      <tr><td>Name:           <%= @event.customer.name%> 
+      <tr><td>Name:           <%=@event.customer.name%>       
       <tr><td>Phone:          <%= @event.customer.phone1%>
       <tr><td>Email:          <%= @event.customer.email%>
       <tr><td>Address:        <%= @event.customer.address%> <%= @event.customer.city%> <%= @event.customer.state%>
@@ -25,7 +40,7 @@
 
 <hr />    
 
-<h3> Details for <%=@event.name%></h3>
+<h3> Details for "<%=@event.name%>"</h3>
   <table align="right">    
       <tr><td>Feel of Day:    <%=@event.feel_of_day%>
       <tr><td>Color Palette:  <%=@event.color_palette%>
@@ -75,10 +90,6 @@
             <td> <%=each.item_specs%></td>
             <td> $<%=each.quoted_price%></td>
             
-            <tr> 
-            <td>
-            <td>
-            <td><i>images here</i></td> </tr>
         </tr>
         <%end%>
        </table>
