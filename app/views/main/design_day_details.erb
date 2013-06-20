@@ -50,11 +50,6 @@
             <td> <%=each.item_quantity%></td>
             <td> <%=each.item_specs%></td>
   
-            
-            <tr> 
-            <td>
-            <td>
-            <td><i>images here</i></td> </tr>
         </tr>
         <%end%>
        </table>
@@ -109,7 +104,11 @@
           <%if product != nil%>
             <td><%=product.name%></td>
             <%for specification in @specifications%>
-              <td><%=product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty%></td>
+                <%if DesignedProduct.where(product_id: id).where(specification_id: specification.id).first != nil%>
+                  <td><%=product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty%></td>
+                <%else%>
+                <td><%= product_quantity = 0%></td>
+                <%end%>
             <%end%>
           <%end%>
         </tr>  
