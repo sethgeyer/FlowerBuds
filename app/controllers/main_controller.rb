@@ -496,21 +496,36 @@ end
   #Creates a "grocery list" of all products, etc. that will need to be ordered from the wholesaler.
   def wholesale_order_list
     @orders = Quote.where(florist_id: session["found_florist_id"]).where(status: "Ordered").where(wholesale_order_date: params["place_order_on"])
-    @list_of_event_ids = []
-    #@list_of_product_types = @designed_products.uniq.pluck(:product_type)
-    for order in @orders
-      @list_of_event_ids << order.event_id
-    end
-
+    @list_of_event_ids = @orders.uniq.pluck(:event_id)
+    
+    
     list_of_product_ids = []
+    list_of_product_types = []
     for each_id in @list_of_event_ids   
-      for designed_product in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: each_id).order("product_type")
+      for designed_product in DesignedProduct.where(event_id: each_id)
         list_of_product_ids << designed_product.product_id
+        list_of_product_types << designed_product.product_type
       end
     end
     @list_of_product_ids = list_of_product_ids.uniq
+    @list_of_product_types = list_of_product_types.uniq.sort
+    
     render(:wholesale_order_list) and return
   end
+  
+  
+=begin
+  @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
+    @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
+    @list_of_product_types = @designed_products.uniq.pluck(:product_type).sort!
+  
+=end
+  
+  
+  
+  
+  
+  
   
 ####GET Handler from event_edit.erb
   #Creates an order details summary for the individual event (to be used on the day of the design work).

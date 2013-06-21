@@ -35,53 +35,53 @@
   <p> Note: If there is a last second cancellation, select the Quote Name link to change the Quote Status.  Doing so, will clear the <br> event from the Wholesaler Order List.</p> 
   
   
-    <h4>Items You're Shopping For</h4>     
-     <table border='1'>
+
+
+
+<h4> Items You're Shopping For </h4>  
+    
+  <% for product_type in @list_of_product_types%>
+    <p><b><%=product_type%>
+    <table border='1'>  
       <tr>
-      <th>Type</th>
-      <th>Products</th>
-      <% for order in @orders%>
+        
+        <th>Products</th>
+        <% for order in @orders%>
         <th><%=order.event.name%></th>
       <%end%>
-      <th>Total</th>
-      
-      <th>Sold in Bundles of</th>
+        <th>Total</th>
+        <th>Sold in Bundles of</th>
       <th>Purchase This Many Bundles</thd>
       <th>Leftover</th>
       </tr>
-     
-      <tr>
-      
-      <% for product_id in @list_of_product_ids%>
-      <td><%=type= Product.where(id: product_id).first.product_type%>
-      <td><%= name = Product.where(id: product_id).first.name%>/<%=product_id%></td>
-            <%total_count = 0%>
-            <% for order in @orders%>
-            <%designed_products =DesignedProduct.where(product_id: product_id).where(event_id: order.event_id)%>
-            <%count = 0%>
-            <%for designed_product in designed_products%>
-            <%count = count + (designed_product.product_qty * designed_product.specification.item_quantity)%>
-            <%end%>
-            <td><%=count%></td>
-            <%total_count =  total_count + count%> 
-            <%end%>
+
+ <tr>
+      <%for product_id in @list_of_product_ids%>
+        
+        <% product = Product.where(id: product_id).where(product_type: product_type).first%>
+        <%if product != nil%>
+          <td><%=product.name%></td>
+          <%total_count = 0%>
+              <% for order in @orders%>
+                <%designed_products =DesignedProduct.where(product_id: product_id).where(event_id: order.event_id)%>
+                <%count = 0%>
+                <%for designed_product in designed_products%>
+                  <%count = count + (designed_product.product_qty * designed_product.specification.item_quantity)%>
+                <%end%>
+                <td><%=count%></td>
+                <%total_count =  total_count + count%> 
+              <%end%>
             <td><%=total_count%></td>
-      <td><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch%></td>
-      <td><%= purchase = (total_count / items_per_bunch).ceil%>
-      <td><%= ((purchase*items_per_bunch) - total_count).to_i%> 
-      </tr>   
-      <%end%>
-      
-      
-      
-      </table>
- 
+            <td><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch%></td>
+           <td><%= purchase = (total_count / items_per_bunch).ceil%>
+          <td><%= ((purchase*items_per_bunch) - total_count).to_i%> 
+          </tr>   
+          <%end%>
+          <%end%>
 
+</table>
 
-
-
-
-
+<%end%>
 
 
 

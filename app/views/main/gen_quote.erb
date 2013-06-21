@@ -26,7 +26,7 @@
       <%= label_tag "status", "Status:"%>
       <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><tr> 
       Estimated Profit: <% if @event.quote.markup != nil%>
-        $<%=profit = @event.quote.total_price.round(2)- (@event.quote.total_price/@event.quote.markup).round(2)%><br><br>
+        $<%=profit = (@event.quote.total_price - (@event.quote.total_price/@event.quote.markup)).round(2)%><br><br>
         <%else%> -
         <%end%>
   <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
