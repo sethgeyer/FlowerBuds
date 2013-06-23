@@ -12,4 +12,13 @@
  *= require_tree .
  */
 
+
 body { font-family: Arial; color: black;}
+
+
+.flash-error {
+  background-color; #f2dede;
+  border: 1px #eed3d7 solid;
+  color: #b94a48;
+  padding: 15px
+}

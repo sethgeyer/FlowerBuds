@@ -1,5 +1,11 @@
 
     <h3>Event Edit</h3>
+    <% if flash[:error] != nil %>
+<div class="flash-error">
+  <%= flash[:error]%>
+  </div><br>
+  <%end%>
+    
     
      <%=error_messages_for @event%>
        
@@ -46,7 +52,7 @@
  <hr />
  <td><button name= "save" value= "save">Save Updates</button>
  <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" /></a>Virtual Studio
- <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Build Quote
+ <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Quote
  <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Design Day Details
  <hr />
 
