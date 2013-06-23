@@ -45,12 +45,14 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
       <th>Total Cost:</th>
 
       <th>Total Markup: </th>
       <th>Total Quoted Price:  </th>
       </tr>
         <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -86,6 +88,7 @@
       <th>Item Name</th>
       <th>Quantity</th>
       <th>Specifications</th> 
+      <th>Budgeted Hours</th>
       <th>Per Item Cost</th>
             <th>Extended Cost</th>
 
@@ -94,7 +97,7 @@
       <th>Markup @ List Price
       <th>Quoted Price</th>
     </tr>
-       
+       <% total_hours = 0%>
         <% for each in @specifications %>
            <tr>
            
@@ -105,10 +108,11 @@
                  <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%>
                 <%= each.item_specs%></td>
+           
             
             <% per_arrangement_cost = 0 %>
             <% per_arrangement_list_price = 0%>
-            
+            <% per_arrangement_hours = 0%>
             <% designed_products = DesignedProduct.where(specification_id: each.id)%>
             <%for designed_product in designed_products %>
               <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
@@ -117,7 +121,13 @@
               <% per_arrangement_list_price = per_arrangement_list_price + product_list_price%>
             <%end%>
             
+            <%for labor_dp in DesignedProduct.where(specification_id: each.id).where("product_type ILIKE ?", "%labor%") 
+                  hours = labor_dp.product_qty / 100.0
+                  per_arrangement_hours = per_arrangement_hours + hours
+            end%>
             
+             <td><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
+             <% total_hours = total_hours + item_hours%>
             <td> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
                  $ <%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
 
@@ -138,7 +148,7 @@
             <% if each.quoted_price != nil%>
             <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price / 100.0.round(2)%> </td>
             <%else%>
-            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price.round(2)%> </td>
+            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
             <%end%>
            
         </tr>
@@ -148,6 +158,7 @@
       
        </table>
        
+       <p> Total Estimated Hours are: <%=total_hours%></p> 
         
          
     <%end%>   
