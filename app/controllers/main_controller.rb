@@ -3,6 +3,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ###
 
+
+font = "Arial"
+
 ######### SESSION SECURITY
 OPEN_PAGES = ["/", "/login", "logout", "/about_us"]
 before_filter do
@@ -47,7 +50,15 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
 
 ######### DISPLAY HOMEPAGE
   def home
+      if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
+      Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
       @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
+      else
+      view_pref = Employee.where(id: session["found_user_id"]).first.view_pref
+      employee_id = Employee.where(florist_id: session["found_florist_id"]).where(username: view_pref).first.id
+      @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
+      end
+      @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
       render(:homepage) and return
   end
   
@@ -63,6 +74,11 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
       redirect_to "/search/#{customer}" and return
     elsif params["admin_access"]
       redirect_to "/florists" and return
+    elsif params["update_view"]
+      emp_update = Employee.where(id: session["found_user_id"]).first
+      emp_update.view_pref = params["view"]
+      emp_update.save!
+      redirect_to home_path and return
     else 
       redirect_to logout_path and return
     end
@@ -269,7 +285,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
       new_spec.save!
     else #do nothing
     end
-    redirect_to "/event_edit/#{params["event_id"]}"
+    redirect_to "/event_edit/#{params["event_id"]}" and return
  
     end
   
@@ -281,6 +297,22 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     event_id = params["event_id"]    
     @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
     @specifications = @event.specifications.order("id")
+  
+  if @specifications == []
+    
+      flash[:error] = "A. You need to create arrangements below before designing them in Virtual Studio."
+      redirect_to "/event_edit/#{params["event_id"]}" and return
+    
+    
+    else
+    end
+  
+  
+  
+  
+  
+  
+  
   
   #Creates a list of used products for the specification 
     designedproducts = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
@@ -386,7 +418,11 @@ end
       count = count + (each.product_qty / 100.0)
     end
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count < 1.0
-      redirect_to "/virtual_studio/#{event_id}" and return
+    
+      flash[:error] = "B. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
+      redirect_to "/event_edit/#{params["event_id"]}" and return
+    
+    
     else
     end
     if Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
@@ -457,6 +493,7 @@ end
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
     @specifications = @event.specifications.order("id")
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
+      
       redirect_to "/virtual_studio/#{event_id}" and return
     else
     end
@@ -549,11 +586,13 @@ end
     end
 
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil || count < 1.0
-      redirect "/virtual_studio/#{params["event_id"]}"
+      flash[:error] = "C. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
+      redirect_to "/event_edit/#{params["event_id"]}" and return
     end
 
     if Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil
-      redirect "/generate_quote/#{params["event_id"]}"
+      flash[:error] = "D. You need to create a Quote before viewing the Design Day Details."
+      redirect_to "/event_edit/#{params["event_id"]}" and return
     end
     render(:design_day_details, layout:false) and return
   end
@@ -647,6 +686,7 @@ end
     @EMPLOYEES_VIEW_MUST_HAVE = EMPLOYEES_VIEW_MUST_HAVE 
     if id == "new"
       @employee = Employee.new
+      @employee.view_pref = "all"
     else
       @employee = Employee.where(florist_id: session["found_florist_id"]).where(id: id).first
     end
@@ -658,6 +698,7 @@ end
     if params["employee_id"] == "new"
       @employee = Employee.new
       @employee.florist_id = session["found_florist_id"]
+      @employee.view_pref = "all"
     else
       @employee = Employee.where(id: params["employee_id"]).first
     end
@@ -678,6 +719,10 @@ end
         redirect_to home_path and return
       end
     else
+       
+    @ADMIN_RIGHTS = ADMIN_RIGHTS
+    @EMPLOYEES_VIEW_MUST_HAVE = EMPLOYEES_VIEW_MUST_HAVE 
+   
       render(:employee_edit) and return
     end
   end
