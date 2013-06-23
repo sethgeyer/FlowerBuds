@@ -1,4 +1,9 @@
-    
+    <% if flash[:update] != nil %>
+<div class="flash-error">
+  <%= flash[:update]%>
+  </div><br>
+  <%end%>
+  
      <%= form_tag("/save_quote") do %>  
     <h3>Quote Name: *<%= text_field_tag "quote_name", @quote.quote_name%></h3> 
     
@@ -104,9 +109,9 @@
             <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
                  <%=each.item_name%></td> 
             
-            <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity / 100%>          
+            <td align="middle"> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity / 100%>          
                  <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%>
+            <td align="right"> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%>
                 <%= each.item_specs%></td>
            
             
@@ -126,29 +131,29 @@
                   per_arrangement_hours = per_arrangement_hours + hours
             end%>
             
-             <td><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
+             <td align="middle"><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
              <% total_hours = total_hours + item_hours%>
-            <td> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
+            <td align="right"> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
                  $ <%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
 
-            <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
+            <td align="right"> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
                  <% extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
                  $ <%=sprintf("%.2f" , extended_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             
             
-            <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = per_arrangement_list_price.round(2)%>
+            <td align="right"> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = per_arrangement_list_price.round(2)%>
                  $ <%=sprintf("%.2f" , per_arrangement_list_price.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             
             
-            <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)%>
+            <td align="right"> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)%>
                  $ <%=sprintf("%.2f" , (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             
-            <td> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
+            <td align="middle"> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
             
             <% if each.quoted_price != nil%>
-            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price / 100.0.round(2)%> </td>
+            <td align="right"> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price / 100.0.round(2)%> </td>
             <%else%>
-            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
+            <td align="right"> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
             <%end%>
            
         </tr>

@@ -5,25 +5,26 @@
     
     
     
-    <b>Florist:</b><%=@event.employee.name%><br> </p>
+    <b>Florist: </b><%=@event.employee.name%><br> 
+    <b>Total Price:</b> $ <%=sprintf("%.2f" , @event.quote.total_price / 100.0).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></p>
     <hr />    
 
 <h3> Event Details</h3>
   <table align="right">    
-      <tr><td>Feel of Day:    <%=@event.feel_of_day%>
-      <tr><td>Color Palette:  <%=@event.color_palette%>
-      <tr><td>Flower Types:   <%=@event.flower_types%>
-      <tr><td>Attire:         <%=@event.attire%>
-      <tr><td>Photographer:   
-      <tr><td>Coordinator:    
+      <tr><td><b>Feel of Day:</b>    <%=@event.feel_of_day%>
+      <tr><td><b>Color Palette:</b>  <%=@event.color_palette%>
+      <tr><td><b>Flower Types:</b>   <%=@event.flower_types%>
+      <tr><td><b>Attire:</b>         <%=@event.attire%>
+      <tr><td><b>Photographer:</b>   
+      <tr><td><b>Coordinator:</b>    
   </table>
   
 <table align="left">    
-      <tr><td>Event Date:     <%=@event.date_of_event%>
-      <tr><td>Event Time:     <%=@event.time%>
-      <tr><td>Setup Time:     <%=@event.delivery_setup_time%>
-       <tr><td> Ceremony Location:
-      <tr><td>Reception Location:
+      <tr><td><b>Event Date:</b>     <%=@event.date_of_event%>
+      <tr><td><b>Event Time:</b>     <%=@event.time%>
+      <tr><td><b>Setup Time:</b>     <%=@event.delivery_setup_time%>
+       <tr><td> <b>Ceremony Location:</b>
+      <tr><td><b>Reception Location:</b>
      
 </table>
   
@@ -33,7 +34,7 @@
 <br>
 <br>
 <br>
-<tr> Event Notes:    <%= @event.notes%> </tr>
+<tr> <b>Event Notes:</b>    <%= @event.notes%> </tr>
 
 <hr />
      
@@ -50,13 +51,13 @@
         <% for each in @specifications %>
            <tr>
             <td> <%=each.item_name%></td> 
-            <td> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+            <td align="middle"> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%=each.item_specs%></td>
   
         </tr>
         <%end%>
        </table>
-      <th>Total Price: $ <%=sprintf("%.2f" , @event.quote.total_price / 100.0).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th><br>
+     <br>
       <hr />
 
 
@@ -80,7 +81,7 @@
             <%for designed_product in designed_products%>
               <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
             <%end%>
-          <td><%=count.round(2).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>  
+          <td align="right"><%=count.round(2).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>  
         <%end%>
         </tr>  
       <%end%>
@@ -109,9 +110,9 @@
             <%for specification in @specifications%>
                 <%if DesignedProduct.where(product_id: id).where(specification_id: specification.id).first != nil%>
                 <%product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty / 100.0%>
-                  <td><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+                  <td align="right"><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
                 <%else%>
-                <td><%= product_quantity = 0%></td>
+                <td align="right"><%= product_quantity = 0%></td>
                 <%end%>
             <%end%>
           <%end%>

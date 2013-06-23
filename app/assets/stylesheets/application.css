@@ -13,7 +13,10 @@
  */
 
 
-body { font-family: Arial; color: black;}
+body { 
+font-family: Arial; color: black;
+background-color: rgb(248,250,222);
+}
 
 
 .flash-error {

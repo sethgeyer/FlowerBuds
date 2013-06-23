@@ -68,13 +68,15 @@
                 <%for designed_product in designed_products%>
                   <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
                 <%end%>
-                <td><%=count%></td>
+                <td align="right"><%=sprintf("%.2f" ,count).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
                 <%total_count =  total_count + count%> 
               <%end%>
-            <td><%=total_count%></td>
-            <td><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch / 100.0 %></td>
-           <td><%= purchase = (total_count / items_per_bunch).ceil%>
-          <td><%= ((purchase*items_per_bunch) - total_count).to_i%> 
+            <td align="right"> <%=sprintf("%.2f" ,total_count).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+
+            <td align="right"><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch / 100 %></td>
+           <td align="right"><%purchase = (total_count / items_per_bunch).ceil%>
+           <%=sprintf("%.2f" ,purchase).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+          <td align="right"><%= ((purchase*items_per_bunch) - total_count).to_i%> 
           </tr>   
           <%end%>
           <%end%>

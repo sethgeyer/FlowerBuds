@@ -35,7 +35,7 @@
           <td> <%=booked_quote.event.name%> </td>
           <td> <%=booked_quote.event.date_of_event%> </td>
           <td> <%=booked_quote.quote_name%></td>
-          <td> $<%=booked_quote.total_price / 100.0%></td>
+          <td> $ <%=sprintf("%.2f" ,booked_quote.total_price / 100.0).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
           <td> <%=booked_quote.status%></td>
           <td> <%=booked_quote.wholesale_order_date%></td>
          

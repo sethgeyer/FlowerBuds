@@ -440,6 +440,7 @@ end
     else
     end
     @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
+     
     render(:gen_quote) and return
   end
 
