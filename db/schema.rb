@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130620023952) do
+ActiveRecord::Schema.define(:version => 20130622161658) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20130620023952) do
     t.integer  "event_id"
     t.integer  "specification_id"
     t.integer  "product_id"
-    t.float    "product_qty"
+    t.integer  "product_qty"
     t.string   "product_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
@@ -104,10 +104,10 @@ ActiveRecord::Schema.define(:version => 20130620023952) do
   create_table "products", :force => true do |t|
     t.string   "product_type"
     t.string   "name"
-    t.float    "items_per_bunch"
-    t.float    "cost_per_bunch"
-    t.float    "cost_for_one"
-    t.float    "markup"
+    t.integer  "items_per_bunch"
+    t.integer  "cost_per_bunch"
+    t.integer  "cost_for_one"
+    t.integer  "markup"
     t.string   "status"
     t.integer  "florist_id"
     t.datetime "created_at",      :null => false
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(:version => 20130620023952) do
   create_table "quotes", :force => true do |t|
     t.string   "quote_name"
     t.integer  "event_id"
-    t.float    "total_price"
-    t.float    "markup"
+    t.integer  "total_price"
+    t.integer  "markup"
     t.string   "status"
     t.date     "wholesale_order_date"
     t.datetime "created_at",           :null => false
@@ -131,13 +131,13 @@ ActiveRecord::Schema.define(:version => 20130620023952) do
   create_table "specifications", :force => true do |t|
     t.integer  "event_id"
     t.string   "item_name"
-    t.float    "item_quantity"
+    t.integer  "item_quantity"
     t.string   "item_specs",          :limit => 1000
     t.boolean  "in_quote"
-    t.float    "per_item_cost"
-    t.float    "per_item_list_price"
-    t.float    "extended_list_price"
-    t.float    "quoted_price"
+    t.integer  "per_item_cost"
+    t.integer  "per_item_list_price"
+    t.integer  "extended_list_price"
+    t.integer  "quoted_price"
     t.string   "image"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
