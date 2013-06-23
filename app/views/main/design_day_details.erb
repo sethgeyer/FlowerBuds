@@ -1,7 +1,10 @@
-    
-    <h3><a href= "/event_edit/<%=@event.id%>"><%=@event.name.upcase%></a> - DESIGN DAY DETAILS </h3>
+ <h2><a href= "/home"><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="60" height="40" align="left"/></a>Design Day Details<br>   
+    <h2><a href= "/event_edit/<%=@event.id%>"><%=@event.name%></a>  </h2>
     <p><b>Customer:</b> <%=@event.customer.name%><br>
     <b>Phone:</b> <%= @event.customer.phone1%>  / <b>Email: </b><%= @event.customer.email%><br>
+    
+    
+    
     <b>Florist:</b><%=@event.employee.name%><br> </p>
     <hr />    
 
