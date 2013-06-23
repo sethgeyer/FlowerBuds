@@ -72,7 +72,7 @@ GEM
       railties
     method_source (0.8.1)
     mime-types (1.23)
-    multi_json (1.7.6)
+    multi_json (1.7.7)
     pg (0.15.1)
     polyglot (0.3.3)
     pry (0.9.12.2)
@@ -108,7 +108,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.0.4)
+    rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
     sass (3.2.9)
