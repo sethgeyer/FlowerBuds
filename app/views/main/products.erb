@@ -33,14 +33,14 @@
                <%=product.product_type%></td>
           <td><%= hidden_field_tag "product_name", product.name%>
                <%=product.name%></td>
-          <td><%= hidden_field_tag "cost_per_bunch", product.cost_per_bunch%>
-              $ <%= product.cost_per_bunch%> </td>
-          <td><%= hidden_field_tag "items_per_bunch", product.items_per_bunch %>
-              <%= product.items_per_bunch%></td>
-          <td><%= hidden_field_tag "cost_for_one", product.cost_for_one %>
-              $<%=product.cost_for_one %></td>
-          <td><%= hidden_field_tag "markup", product.markup %>
-              <%=product.markup%> x</td>
+          <td><%= hidden_field_tag "cost_per_bunch", product.cost_per_bunch / 100.round(2)%>
+               $<%= sprintf("%.2f" , product.cost_per_bunch / 100.round(2))%> </td>
+          <td><%= hidden_field_tag "items_per_bunch", product.items_per_bunch / 100 %>
+              <%= (product.items_per_bunch / 100).round(0)  %></td>
+          <td><%= hidden_field_tag "cost_for_one", product.cost_for_one / 100.round(2)%>
+              $<%=sprintf("%.2f" , product.cost_for_one / 100.round(2)) %></td>
+          <td><%= hidden_field_tag "markup", product.markup / 100.round(2) %>
+              <%=sprintf("%.2f" , product.markup / 100.round(2))%> x</td>
           <td><%= hidden_field_tag "status", product.status %>
               <%=product.status%></td>
                  

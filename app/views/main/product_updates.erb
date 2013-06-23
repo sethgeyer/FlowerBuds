@@ -43,14 +43,14 @@
               <%= text_field_tag "product_name", @product.name%></tr>
           <br><br> 
          <tr><%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>
-              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
+              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%></tr>
           <br><br>
           <tr><%=label_tag "items_per_bunch", "Items per Bunch: *" %>
-              <%= text_field_tag "items_per_bunch", @product.items_per_bunch%></tr>
+              <%= text_field_tag "items_per_bunch", @product.items_per_bunch / 100.0.round(2)%></tr>
           <br><br>
          
           <tr><%=label_tag "markup", "Markup: * " %>
-              <%= text_field_tag "markup", @product.markup%></tr>
+              <%= text_field_tag "markup", @product.markup / 100.0.round(2)%></tr>
           <br><br>
          <tr><%=label_tag "status", "Status: *" %>
              <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 

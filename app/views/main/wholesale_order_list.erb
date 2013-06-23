@@ -66,13 +66,13 @@
                 <%designed_products =DesignedProduct.where(product_id: product_id).where(event_id: order.event_id)%>
                 <%count = 0%>
                 <%for designed_product in designed_products%>
-                  <%count = count + (designed_product.product_qty * designed_product.specification.item_quantity)%>
+                  <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
                 <%end%>
                 <td><%=count%></td>
                 <%total_count =  total_count + count%> 
               <%end%>
             <td><%=total_count%></td>
-            <td><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch%></td>
+            <td><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch / 100.0 %></td>
            <td><%= purchase = (total_count / items_per_bunch).ceil%>
           <td><%= ((purchase*items_per_bunch) - total_count).to_i%> 
           </tr>   

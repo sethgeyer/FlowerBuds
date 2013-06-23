@@ -1,6 +1,6 @@
   
   
-  <h1> Specifications for Event ID: <%=@event_id%> / <%=Event.where(id: @event_id).first.name%> </h1>
+  <h1> Specifications for <%=Event.where(id: @event_id).first.name%> </h1>
   
   <p> Macs = Command ~ to toggle between browser windows</p>
   
@@ -14,7 +14,6 @@
      <tr>
       <td><%=specification.item_name%></td>
       <td><%=specification.item_specs%></td> </tr>
-     <tr><td>images </td></tr>
    <%end%>
       
     

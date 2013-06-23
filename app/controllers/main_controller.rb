@@ -29,7 +29,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
       if found_user && found_user.authenticate(params["password"])
         session["found_user_id"] = found_user.id
         session["found_florist_id"] = found_florist.id
-        redirect_to "/home" and return
+        redirect_to home_path and return
       else
       end
     end
@@ -64,7 +64,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     elsif params["admin_access"]
       redirect_to "/florists" and return
     else 
-      redirect_to "/logout" and return
+      redirect_to logout_path and return
     end
   end
 
@@ -191,7 +191,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     @event.coordinator = params["coordinator"]
     @event.locations = params["locations"]
       if params["lead_designer"] != ""
-        @event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
+        @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
       else
         @event.employee_id = nil
       end
@@ -234,7 +234,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
       @event.photographer = params["photographer"]
       @event.coordinator = params["coordinator"]
       @event.locations = params["locations"]
-      @event.employee_id = Employee.where(name: params["lead_designer"]).first.id                                                   
+      @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
                                                                             #As well, you need to resolve the 3rd party and Site info
       @event.notes = params["notes"]
       @event.budget = params["budget"]
@@ -248,7 +248,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     #Updates to Event Specifications Section
       for each in Specification.where(event_id: params["event_id"])  
         each.item_name = params["spec_item-#{each.id}"]
-        each.item_quantity = params["spec_qty-#{each.id}"]
+        each.item_quantity = params["spec_qty-#{each.id}"].to_i * 100.0
         each.item_specs = params["spec_notes-#{each.id}"]
         each.save      
       end
@@ -263,7 +263,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     elsif params["add"]
       new_spec = Specification.new
       new_spec.event_id = params["ev_id"]
-      new_spec.item_quantity = 1
+      new_spec.item_quantity = 1 * 100.0
       new_spec.item_name = ""
       new_spec.florist_id = session["found_florist_id"] 
       new_spec.save!
@@ -293,7 +293,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
   #Creates a new designed_product for each specification for each product identified for the particular specification
   #This addresses the issue associated specifications added at the end of the design process.
    for each in @list_of_products
-      id = Product.where(name: each).first.id
+      id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id
       for specification in @specifications
           x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first
           if x == nil
@@ -303,7 +303,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
             new_dp.event_id = @event.id
             new_dp.product_qty = 0
             new_dp.florist_id = session["found_florist_id"]
-            new_dp.product_type = Product.where(name: each).first.product_type
+            new_dp.product_type = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.product_type
             new_dp.save!
           else
           end
@@ -333,8 +333,8 @@ end
     designedproducts = DesignedProduct.where(event_id: event_id)
     for each in designedproducts
       for specification in specifications
-        if params["stemcount_#{each.id}"].to_f != each.product_qty
-          each.product_qty = params["stemcount_#{each.id}"]
+        if params["stemcount_#{each.id}"].to_f*100 != each.product_qty
+          each.product_qty = params["stemcount_#{each.id}"].to_f * 100.round(2)
           each.product_type = Product.where(id: each.product_id).first.product_type  
           each.save!
         end
@@ -348,9 +348,9 @@ end
         new_dp = DesignedProduct.new
         new_dp.specification_id = specification.id
         new_dp.product_qty = 0
-        new_dp.product_type = Product.where(name: new_item).first.product_type
+        new_dp.product_type = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.product_type
         new_dp.florist_id = session["found_florist_id"]
-        new_dp.product_id = Product.where(name: new_item).first.id
+        new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
         new_dp.event_id = event_id
         new_dp.save!
       end         
@@ -371,7 +371,7 @@ end
     event_id = params["event_id"]
     @event_id = event_id
     @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).order("id")
-    render(:popup_specs) and return
+    render(:popup_specs, layout:false) and return
   end 
   
 ######### QUOTE GENERATION
@@ -383,7 +383,7 @@ end
     @specifications = @event.specifications.order("id")
     count = 0
     for each in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
-      count = count + each.product_qty
+      count = count + (each.product_qty / 100.0)
     end
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count < 1.0
       redirect_to "/virtual_studio/#{event_id}" and return
@@ -395,6 +395,8 @@ end
       new_quote.event_id = event_id
       new_quote.status = "Open Proposal"
       new_quote.florist_id = session["found_florist_id"] 
+      new_quote.total_price = 0
+      new_quote.markup = 0
       new_quote.save!
       event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
       event.event_status = "Open Proposal"
@@ -412,11 +414,11 @@ end
       if params["quoted_price-#{each.id}"] == nil
         each.quoted_price = 0
       else
-        each.quoted_price = params["quoted_price-#{each.id}"]
+        each.quoted_price = params["quoted_price-#{each.id}"].to_f * 100
       end
-      each.per_item_cost = params["per_item_cost-#{each.id}"]
-      each.per_item_list_price = params["per_item_list_price-#{each.id}"]
-      each.extended_list_price = params["extended_list_price-#{each.id}"]
+      each.per_item_cost = params["per_item_cost-#{each.id}"].to_f * 100
+      each.per_item_list_price = params["per_item_list_price-#{each.id}"].to_f * 100
+      each.extended_list_price = params["extended_list_price-#{each.id}"].to_f * 100
       each.save!
     end
     quote = Quote.where(event_id: event_id).first
@@ -426,13 +428,17 @@ end
     for each in Specification.where(event_id: event_id)
       if each.quoted_price == nil
         each.quoted_price = 0
+      
       else
       end
       quoted_total_price = quoted_total_price + each.quoted_price
-      total_cost = total_cost + (each.per_item_cost * each.item_quantity).round(2)
+      total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
     end 
-    quote.total_price = quoted_total_price.round(2)
-    quote.markup = (quote.total_price / total_cost).round(2)
+    quote.total_price = quoted_total_price
+    if total_cost != 0
+      quote.markup = (quote.total_price / total_cost)
+    else
+    end
     quote.status = params["status"]
     if params["status"] != "Completed"  && params["status"] != "Ordered"
       quote.wholesale_order_date = nil
@@ -539,7 +545,7 @@ end
 
     count = 0
     for each in @designed_products
-      count = count + each.product_qty
+      count = count + (each.product_qty / 100.0)
     end
 
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil || count < 1.0
@@ -575,6 +581,9 @@ end
       id = params["product_id"]
       if id == "new"
         @product = Product.new
+        @product.cost_per_bunch = 0
+        @product.items_per_bunch = 0
+        @product.markup = 0
       else
         @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
       end
@@ -595,10 +604,10 @@ end
     end
      @product.product_type= params["product_type"]
     @product.name = params["product_name"]
-    @product.items_per_bunch = params["items_per_bunch"].to_f
-    @product.cost_per_bunch = params["cost_per_bunch"].to_f
-    @product.cost_for_one =(params["cost_per_bunch"].to_f) / (params["items_per_bunch"].to_f)
-    @product.markup = params["markup"].to_f
+    @product.items_per_bunch = params["items_per_bunch"].to_f * 100
+    @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100
+    @product.cost_for_one =(params["cost_per_bunch"].to_f) / (params["items_per_bunch"].to_f) * 100
+    @product.markup = params["markup"].to_f * 100
     @product.status = params["status"]
     @product.updated_by = Employee.where(id: session["found_user_id"]).first.name
     @product.florist_id = session["found_florist_id"]
@@ -666,7 +675,7 @@ end
       if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
         redirect_to "/employees" and return
       else
-        redirect_to "/home" and return
+        redirect_to home_path and return
       end
     else
       render(:employee_edit) and return

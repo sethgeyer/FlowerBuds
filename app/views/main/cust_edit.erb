@@ -74,11 +74,8 @@
                         
             <td> <%= event.employee.name %> </td>
             <td> <%=event.notes%> </td>
-            <% if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
             <td> <div class = 'label-spacer'></div> 
               <button name="delete" value= <%=event.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
-              <%else%>
-              <%end%>
           </tr>
         </tr>
       <%end%>

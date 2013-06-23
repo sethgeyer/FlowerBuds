@@ -14,7 +14,7 @@
   
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   
-  HR {page-break-after: always;}
+
   
   <h3> Contact Information</h3>
 
@@ -86,14 +86,15 @@
         <% for each in @specifications %>
            <tr>
             <td> <%=each.item_name%></td> 
-            <td> <%=each.item_quantity%></td>
+            <td> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
             <td> <%=each.item_specs%></td>
-            <td> $<%=each.quoted_price%></td>
+            <td>$ <%=sprintf("%.2f" , each.quoted_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+      
             
         </tr>
         <%end%>
        </table>
-      <th>Total Price: $<%=@event.quote.total_price%>  </th>
+      <th>Total Price: $ <%=sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
       <p> Note: Price does not include applicable state and local taxes.
 <br><br>
    <p> I agree to the terms and conditions of the contract.  This quote once executed will server as my order form... blah blah blah.</p>

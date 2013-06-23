@@ -40,12 +40,12 @@
       <tr> 
       
       <%for each in @list_of_products%>
-         <%id = Product.where(name: each).first.id%>
+         <%id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id%>
           <td><%=each%></td> 
           <% for specification in @specifications%>
             <td><%x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first%>
                
-                  <%stem_count=x.product_qty%>
+                  <%stem_count= x.product_qty / 100.0.round(2) %>
                   <%=text_field_tag "stemcount_#{x.id}", stem_count%> </td>               
           <%end%> 
           <td>            <div class = 'label-spacer'></div>

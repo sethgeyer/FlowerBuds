@@ -5,7 +5,7 @@
      
       <h1> flower buds, inc. </h1>
       
-      <%= form_tag("/login") do %>
+      <%= form_tag login_path do %>
         <b><%= label_tag "company_id", "Florist ID: " %>
         <%= text_field_tag "company_id"%>
         <br>
@@ -24,7 +24,7 @@
         <button name= "action" value= "save">Enter</button>
       <%end%><br><br><br><br>
       
-      <p><a href="/about_us">about flower buds</a></p>
+      <p><%= link_to "about flower buds", about_us_path%></p>
       
        </div>
       

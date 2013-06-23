@@ -25,9 +25,11 @@
       
       <%= label_tag "status", "Status:"%>
       <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><tr> 
-      Estimated Profit: <% if @event.quote.markup != nil%>
-        $<%=profit = (@event.quote.total_price - (@event.quote.total_price/@event.quote.markup)).round(2)%><br><br>
-        <%else%> -
+      Estimated Profit: <% if @event.quote.markup != 0%>
+        <%profit = @event.quote.total_price / 100 - (@event.quote.total_price / @event.quote.markup) %>
+        $ <%=profit.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%><br><br>
+        
+        <%else%> - <br><br>
         <%end%>
   <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
   
@@ -56,13 +58,27 @@
       <th></th>
             <th></th>
 
-      <% if @event.quote.markup != nil%>
-      <th>$<%=total_cost = (@event.quote.total_price/@event.quote.markup).round(2)%></th>
+      <%total_cost = 0%>     
+      <% for each in @specifications
+          if each.per_item_cost != nil
+            each.per_item_cost
+          else
+            
+            each.per_item_cost = 0
+          end
+          total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
+          end%>
+      <th>$ <%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
+        
+        
+      <% if @event.quote.markup != 0%>
+          <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
       <%else%>
-          <%= total_cost = 0%>
-      <%end%>
-      <th><%=@event.quote.markup%> x </th>
-      <th>$<%=@event.quote.total_price%>  </th>
+        <th> - </th>  
+      <%end%>    
+       <%price = @event.quote.total_price / 100.0 %>
+      <th>$ <%=sprintf("%.2f" , price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+           
       </tr>
       
 <tr>      
@@ -85,61 +101,50 @@
             <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
                  <%=each.item_name%></td> 
             
-            <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity%>          
-                 <%=each.item_quantity%></td>
+            <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity / 100%>          
+                 <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_specs, rows: 10, cols: 60%>
                 <%= each.item_specs%></td>
             
-            <% per_arrangement_cost = 0.00 %>
-            <% per_arrangement_list_price = 0.00%>
+            <% per_arrangement_cost = 0 %>
+            <% per_arrangement_list_price = 0%>
             
             <% designed_products = DesignedProduct.where(specification_id: each.id)%>
             <%for designed_product in designed_products %>
-              <% product_cost = designed_product.product_qty * designed_product.product.cost_for_one %>
-              <% product_list_price = product_cost * designed_product.product.markup%>
+              <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
+              <% product_list_price = product_cost * (designed_product.product.markup / 100.0)%>
               <% per_arrangement_cost = per_arrangement_cost + product_cost %>
               <% per_arrangement_list_price = per_arrangement_list_price + product_list_price%>
             <%end%>
             
+            
             <td> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
-                 $<%=each.per_item_cost = per_arrangement_cost.round(2)%> </td>
-            <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (each.per_item_cost * each.item_quantity).round(2)%>
-                 $<%= extended_cost = (each.per_item_cost * each.item_quantity).round(2)%></td>
+                 $ <%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+
+            <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
+                 <% extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
+                 $ <%=sprintf("%.2f" , extended_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+            
             
             <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = per_arrangement_list_price.round(2)%>
-                 $<%= each.per_item_list_price = per_arrangement_list_price.round(2)%></td>
-            <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%>
-                 $<%= each.extended_list_price = (each.per_item_list_price * each.item_quantity).round(2)%></td>
-            <td> <%= markup = (each.extended_list_price / (each.per_item_cost*each.item_quantity)).round(2)%> x</td>
-            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
+                 $ <%=sprintf("%.2f" , per_arrangement_list_price.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             
+            
+            <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)%>
+                 $ <%=sprintf("%.2f" , (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+            
+            <td> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
+            
+            <% if each.quoted_price != nil%>
+            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price / 100.0.round(2)%> </td>
+            <%else%>
+            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price.round(2)%> </td>
+            <%end%>
            
         </tr>
         <%end%>
        
-        <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>Total Cost:</th>
-
-      <th>Total Markup: </th>
-      <th>Total Quoted Price:</th>
-      </tr>
-        <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>$<%=total_cost%></th>
-      <th><%=@event.quote.markup%> x </th>
-      <th>$<%=@event.quote.total_price%>  </th>
-      </tr>
+       
       
        </table>
        

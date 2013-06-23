@@ -1,10 +1,10 @@
 App::Application.routes.draw do
   get "/"                                     => "main#login"
-  post "/login"                               => "main#logged_in"
-  get "/home"                                 => "main#home"
-  post "/homepage"                            => "main#homepage"  
-  get "/logout"                               => "main#logout"
-  get "/search/:customer"                     => "main#search_results"
+  post "/login"                               => "main#logged_in", as: "login"
+  get "/home"                                 => "main#home", as: "home"
+  post "/homepage"                            => "main#homepage", as: "homepage"
+  get "/logout"                               => "main#logout", as: "logout"
+  get "/search/:customer"                     => "main#search_results" #no route_path for this one
   
   get "/cust_new"                             => "main#cust_new"
   post "/create_new_customer"                 => "main#create_new_customer"
@@ -45,7 +45,7 @@ App::Application.routes.draw do
   post "/florists_post"                     => "admin#florists_post"
   get "/florists/:florist_id"               => "admin#florist"
   post "florist_updates/:florist_id"         => "admin#florist_updates"
-  get "/about_us"                           => "main#about_us"
+  get "/about_us"                           => "main#about_us", as: "about_us"
 
 end
 

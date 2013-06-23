@@ -47,13 +47,13 @@
         <% for each in @specifications %>
            <tr>
             <td> <%=each.item_name%></td> 
-            <td> <%=each.item_quantity%></td>
+            <td> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%=each.item_specs%></td>
   
         </tr>
         <%end%>
        </table>
-      <th>Total Price: $<%=@event.quote.total_price%>  </th><br>
+      <th>Total Price: $ <%=sprintf("%.2f" , @event.quote.total_price / 100.0).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th><br>
       <hr />
 
 
@@ -75,9 +75,9 @@
           <%designed_products =DesignedProduct.where(event_id: @event.id).where(product_type: product_type).where(product_id: id)%>            
           <%count = 0%>
             <%for designed_product in designed_products%>
-              <%count = count + (designed_product.product_qty * designed_product.specification.item_quantity)%>
+              <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
             <%end%>
-          <td><%=count%></td>  
+          <td><%=count.round(2).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>  
         <%end%>
         </tr>  
       <%end%>
@@ -94,7 +94,7 @@
       <tr>
         <th>Products</th>
         <%for specification in @specifications%>
-          <th><%=specification.item_name%> (Tot:<%=specification.item_quantity.round(0)%>)</th>
+          <th><%=specification.item_name%> (Tot:<%=specification.item_quantity / 100%>)</th>
         <%end%>
       </tr>
      
@@ -105,7 +105,8 @@
             <td><%=product.name%></td>
             <%for specification in @specifications%>
                 <%if DesignedProduct.where(product_id: id).where(specification_id: specification.id).first != nil%>
-                  <td><%=product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty%></td>
+                <%product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty / 100.0%>
+                  <td><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
                 <%else%>
                 <td><%= product_quantity = 0%></td>
                 <%end%>
