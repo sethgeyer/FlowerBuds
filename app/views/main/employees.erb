@@ -15,6 +15,7 @@
         <th>Type</th>
         
         <th>Admin Rights</th>
+        <th>View Preferences<th>
         
     
    
@@ -39,7 +40,8 @@
           <%= employee.employee_type%></td>
      <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
          <%= employee.admin_rights%></td>
-   
+     <td><%= hidden_field_tag "view_pref", employee.view_pref%>
+         <%= employee.view_pref%></td>
     
    </tr> <%end%>
     

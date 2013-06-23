@@ -30,6 +30,9 @@
           <%= text_field_tag "employee_type", @employee.employee_type%></td><br>
          <td><%=label_tag "admin_rights", "Admin Rights:"%>
          <%= select_tag "admin_rights", options_for_select(@ADMIN_RIGHTS, @employee.admin_rights)%></td><br>
+       <td><%=label_tag "view_pref", "Homepage View Preference:"%>
+          <% hidden_field_tag "view_pref", @employee.view_pref%>          
+          <%= @employee.view_pref%> <- Modify on the homepage view</td><br> 
     <br>
     CHANGE / SET PASSWORD: <br>
     <td><%=label_tag "password", "New Password:"%>
@@ -58,6 +61,10 @@
       <td><%=label_tag "admin_rights", "Admin Rights:"%>
          <%= hidden_field_tag "admin_rights", @employee.admin_rights%>
          <%= @employee.admin_rights%></td><br>
+         
+         <td><%=label_tag "view_pref", "Homepage View Preference:"%>
+          <% hidden_field_tag "view_pref", @employee.view_pref%>          
+          <%= @employee.view_pref%> <- Modify on the homepage view</td><br> 
   <br>
   
   CHANGE / SET PASSWORD: <br>

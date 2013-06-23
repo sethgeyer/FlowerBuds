@@ -9,7 +9,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @florists = Florist.order("status", "name")
       render(:florists, layout:false) and return    
     else
-      redirect_to "/"
+      redirect_to "/" and return
     end
   end
 
@@ -80,6 +80,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee.password = params["password"]
       @employee.password_confirmation = params["password_confirmation"]
       @employee.primary_poc = "yes"
+      @employee.view_pref = "all"
       @employee.save
       if @employee.save
       redirect_to "/florists" and return

@@ -1,15 +1,49 @@
  <%= form_tag homepage_path do %>
-   
-    <h3> <b>Active Events </b></h3>
-      <p>A List of Active Events (aka: event has not yet been delivered). This does not show "delivered" deals and "lost" proposals</p>
-      <p><%=text_field_tag "search_field"%><td>  
-  <%=button_tag "Customer Search", name: "search"%> <- You must search to see if the customer already exists before adding a new customer.</p>
- <%=button_tag "Logout", name: "logout"%>
- 
-  <%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
-    <%=button_tag "Admin Access", name: "admin_access"%>
+   <%=button_tag "Logout", name: "logout"%> 
+   <%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
+    <%=button_tag "Admin Access", name: "admin_access"%><br>
   <%else%>
   <%end%>
+   <br><br>
+<table>
+<tr>
+<th> Customer Search:
+<th>
+<th>
+<th>
+<th>
+<th>
+<th>
+<th>
+<th>
+<th>
+<th>  <%=text_field_tag "search_field"%> 
+<th>
+<th>  <%=button_tag "Search/Add", name: "search"%> <- Search to see if the customer already exists before adding a new customer.
+ </table>
+ 
+  
+
+<br>
+<table>
+<tr>
+<th> Active Events For:
+
+<th> 
+<th> 
+<th> 
+<th> 
+<th> 
+<th> 
+<th> 
+<th> 
+
+<th> 
+<th>
+  <%= select_tag "view", options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref)%>
+  <th> 
+  <%=button_tag "Go!", name: "update_view"%>
+   </table>  
   
   <%end%>
     
@@ -69,4 +103,4 @@
         </tr>
          <% end %>
     </table>
- 
+ <p>Active Events (aka: event has not yet been delivered). This does not show "delivered" deals or "lost" proposals</p>
