@@ -7,9 +7,21 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<h2><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="60" height="40" align="left"/><%= Florist.where(id: session["found_florist_id"]).first.name%></h2>
-<td align="right">Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>!</td><br>
-<%=link_to "Return to Home", home_path%>
+
+<h2><a href= "/home"><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="60" height="40" align="left"/></a>
+<h2><%= Florist.where(id: session["found_florist_id"]).first.name%></h2>
+<% time = Time.new
+   hour = time.hour
+   if hour > 17
+      greeting = "Good Evening"
+   elsif hour >11 
+      greeting = "Good Afternoon"
+   else 
+      greeting = "Good Morning"
+   end%>
+
+<td align="right"><%=greeting%> <%=Employee.where(id: session["found_user_id"]).first.name%>!</td><br>
+
 
 <%= yield %>
 
