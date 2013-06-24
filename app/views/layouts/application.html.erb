@@ -11,9 +11,7 @@
 <h2><a href= "/home"><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="60" height="40" align="left"/></a>
 <h2><%= Florist.where(id: session["found_florist_id"]).first.name%></h2>
 
-<td align="right">Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>!</td><br>
-
-
+<td align="right">Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>! <a href="/logout">Logout</a>
 <%= yield %>
 
 </body>

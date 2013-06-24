@@ -10,10 +10,11 @@ OPEN_PAGES = ["/", "/login", "logout", "/about_us"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
     render(:login, layout:false) and return
+    if Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
+      render(:login, layout:false) and return
+    end
   end
-  if Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
-    render(:login, layout:false) and return
-  end
+ 
 end
 
 
@@ -27,10 +28,11 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
     render(:login, layout:false) and return    
   end
 
+
   def logged_in
-    found_florist = Florist.where(status: "Active").where(company_id: params["company_id"]).first
-    found_user = Employee.where(status: "Active").where(florist_id: found_florist.id).where(username: params["username"]).first
-    if found_florist != nil && found_user != nil
+    found_florist = Florist.where(status: "Active").where(company_id: params["company_id"]).first    
+    if found_florist != nil
+      found_user = Employee.where(status: "Active").where(florist_id: found_florist.id).where(username: params["username"]).first
       if found_user && found_user.authenticate(params["password"])
         session["found_user_id"] = found_user.id
         session["found_florist_id"] = found_florist.id
@@ -88,8 +90,8 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
       emp_update.view_pref = params["view"]
       emp_update.save!
       redirect_to home_path and return
-    else 
-      redirect_to logout_path and return
+   # else 
+   #   redirect_to logout_path and return
     end
   end
 

@@ -30,10 +30,10 @@
 
     <table border='1'>
     
-    <div class = 'label-spacer'></div>
-      <button name= "update" value= "update">Save Updates</button>   
+    
+       
       <%= form_tag("/virtual_studio_update") do %>
-  
+  <button name= "update" value= "update">Save Updates</button>  
       <%=hidden_field_tag "event_id", @event.id%>
       <th>
       <th>Items to Include</th>
@@ -49,10 +49,9 @@
       <%for each in @list_of_products%>
          <%id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id%>
         
-            <td>            <div class = 'label-spacer'></div>
+            <td>            <div class = 'label-spacer'>
       
-     <button name= "update" value= "update"></button>    
-      <button name= "remove" value= <%=id%>>Delete</button> </td> 
+      <button name= "remove" value= <%=id%>>Delete</button></div> </td> 
         
           <td><%=each%></td> 
           <% for specification in @specifications%>

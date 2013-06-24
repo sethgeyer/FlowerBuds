@@ -1,5 +1,5 @@
  <%= form_tag homepage_path do %>
-   <%=button_tag "Logout", name: "logout"%> 
+  
    <%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
     <%=button_tag "Admin Access", name: "admin_access"%><br>
   <%else%>
