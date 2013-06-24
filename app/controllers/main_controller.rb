@@ -9,7 +9,7 @@ font = "Arial"
 ######### SESSION SECURITY
 OPEN_PAGES = ["/", "/login", "logout", "/about_us"]
 before_filter do
-  if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil
+  if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil || Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
     render(:login, layout:false) and return
   end
 end
@@ -50,6 +50,10 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
 
 ######### DISPLAY HOMEPAGE
   def home
+      
+      
+      
+      
       if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
       Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
       @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")

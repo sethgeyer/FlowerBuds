@@ -60,7 +60,11 @@
  <h3> Arrangments & Quotable Items for Event </h3>
     
       <table border='1'>
+      <div class = 'label-spacer'></div>
+        <button name="add" value= "add">Add New Arrangement & Save</button> 
   
+      
+      <th>
       <th>Spec ID</th>
       <th>Item Name *</th>
       <th>Quantity *</th>
@@ -68,20 +72,19 @@
        
         <% for each in @specifications %>
            <tr>
+            <td> <div class = 'label-spacer'></div> 
+            
+              <button name="delete" value= <%=each.id%>>Delete</button></td>
             <td> <%= hidden_field_tag "spec_id", each.id%>
                 <%=each.id%></td> 
             <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
             <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0%></td>          
                      
             <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs%></td>
-            <td> <div class = 'label-spacer'></div> 
-              <button name= "save" value= "save"></button>       
-              <button name="delete" value= <%=each.id%>>Delete</button></td>
+            
                     <%end%>
         <%= hidden_field_tag "ev_id", @event.id%>
-        <div class = 'label-spacer'></div>
-        <button name="add" value= "add">Add New Arrangement & Save</button> 
-  
+        
   
              
     <%end%> 

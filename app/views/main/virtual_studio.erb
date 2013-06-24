@@ -29,6 +29,9 @@
 <p>Design a single arrangment for each type of arrangement.  Include stems, design time, vases, rented items, etc. </p>
 
     <table border='1'>
+    
+    <div class = 'label-spacer'></div>
+      <button name= "update" value= "update">Save Updates</button>   
       <%= form_tag("/virtual_studio_update") do %>
   
       <%=hidden_field_tag "event_id", @event.id%>
@@ -60,8 +63,7 @@
           <%end%> 
             </tr>
       <%end%> 
-       <div class = 'label-spacer'></div>
-      <button name= "update" value= "update">Save Updates</button>   
+       
    
     </table>
     <br>
