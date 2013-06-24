@@ -38,7 +38,7 @@ Here you go.
       <%end %>
          <%= form_tag("/florist_updates/#{id}") do %>
         <tr><img src="/images/<%=@florist.company_logo%>" width="40" height="40" align="left"/> <br><br><br>             
-        <tr><%=label_tag "name", "Florist Name: *" %>
+        <tr><%=label_tag "name", "Florist Co. Name: *" %>
             <%= text_field_tag "name", @florist.name%><br>
         <tr><%=label_tag "company_id", "Company Login ID: *" %>
             <%= text_field_tag "company_id", @florist.company_id%><br>             
@@ -50,7 +50,7 @@ Here you go.
             <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%><br>
         
         <tr>
-          <td><%=label_tag "primary_poc", "Primary POC: *" %> <%= text_field_tag "primary_poc", @employee.name%></td>
+          <td><%=label_tag "primary_poc", "Primary POC's Name: *" %> <%= text_field_tag "primary_poc", @employee.name%></td>
             <td><%=label_tag "username", "Username: *"%>
             <%=text_field_tag "username", @employee.username%>
             <td><%=label_tag "password", "Password: *"%>
