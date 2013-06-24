@@ -11,6 +11,9 @@ before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
     render(:login, layout:false) and return
   end
+  if Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
+    render(:login, layout:false) and return
+  end
 end
 
 
