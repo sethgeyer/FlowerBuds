@@ -25,9 +25,9 @@
       <br>
     <%= label_tag "budget", "Budget:"%>
     <%= text_field_tag "budget", @event.budget%>  
-      <%= label_tag "feel_of_day", "Feel of Day:"%>
+      <%= label_tag "feel_of_day", "Feel/Theme:"%>
       <%= text_field_tag "feel_of_day", @event.feel_of_day%>
-      <%= label_tag "color_palette", "Color Palette:"%>
+      <%= label_tag "color_palette", "Colors:"%>
       <%= text_field_tag "color_palette", @event.color_palette%>
      <%= label_tag "flower_types", "Flower Type:"%>
       <%= text_field_tag "flower_types", @event.flower_types%>
@@ -41,7 +41,7 @@
       <%= label_tag "locations", "Locations(s):"%>
       <%= text_field_tag "locations", @event.locations%>
       <br>
-     <%= label_tag "lead_designer", "Lead Designer: *"%>
+     <%= label_tag "lead_designer", "Designer: *"%>
       <%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name)%>
       <br>
       
@@ -76,7 +76,7 @@
             <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs%></td>
             <td> <div class = 'label-spacer'></div> 
               <button name= "save" value= "save"></button>       
-              <button name="delete" value= <%=each.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
+              <button name="delete" value= <%=each.id%>>Delete</button></td>
                     <%end%>
         <%= hidden_field_tag "ev_id", @event.id%>
         <div class = 'label-spacer'></div>

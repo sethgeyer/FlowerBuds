@@ -43,7 +43,7 @@
        else
         name = ""
        end %> 
-    <%=label_tag "lead_designer", "Lead Designer:*"%>
+    <%=label_tag "lead_designer", "Designer:*"%>
     <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
     <br>
    
@@ -65,15 +65,15 @@
      <%= label_tag "budget","Budget:"%>
     <%= text_field_tag "budget", @event.budget%>
     <br>
-    <%=label_tag "feel_of_day", "Feel of Day:"%>
+    <%=label_tag "feel_of_day", "Feel/Theme:"%>
     <%=text_field_tag "feel_of_day", @event.feel_of_day%>
     <br>
-    <%=label_tag "color_palette", "Color Palette:"%>
+    <%=label_tag "color_palette", "Colors:"%>
     <%=text_field_tag "color_palette", @event.color_palette%>
     <br>
-    <%=label_tag "flower_types", "Flower Types:"%>
+    <%=label_tag "flower_types", "Flower Preferences:"%>
     <%=text_field_tag "flower_types", @event.flower_types%>
-    <br>
+    <br><br>
     <%=label_tag "attire", "Attire:"%>
     <%=text_field_tag "attire", @event.attire%>
     <br>

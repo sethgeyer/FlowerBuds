@@ -66,11 +66,12 @@
         <th>Date of Event</th>
         <th>Quote</th>
         <th>Quote Status</th>
-        <th>Wholesale Order Date</th>
-        <th>Lead Designer</th>
+        <th>W'sale Order Date</th>
+        
         <th>Phone</th>
         <th>Email</th>
-        <th>Company Name, if appl.</th>
+        <th>Company</th>
+      <th>Designer</th>
       </tr>
         
           <tr>
@@ -95,11 +96,11 @@
                   <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date%>
                   <%else%>
                   <%end%></td>
-          <td><%=event.employee.name%>
+          
           <td> <%=event.customer.phone1%> </td>
           <td> <%=event.customer.email%> </td>
           <td> <%=event.customer.company_name%> </td>
-
+          <td><%=event.employee.username%>
         </tr>
          <% end %>
     </table>

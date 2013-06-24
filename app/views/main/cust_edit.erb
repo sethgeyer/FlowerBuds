@@ -47,21 +47,17 @@
     <%id = @customer.id%>
     <td> <a href="/event_new/<%=id%>"> Create New Event </a> </td>
     <table border='1'>
-      <th>FloristID</th>
-      <th>CustID</th>
-      <th>Event ID</th>
+           <th>Event ID</th>
       <th>Event Name</th>
       <th>Event Date</th>
       <th>Quote Name</th>
       <th>Quote Status</th>
-      <th>Lead Designer</th>
+      <th>Designer</th>
       <th>Event Notes</th>
       
       <% for event in @customer.events %>
         <tr>      
-            <td> <%=@customer.florist.id%></td>
-            <td> <%=event.customer.id%></td>
-            <td> <%=event.id%></td>
+                        <td> <%=event.id%></td>
             <td> <a href="/event_edit/<%=event.id%>"> <%=event.name%> </a></td>
             <td> <%=event.date_of_event%> </td>
              <%if event.quote != nil%>
@@ -72,10 +68,10 @@
                     <td>No Quote</td>
                 <%end%>
                         
-            <td> <%= event.employee.name %> </td>
+            <td> <%= event.employee.username %> </td>
             <td> <%=event.notes%> </td>
             <td> <div class = 'label-spacer'></div> 
-              <button name="delete" value= <%=event.id%>><img src="/images/delete.jpeg" width="30" height="30" /></button></td>
+              <button name="delete" value= <%=event.id%>>Delete</button></td>
           </tr>
         </tr>
       <%end%>

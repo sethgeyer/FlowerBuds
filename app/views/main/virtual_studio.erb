@@ -13,8 +13,8 @@
       <table align="right">
    
       <tr><td>Feel_of_day: <%=@event.feel_of_day%>
-      <tr><td>Color Palette: <%=@event.color_palette%>
-     <tr><td>Flower Types: <%=@event.flower_types%>
+      <tr><td>Colors: <%=@event.color_palette%>
+     <tr><td>Flower Preferences: <%=@event.flower_types%>
     <tr><td>Attire: <%=@event.attire%>
       </table>
 
@@ -32,6 +32,7 @@
       <%= form_tag("/virtual_studio_update") do %>
   
       <%=hidden_field_tag "event_id", @event.id%>
+      <th>
       <th>Items to Include</th>
       <%for specification in @specifications%>
         <th><%=specification.item_name%></th>    
@@ -39,8 +40,17 @@
       
       <tr> 
       
+      
+
+      
       <%for each in @list_of_products%>
          <%id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id%>
+        
+            <td>            <div class = 'label-spacer'></div>
+      
+     <button name= "update" value= "update"></button>    
+      <button name= "remove" value= <%=id%>>Delete</button> </td> 
+        
           <td><%=each%></td> 
           <% for specification in @specifications%>
             <td><%x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first%>
@@ -48,11 +58,7 @@
                   <%stem_count= x.product_qty / 100.0.round(2) %>
                   <%=text_field_tag "stemcount_#{x.id}", stem_count%> </td>               
           <%end%> 
-          <td>            <div class = 'label-spacer'></div>
-      
-     <button name= "update" value= "update"></button>    
-      <button name= "remove" value= <%=id%>><img src="/images/delete.jpeg" width="30" height="30" /></button> </td> 
-      </tr>
+            </tr>
       <%end%> 
        <div class = 'label-spacer'></div>
       <button name= "update" value= "update">Save Updates</button>   
