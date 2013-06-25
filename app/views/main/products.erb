@@ -7,23 +7,24 @@
     <%else%>
     <%end%>
     <table border='1'>
-        <th>ProductID</th>
+        
         <th></th>
         <th>Type</th>
         <th>Name</th>
+        <th>Status</th>
         <th>Cost/Bunch</th>
         <th>Items/Bunch</th>             
         <th>Cost for One</th>
         <th>Markup</th>
-        <th>Status</th>
+        
+        <th>id</th>
         <th>Last Updated</th>
         <th>Updated by</th>
       
         
         <tr>
         <% for product in @products%>  
-          <td> <%= hidden_field_tag "product_id", product.id%>
-               <%=product.id%></td>
+          
           <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
             <td>  <button name= "edit" value= <%=product.id%>>Edit</button> </td>
             <%else%>
@@ -33,6 +34,8 @@
                <%=product.product_type%></td>
           <td><%= hidden_field_tag "product_name", product.name%>
                <%=product.name%></td>
+               <td><%= hidden_field_tag "status", product.status %>
+              <%=product.status%></td>
           <td><%= hidden_field_tag "cost_per_bunch", product.cost_per_bunch / 100.round(2)%>
                $<%= sprintf("%.2f" , product.cost_per_bunch / 100.round(2))%> </td>
           <td><%= hidden_field_tag "items_per_bunch", product.items_per_bunch / 100 %>
@@ -41,8 +44,9 @@
               $<%=sprintf("%.2f" , product.cost_for_one / 100.round(2)) %></td>
           <td><%= hidden_field_tag "markup", product.markup / 100.round(2) %>
               <%=sprintf("%.2f" , product.markup / 100.round(2))%> x</td>
-          <td><%= hidden_field_tag "status", product.status %>
-              <%=product.status%></td>
+          
+              <td> <%= hidden_field_tag "product_id", product.id%>
+               <%=product.id%></td>
                  
           <td><%= hidden_field_tag "updated_at", product.updated_at%>
                   <%=product.updated_at%></td>

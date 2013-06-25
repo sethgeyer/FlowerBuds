@@ -4,10 +4,10 @@
    
     
     <%= form_tag("/cust_edit") do %>
-      <%=label_tag "customer_id", "Cust ID:"%>
+      <%=label_tag "customer_id", "ID: "%>
       <%=hidden_field_tag "customer_id", @customer.id%> <%=@customer.id%>
-      <br>
-      <%= label_tag "contact_name", "Customer Name: *"%>
+    
+      <%= label_tag "contact_name", "       Customer Name: *"%>
       <%= text_field_tag "contact_name", @customer.name%>
       <%= label_tag "contact_email", "Email: *"%>
       <%= text_field_tag "contact_email", @customer.email%>
@@ -47,17 +47,18 @@
     <%id = @customer.id%>
     <td> <a href="/event_new/<%=id%>"> Create New Event </a> </td>
     <table border='1'>
-           <th>Event ID</th>
+           
       <th>Event Name</th>
       <th>Event Date</th>
       <th>Quote Name</th>
       <th>Quote Status</th>
-      <th>Designer</th>
       <th>Event Notes</th>
+       <th>Designer</th>
+      <th>id</th>
       
       <% for event in @customer.events %>
         <tr>      
-                        <td> <%=event.id%></td>
+                      
             <td> <a href="/event_edit/<%=event.id%>"> <%=event.name%> </a></td>
             <td> <%=event.date_of_event%> </td>
              <%if event.quote != nil%>
@@ -68,8 +69,10 @@
                     <td>No Quote</td>
                 <%end%>
                         
-            <td> <%= event.employee.username %> </td>
+           
             <td> <%=event.notes%> </td>
+             <td> <%= event.employee.username %> </td>
+              <td> <%=event.id%></td>
             <td> <div class = 'label-spacer'></div> 
               <button name="delete" value= <%=event.id%>>Delete</button></td>
           </tr>

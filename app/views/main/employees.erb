@@ -5,7 +5,7 @@
      
      <table border='1'>
         <th></th>       
-        <th>EmpID</th>
+        
         <th>Name</th>
         <th>Username</th>
         <th>Status</th>
@@ -15,15 +15,14 @@
         <th>Type</th>
         
         <th>Admin Rights</th>
-        <th>View Preferences<th>
-        
+        <th>View Preferences</th>
+        <th>id</th>
     
    
       <tr>
       <% for employee in @employees%> 
     <td>  <button name= "edit" value= <%=employee.id%>>Edit</button> </td>
-      <td><%=hidden_field_tag "id", employee.id%>
-          <%=employee.id%></td>
+     
       <td><%=hidden_field_tag "name", employee.name%>
           <%=employee.name%></td>
      <td><%= hidden_field_tag "username", employee.username%>
@@ -42,7 +41,8 @@
          <%= employee.admin_rights%></td>
      <td><%= hidden_field_tag "view_pref", employee.view_pref%>
          <%= employee.view_pref%></td>
-    
+     <td><%=hidden_field_tag "id", employee.id%>
+          <%=employee.id%></td>
    </tr> <%end%>
     
    

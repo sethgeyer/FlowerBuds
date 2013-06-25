@@ -60,7 +60,7 @@
     
     <table border='1'>
       <tr>
-        <th>CustID</th>
+        
         <th>Customer Name</th>
         <th>Events</th>
         <th>Date of Event</th>
@@ -72,11 +72,13 @@
         <th>Email</th>
         <th>Company</th>
       <th>Designer</th>
+      <th>cust id</th>
+      <th>event id</th>
+
       </tr>
         
           <tr>
           <% for event in @events %>
-          <td><%= event.customer.id %></td>
           <td><a href="cust_edit/<%=event.customer.id%>"> <%= event.customer.name %></a></td>
           <td><a href="event_edit/<%= event.id%>"> <%= event.name %>  </a></td>
           <td><%=event.date_of_event%></td>
@@ -101,6 +103,9 @@
           <td> <%=event.customer.email%> </td>
           <td> <%=event.customer.company_name%> </td>
           <td><%=event.employee.username%>
+                    <td><%= event.customer.id %></td>
+                    <td><%= event.id %></td>
+
         </tr>
          <% end %>
     </table>
