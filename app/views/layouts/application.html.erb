@@ -1,17 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>App</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>flowerbuds</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+    <body>
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container pull-left">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-th-list"></span>
+            </a>
+            <a href= "/home" class="brand"><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="30" height="30" align="left"/>
+            <%= Florist.where(id: session["found_florist_id"]).first.name%></a>
+            <div class = "nav-collapse collapse">
+              <ul class="nav pull-right">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/schedule_order_date">W'Sale Order Date</a></li>
+                <li><a href="/employees">Employees</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<h2><a href= "/home"><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="60" height="40" align="left"/></a>
-<h2><%= Florist.where(id: session["found_florist_id"]).first.name%></h2>
+<p>Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>!</p> 
 
-<td align="right">Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>! <a href="/logout">Logout</a>
+ 
+    
+ 
+
+
+
 <%= yield %>
 
 </body>

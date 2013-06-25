@@ -16,3 +16,7 @@
 app/views/admin/_error_fields.erb
 about.erb
 public/images/logout.jpeg
+app/assets/.DS_Store
+app/assets/javascripts/.DS_Store
+app/assets/stylesheets/.DS_Store
+config/locales/.DS_Store
