@@ -61,11 +61,11 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
       
       if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
       Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
-      @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
+      @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 100)
       else
       view_pref = Employee.where(id: session["found_user_id"]).first.view_pref
       employee_id = Employee.where(florist_id: session["found_florist_id"]).where(username: view_pref).first.id
-      @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event")
+      @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 100)
       end
       @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
       render(:homepage) and return

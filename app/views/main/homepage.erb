@@ -70,8 +70,11 @@
 
 <p><i>Note: These are Active Events only (aka: event has not yet been delivered). This does not show already "delivered/fulfilled" events or "lost" proposals.</p>
  
- 
-
+ <div class="apple_pagination">
+  <%=will_paginate @events%>
+ </div>
+ <br>
+<p><i>Defaulted to show 100 events per page view</p>
   
   
  

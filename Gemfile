@@ -52,5 +52,5 @@ gem 'pry-debugger', group: :development
 gem 'meta_request', group: :development
 gem 'dynamic_form'
 
-
+gem 'will_paginate', '~>3.0.0'
 
