@@ -124,12 +124,13 @@
               <% product_list_price = product_cost * (designed_product.product.markup / 100.0)%>
               <% per_arrangement_cost = per_arrangement_cost + product_cost %>
               <% per_arrangement_list_price = per_arrangement_list_price + product_list_price%>
+              <% if Product.where(id: designed_product.product_id).first.product_type == "4. Labor"%>
+                    <%hours = designed_product.product_qty / 100.0 %>
+                    <%per_arrangement_hours = per_arrangement_hours + hours %>
+              <%else%>
+              <%end%>
             <%end%>
             
-            <%for labor_dp in DesignedProduct.where(specification_id: each.id).where("product_type ILIKE ?", "%labor%") 
-                  hours = labor_dp.product_qty / 100.0
-                  per_arrangement_hours = per_arrangement_hours + hours
-            end%>
             
              <td align="middle"><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
              <% total_hours = total_hours + item_hours%>

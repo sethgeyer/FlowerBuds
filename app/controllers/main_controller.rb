@@ -344,7 +344,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
             new_dp.event_id = @event.id
             new_dp.product_qty = 0
             new_dp.florist_id = session["found_florist_id"]
-            new_dp.product_type = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.product_type
+            #new_dp.product_type = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.product_type
             new_dp.save!
           else
           end
@@ -376,7 +376,7 @@ end
       for specification in specifications
         if params["stemcount_#{each.id}"].to_f*100 != each.product_qty
           each.product_qty = params["stemcount_#{each.id}"].to_f * 100.round(2)
-          each.product_type = Product.where(id: each.product_id).first.product_type  
+          #each.product_type = Product.where(id: each.product_id).first.product_type  
           each.save!
         end
       end
@@ -389,7 +389,7 @@ end
         new_dp = DesignedProduct.new
         new_dp.specification_id = specification.id
         new_dp.product_qty = 0
-        new_dp.product_type = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.product_type
+       # new_dp.product_type = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.product_type
         new_dp.florist_id = session["found_florist_id"]
         new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
         new_dp.event_id = event_id
@@ -557,7 +557,7 @@ end
     for each_id in @list_of_event_ids   
       for designed_product in DesignedProduct.where(event_id: each_id)
         list_of_product_ids << designed_product.product_id
-        list_of_product_types << designed_product.product_type
+        list_of_product_types << designed_product.product.product_type
       end
     end
     @list_of_product_ids = list_of_product_ids.uniq
@@ -588,7 +588,11 @@ end
     @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
-    @list_of_product_types = @designed_products.uniq.pluck(:product_type).sort!
+    product_types = []
+    for id in @list_of_product_ids
+      product_types = product_types + [Product.where(id: id).first.product_type]
+    end
+    @list_of_product_types = product_types.uniq.sort!
 
     count = 0
     for each in @designed_products

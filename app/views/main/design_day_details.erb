@@ -85,7 +85,7 @@
         <% product = Product.where(id: id).where(product_type: product_type).first%>
         <%if product != nil%>
           <td><%=product.name%></td>
-          <%designed_products =DesignedProduct.where(event_id: @event.id).where(product_type: product_type).where(product_id: id)%>            
+          <%designed_products =DesignedProduct.where(event_id: @event.id).where(product_id: id)%>            
           <%count = 0%>
             <%for designed_product in designed_products%>
               <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
