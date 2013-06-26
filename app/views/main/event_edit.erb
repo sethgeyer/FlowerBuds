@@ -1,56 +1,136 @@
+<%= form_tag("/event_edit", class: "form-horizontal") do %>   
 
-    <h3>Event Edit</h3>
-    <% if flash[:error] != nil %>
-<div class="flash-error">
-  <%= flash[:error]%>
+<h3>Edit Event for <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a> </h3>
+
+<% if flash[:error] != nil %>
+  <div class="flash-error">
+    <%= flash[:error]%>
   </div><br>
-  <%end%>
+<%end%> 
+
+<%=error_messages_for @event%>
+            
+<%=hidden_field_tag "customer_id", @event.customer.id%> 
+<%=hidden_field_tag "event_id", @event.id%>        
+
+  <div class="row-fluid">
+    <div class="span3">
+      <div class= "control-group">
+        <%= label_tag "event_name", "Event Name: *", class: "control-label"%>
+        <div class="controls">
+          <%= text_field_tag "event_name", @event.name, class: "input-xlarge"%>
+        </div>
+      </div>    
+    </div>
+    
+    <div class="span2">
+      <div class= "control-group">
+        <%= label_tag "event_date", "Event Date: *", class: "control-label"%>
+        <div class="controls">
+          <%= text_field_tag "event_date", @event.date_of_event, class: "input-small"%>
+        </div>
+      </div>    
+    </div>
+    
+    <div class="span2">
+      <div class= "control-group">
+        <%= label_tag "event_time", "Event Time:", class: "control-label"%>
+        <div class="controls">
+          <%= text_field_tag "event_time", @event.time, class: "input-mini"%>
+        </div>
+      </div>    
+    </div>    
+    
+    <div class="span2">
+      <div class= "control-group">
+        <%= label_tag "setup_time", "Setup Time:", class: "control-label"%>
+        <div class="controls">
+          <%= text_field_tag "setup_time", @event.delivery_setup_time, class: "input-mini"%>
+        </div>
+      </div>    
+    </div>
+    
+    <div class="span2">
+      <div class= "control-group">
+        <%= label_tag "budget", "Budget:", class: "control-label"%>
+        <div class="controls">
+          <%= text_field_tag "budget", @event.budget, class: "input-small"%>  
+        </div>
+      </div>    
+    </div>    
+  </div>
     
     
-     <%=error_messages_for @event%>
+<div class="row-fluid">
+  <div class="span6">
+     <div class= "control-group">
+      <%= label_tag "locations", "Locations(s):", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "locations", @event.locations, class: "input-xxlarge"%>
+      </div>
+    </div> 
+    <div class= "control-group">
+      <%= label_tag "color_palette", "Colors:", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "color_palette", @event.color_palette, class: "input-xxlarge"%>
+      </div>
+    </div>              
+    <div class= "control-group">
+      <%= label_tag "flower_types", "Flower Type:", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "flower_types", @event.flower_types, class: "input-xxlarge"%>
+      </div>
+    </div>     
+    
+    <div class= "control-group">
+      <%= label_tag "feel_of_day", "Feel/Theme:", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "feel_of_day", @event.feel_of_day, class: "input-xxlarge"%>
+      </div>
+    </div>        
+  </div>
+  <div class="span4">
        
-    <%= form_tag("/event_edit") do %>    
-      <%=hidden_field_tag "customer_id", @event.customer.id%> 
+    <div class= "control-group">
+      <%= label_tag "attire", "Attire:", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "attire", @event.attire, class: "input-xxlarge"%>
+      </div>
+    </div>   
+    <div class= "control-group">
+      <%= label_tag "coordinator", "Coordinator:", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "coordinator", @event.coordinator, class: "input-xlarge"%>
+      </div>
+    </div>  
+    
+     <div class= "control-group">
+        <%= label_tag "photographer", "Photographer:", class: "control-label"%>
+      <div class="controls">
+        <%= text_field_tag "photographer", @event.photographer, class: "input-xlarge"%>
+      </div>
+    </div>  
+    <div class= "control-group">
+      <%= label_tag "lead_designer", "Designer: *", class: "control-label"%>
+      <div class="controls">
+        <%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name)%>
+      </div>
+    </div>   
+  
+  </div>
+</div>    
+
+    
+<div class= "control-group">
+  <%= label_tag "notes", "Event Notes:", class: "control-label"%>
+  <div class="controls">
+    <%= text_area_tag "notes", @event.notes, rows: 2, cols: 130%>
+  </div>
+</div>   
       
-    Customer Name: <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a> <br>
-    <%=hidden_field_tag "event_id", @event.id%>
-    <%= label_tag "event_name", "Event Name: *"%>
-    <%= text_field_tag "event_name", @event.name%>
-    <%= label_tag "event_date", "Event Date: *"%>
-    <%= text_field_tag "event_date", @event.date_of_event%>
-    <%= label_tag "event_time", "Event Time:"%>
-    <%= text_field_tag "event_time", @event.time%>
-    <%= label_tag "setup_time", "Setup Time:"%>
-    <%= text_field_tag "setup_time", @event.delivery_setup_time%>
-      <br>
-    <%= label_tag "budget", "Budget:"%>
-    <%= text_field_tag "budget", @event.budget%>  
-      <%= label_tag "feel_of_day", "Feel/Theme:"%>
-      <%= text_field_tag "feel_of_day", @event.feel_of_day%>
-      <%= label_tag "color_palette", "Colors:"%>
-      <%= text_field_tag "color_palette", @event.color_palette%>
-     <%= label_tag "flower_types", "Flower Type:"%>
-      <%= text_field_tag "flower_types", @event.flower_types%>
-      <%= label_tag "attire", "Attire:"%>
-      <%= text_field_tag "attire", @event.attire%>
-     <br> 
-      <%= label_tag "coordinator", "Coordinator:"%>
-      <%= text_field_tag "coordinator", @event.coordinator%>
-      <%= label_tag "photographer", "Photographer:"%>
-      <%= text_field_tag "photographer", @event.photographer%>
-      <%= label_tag "locations", "Locations(s):"%>
-      <%= text_field_tag "locations", @event.locations%>
-      <br>
-     <%= label_tag "lead_designer", "Designer: *"%>
-      <%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name)%>
-      <br>
-      
-      
-      <%= label_tag "notes", "Event Notes:"%>
-      <%= text_area_tag "notes", @event.notes, rows: 2, cols: 130%> <br><br>
-      
+    
  <hr />
- <td><button name= "save" value= "save">Save Updates</button>
+ <td><button class="btn btn-success" name= "save" value= "save">Save</button>
  <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" /></a>Virtual Studio
  <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Quote
  <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Design Day Details
@@ -59,10 +139,10 @@
 
  <h3> Arrangments & Quotable Items for Event </h3>
     
-      <table border='1'>
+     
       <div class = 'label-spacer'></div>
-        <button name="add" value= "add">Add New Arrangement & Save</button> 
-  
+        <button class="btn btn-success" name="add" value= "add">Add New Arrangement & Save</button> 
+ <table class="table table-striped table-hover table-condensed">
       
       <th>
       
@@ -75,7 +155,7 @@
            <tr>
             <td> <div class = 'label-spacer'></div> 
             
-              <button name="delete" value= <%=each.id%>>Delete</button></td>
+              <button class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
                         <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
             <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0%></td>          
                      

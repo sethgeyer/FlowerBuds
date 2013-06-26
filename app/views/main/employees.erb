@@ -1,9 +1,9 @@
 <h3>Employees</h3>
 
      <%= form_tag("/employee_post") do %>
-     <button name= "new" value= "new">Add New</button>
+     <button class="btn" name= "new" value= "new">Add New</button>
      
-     <table border='1'>
+     <table class="table table-striped table-hover ">
         <th></th>       
         
         <th>Name</th>
@@ -21,7 +21,7 @@
    
       <tr>
       <% for employee in @employees%> 
-    <td>  <button name= "edit" value= <%=employee.id%>>Edit</button> </td>
+    <td>  <button class="btn" name= "edit" value= <%=employee.id%>>Edit</button> </td>
      
       <td><%=hidden_field_tag "name", employee.name%>
           <%=employee.name%></td>

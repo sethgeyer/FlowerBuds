@@ -30,16 +30,16 @@
           <%= text_field_tag "employee_type", @employee.employee_type%></td><br>
          <td><%=label_tag "admin_rights", "Admin Rights:"%>
          <%= select_tag "admin_rights", options_for_select(@ADMIN_RIGHTS, @employee.admin_rights)%></td><br>
-       <td><%=label_tag "view_pref", "Homepage View Preference:"%>
-          <% hidden_field_tag "view_pref", @employee.view_pref%>          
-          <%= @employee.view_pref%> <- Modify on the homepage view</td><br> 
+    
+    <a href="/employees">Return to Employees</a>
     <br>
-    CHANGE / SET PASSWORD: <br>
+    <b>CHANGE / SET PASSWORD:</b> <br>
     <td><%=label_tag "password", "New Password:"%>
           <%= password_field_tag "password"%></td><br>
       <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
           <%=password_field_tag "password_confirmation"%></td><br><br><br>
     <%else%>
+    
       <td><%=label_tag "name", "Name:"%>
           <%=hidden_field_tag "name", @employee.name%>
           <%=@employee.name%></td> <br>
@@ -61,13 +61,10 @@
       <td><%=label_tag "admin_rights", "Admin Rights:"%>
          <%= hidden_field_tag "admin_rights", @employee.admin_rights%>
          <%= @employee.admin_rights%></td><br>
-         
-         <td><%=label_tag "view_pref", "Homepage View Preference:"%>
-          <% hidden_field_tag "view_pref", @employee.view_pref%>          
-          <%= @employee.view_pref%> <- Modify on the homepage view</td><br> 
+        <br> 
   <br>
   
-  CHANGE / SET PASSWORD: <br>
+  <b>CHANGE / SET PASSWORD:</b> <br>
   <td><%=label_tag "password", "New Password:"%>
           <%= password_field_tag "password"%></td><br>
   <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
@@ -76,7 +73,7 @@
 <%end%>
 
 
-    <td>  <button name= "action" value= "save">Save</button> </td>
+    <td>  <button class="btn btn-success" name= "action" value= "save">Save</button> </td>
     
     <%end%>
    

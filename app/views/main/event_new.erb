@@ -66,30 +66,30 @@
     <%= text_field_tag "budget", @event.budget%>
     <br>
     <%=label_tag "feel_of_day", "Feel/Theme:"%>
-    <%=text_field_tag "feel_of_day", @event.feel_of_day%>
+    <%=text_field_tag "feel_of_day", @event.feel_of_day, class: "input-xlarge"%>
     <br>
     <%=label_tag "color_palette", "Colors:"%>
-    <%=text_field_tag "color_palette", @event.color_palette%>
+    <%=text_field_tag "color_palette", @event.color_palette, class: "input-xlarge"%>
     <br>
     <%=label_tag "flower_types", "Flower Preferences:"%>
-    <%=text_field_tag "flower_types", @event.flower_types%>
+    <%=text_field_tag "flower_types", @event.flower_types, class: "input-xlarge"%>
     <br><br>
     <%=label_tag "attire", "Attire:"%>
-    <%=text_field_tag "attire", @event.attire%>
+    <%=text_field_tag "attire", @event.attire, class: "input-xlarge"%>
     <br>
     <%= label_tag "coordinator", "Coordinator:"%>
-      <%= text_field_tag "coordinator", @event.coordinator%>
+      <%= text_field_tag "coordinator", @event.coordinator, class: "input-xlarge"%>
       <br>
       <%= label_tag "photographer", "Photographer:"%>
-      <%= text_field_tag "photographer", @event.photographer%>
+      <%= text_field_tag "photographer", @event.photographer, class: "input-xlarge"%>
       <br>
       <%= label_tag "locations", "Locations(s):"%>
-      <%= text_field_tag "locations", @event.locations%>    
+      <%= text_field_tag "locations", @event.locations, class: "input-xlarge"%>    
     <br>    
     
     <%= label_tag "notes", "Event Notes:"%>
     <%= text_area_tag "notes", @event.notes%><br><br>
-     <button name= "action" value= "save">Save</button>
+     <button class= "btn" name= "action" value= "save">Save</button>
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>
 

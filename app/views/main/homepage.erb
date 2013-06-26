@@ -15,7 +15,7 @@
     </div>
     <div class="span3">
       <h4>Active Events For:</h4>
-      <p><%= select_tag "view", options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref)%><br>
+      <p><%= select_tag "view",  options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref), class: "input-medium"%><br>
       <%=button_tag "Show Me", name: "update_view", class:"btn"%> </p>
     </div>  
   </div>

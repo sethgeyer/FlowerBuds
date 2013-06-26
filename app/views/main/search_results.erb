@@ -2,13 +2,13 @@
     <h3>Customer Search Results</h3>
     
   <%= form_tag homepage_path do %>  
-  <p><%=text_field_tag "search_field"%><td>  
-  <button name= "search" value= "search">Customer Search</button> </p>
+  <p><%=text_field_tag "search_field"%><br> 
+  <button class="btn"name= "search" value= "search">Search Again</button> </p>
   <%end%>
   
   
-   <p> <a href="/cust_new">Add New Customer</a><p>
-    <table border='1'>   
+   <h4> <a href="/cust_new">Add New Customer</a></h4>
+    <table class="table table-striped table-hover ">   
      <th> Florist ID</th>
      <th> Cust ID </th>
      <th> Customer Name </th>

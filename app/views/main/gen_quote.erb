@@ -39,10 +39,10 @@
   <td><a href="/generate_cust_facing_quote/<%=@event.id%>"><img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Generate Customer Facing Quote
   
    <h3> Arrangements & Quotable Items for Event </h3>
-  <button name= "save" value= "save">Save & Recalc</button> - Press Save to See Updated Total Markup & Quoted Price
+  <button class="btn" name= "save" value= "save">Save & Recalc</button> - Press Save to See Updated Total Markup & Quoted Price
      
   
-  <table border='1'>
+  <table class="table table-striped table-hover table-condensed ">
        <tr>
       <th></th>
       <th></th>
@@ -151,9 +151,9 @@
             <td align="middle"> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
             
             <% if each.quoted_price != nil%>
-            <td align="right"> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price / 100.0.round(2)%> </td>
+            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price / 100.0.round(2), class: "input-small"%> </td>
             <%else%>
-            <td align="right"> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price%> </td>
+            <td> $<%= text_field_tag "quoted_price-#{each.id}", each.quoted_price, class:"input-small"%> </td>
             <%end%>
            
         </tr>

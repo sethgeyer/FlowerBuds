@@ -3,7 +3,7 @@
     <h3>Wholesaler Order List for <%=params["place_order_on"]%></h3>
     
     <h4>Events You're Shopping For</h4>
-    <table border='1'>
+    <table class="table table-striped table-hover ">
       <tr>
         <th>Florist</th>
         <th>Lead Designer</th>
@@ -42,7 +42,7 @@
     
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%>
-    <table border='1'>  
+    <table class="table table-striped table-hover ">  
       <tr>
         
         <th>Products</th>

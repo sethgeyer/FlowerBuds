@@ -58,7 +58,7 @@
   <%= label_tag "groom_email", "Email:"%>
   <%= text_field_tag "groom_email", @new_customer.groom_email%>
   <br>
-  <%= label_tag "address", "Address"%>
+  <%= label_tag "address", "Address:"%>
   <%= text_field_tag "address", @new_customer.address%>
   <br>
   <%= label_tag "city", "City:"%>
@@ -73,6 +73,6 @@
   <%= label_tag "notes", "Customer Notes:"%>
   <%= text_area_tag "notes", @new_customer.notes%>
   <br>
-<button name= "action" value= "save">Create</button>
+<button class="btn" name= "action" value= "save">Create</button>
 <%end%>
 
