@@ -3,15 +3,20 @@
 
 <div class="row-fluid">
     <div class="span4">
-      <p>Cust Name: <%=@event.customer.name%><br>
-         Event Name: <a href= "/event_edit/<%=@event.id%>"> <%=@event.name%></a><br>
-         Budget: <%=@event.budget%></p>
+      <p><b>Cust Name:</b> <%=@event.customer.name%><br>
+         <b>Event Name:</b> <a href= "/event_edit/<%=@event.id%>"> <%=@event.name%></a><br>
+         <b>Budget:</b> <%=@event.budget%></p>
     </div>    
     <div class="span4">
-      <p>Feel_of_day: <%=@event.feel_of_day%><br>
-         Colors: <%=@event.color_palette%><br>
-         Flower Preferences: <%=@event.flower_types%><br>
-         Attire: <%=@event.attire%></p>
+      <p><b>Feel_of_day:</b> <%=@event.feel_of_day%><br>
+         <b>Colors:</b> <%=@event.color_palette%><br>
+         <b>Flower Preferences:</b> <%=@event.flower_types%><br>
+         <b>Attire:</b> <%=@event.attire%></p>
+    </div>
+    <div class="span4">
+    <b>Event Notes:</b>
+    <%=@event.notes%>
+    
     </div>
 </div>
 
@@ -26,7 +31,7 @@
     
        
       <%= form_tag("/virtual_studio_update") do %>
-  <button class="btn btn-success" name= "update" value= "update">Save Updates</button>  
+  <button class="btn btn-small" name= "update" value= "update">Save Updates</button>  
       <%=hidden_field_tag "event_id", @event.id%>
       <thead>
         <tr>
@@ -60,7 +65,7 @@
       <%= label_tag "new_item", "Add New Item:"%>
       <%= select_tag "new_item", options_for_select(@dropdown)%>       
        <div class = 'label-spacer'></div>
-      <button class="btn" name= "add" value= "add">Add</button><- single click please. 
+      <button class="btn btn-small" name= "add" value= "add">Add</button><- single click please. 
     <%end%>    
   </table>
   

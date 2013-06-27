@@ -3,14 +3,13 @@
 
 
 
-<div class="container-fluid">
+
 <div class="row-fluid">
 <div class="span9">
 <h3>Edit Event for <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a> </h3>
 </div>
 <div class="span3 ">
 <%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name), class: "pull-right"%>
-</div>
 </div>
 </div>
 
@@ -29,7 +28,6 @@
 
 
 
-<div class="container-fluid">
   <div class="row-fluid">
      <div class="span3">
       <%= label_tag "event_name", "Event Name: *"%>
@@ -94,43 +92,42 @@
       <%= text_area_tag "notes", @event.notes, class: "span12"%>  
     </div>
   </div>
-</div>
 
 
+ <td><b><button class="btn btn-small" name= "save" value= "save" >Save</button>
 
     
  <hr />
- <td><button class="btn btn-success" name= "save" value= "save">Save</button>
- <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" /></a>Virtual Studio
- <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" /></a>Quote
- <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" /></a>Design Day Details
+ <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" class="img-rounded"/></a> vStudio 
+ <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" class="img-rounded" /></a> Quote 
+ <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" class="img-rounded" /></a> Design Day Details 
  <hr />
 
-
- <h3> Arrangments & Quotable Items for Event </h3>
-    
-     
-     
+ <h3> Arrangements & Quotable Items for Event </h3>
+         
  <table class="table table-striped table-hover table-condensed">
       
-      <th>
+     
       
       <th>Item Name *</th>
       <th>Quantity *</th>
       <th>Specifications</th>  
-      <th>id</th>     
+      <th>id</th>  
+      <th></th>   
        
         <% for each in @specifications %>
            <tr>
-            <td> <div class = 'label-spacer'></div> 
-            
-              <button class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
-                        <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
+             <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
             <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0%></td>          
                      
             <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs%></td>
+           
+            
             <td> <%= hidden_field_tag "spec_id", each.id%>
                 <%=each.id%></td> 
+                 <td> <div class = 'label-spacer'></div> 
+              <button class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
+                       
 
                     <%end%>
         <%= hidden_field_tag "ev_id", @event.id%>
@@ -145,6 +142,6 @@
   <hr />  
     
      <div class = 'label-spacer'></div>
-        <button class="btn btn-success" name="add" value= "add">Add New Arrangement & Save</button> 
+        <button class="btn btn-small" name="add" value= "add">Add New Arrangement & Save</button> 
  
  
