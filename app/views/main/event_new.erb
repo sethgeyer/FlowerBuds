@@ -89,7 +89,7 @@
     
     <%= label_tag "notes", "Event Notes:"%>
     <%= text_area_tag "notes", @event.notes%><br><br>
-     <button class= "btn" name= "action" value= "save">Save</button>
+     <button class= "btn btn-small" name= "action" value= "save">Save</button>
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>
 

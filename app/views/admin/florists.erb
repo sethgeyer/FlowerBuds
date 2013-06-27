@@ -1,5 +1,4 @@
-
-     
+  
       </h1>     ADMIN VIEW </h1>
       
       <br><th><%=link_to "Return to Home", home_path%></th>
@@ -8,9 +7,9 @@
      
       <%= form_tag("/florists_post") do %>
         
-      <button name= "new" value= "new">Add New</button>
-        <table border='1'>
-        <th></th>
+      <button class="btn btn-small" name= "new" value= "new">Add New</button>
+        <table class="table table-striped table-hover table-condensed">
+        <th>Logo</th>
         <th>ID:</th>
         <th></th>
         <th>Name: *</th>
@@ -30,10 +29,10 @@
         
         
         <% for florist in @florists%>  
-          <td><img src="/images/<%=florist.company_logo%>" width="30" height="30" align="left"/>
+          <td><img src="/images/<%=florist.company_logo%>" width="30" height="30" align="left" />
           <td> <%= hidden_field_tag "florist_id", florist.id%>
                <%=florist.id%></td>
-          <td>  <button name= "edit" value= <%=florist.id%>>Edit</button> </td>
+          <td>  <button class="btn btn-mini" name= "edit" value= <%=florist.id%>>Edit</button> </td>
           <td><%= hidden_field_tag "name", florist.name%>
                <%=florist.name%></td>
           <td><%= hidden_field_tag "company_id", florist.company_id%>
@@ -63,14 +62,7 @@
           
           </tr>
          <% end %>
-    </table>
-   
-    
-        
-        
-        
+    </table>    
         
       <%end%>
-      
-      
     

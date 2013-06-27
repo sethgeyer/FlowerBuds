@@ -1,86 +1,79 @@
-Here you go.
-
-
-<head>
-    <style>
-      label[for=name],
-      label[for=company_id],
-      label[for=status],
-      label[for=primary_poc],
-       label[for=poc_email],
-      label[for=poc_phone_w],
-      label[for=poc_phone_c],
-      label[for=city],
-      label[for=state],
-      label[for=zip],
-      label[for=company_logo]
-            {
-        width: 170px;
-        float: left;
-      }
-      .label-spacer {
-        width: 50px;
-        height: 1px;
-        float: left;
-      }
-    </style>
-  </head>
 
 <h3><b>Create/Edit Florists</b></h3>
+<p><a href="/florists">Back to Florists</a></p><br>
 
 <%=error_messages_for @employee%>
 <%=error_messages_for @florist%>
 
-   <% if @florist.id == nil 
-        id = "new"%>
-      <%else
-        id = @florist.id%>
-      <%end %>
-         <%= form_tag("/florist_updates/#{id}") do %>
-        <tr><img src="/images/<%=@florist.company_logo%>" width="40" height="40" align="left"/> <br><br><br>             
-        <tr><%=label_tag "name", "Florist Co. Name: *" %>
-            <%= text_field_tag "name", @florist.name%><br>
-        <tr><%=label_tag "company_id", "Company Login ID: *" %>
-            <%= text_field_tag "company_id", @florist.company_id%><br>             
-        <tr><%=label_tag "company_logo", "Company Logo: *" %>
-        <%= hidden_field_tag "company_logo", @florist.company_logo %>
-        <%=@florist.company_logo%><br> 
-        
-        <tr><%=label_tag "status", "Status: *" %>
-            <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%><br>
-        
-        <tr>
-          <td><%=label_tag "primary_poc", "Primary POC's Name: *" %> <%= text_field_tag "primary_poc", @employee.name%></td>
-            <td><%=label_tag "username", "Username: *"%>
-            <%=text_field_tag "username", @employee.username%>
-            <td><%=label_tag "password", "Password: *"%>
-            <%=password_field_tag "password", @employee.password%>
-              <td><%=label_tag "password_confirmation", "Confirm Password: *"%>
-            <%=password_field_tag "password_confirmation", @employee.password_confirmation%>
-            <td><%=label_tag "admin_rights", "Admin Rights: *"%>
-            <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights)%>
-            
-            </tr>
-        <br>
-        <tr><%=label_tag "poc_email", "Email: *" %>
-            <%= text_field_tag "poc_email", @employee.email %><br>
-        <tr><%=label_tag "poc_phone_w", "Phone (w):" %>
-            <%= text_field_tag "poc_phone_w", @employee.w_phone %><br>
-        <tr><%=label_tag "poc_phone_c", "Phone (c):" %>
-            <%= text_field_tag "poc_phone_c", @employee.c_phone %><br>
-        <tr><%=label_tag "city", "City:" %>
-            <%= text_field_tag "city", @florist.city %><br>
-        <tr><%=label_tag "state", "State:" %>
-            <%= text_field_tag "state", @florist.state %><br>
-        <tr><%=label_tag "zip", "Zip:" %>
-            <%= text_field_tag "zip", @florist.zip %><br>
-                  
-        <div class= 'label-spacer'></div> <button name= "action" value= "save">Save</button>
+<% if @florist.id == nil 
+  id = "new"%>
+<%else
+  id = @florist.id%>
+<%end %>
+       
+<%= form_tag("/florist_updates/#{id}") do %>
+         
+  <div class="row-fluid">
+    <div class="span12">
+      <img src="/images/<%=@florist.company_logo%>" width="40" height="40" align="left"/>           
+      <%= hidden_field_tag "company_logo", @florist.company_logo %>
+      <%=@florist.company_logo%><br><br><br>
+      <%=label_tag "name", "Florist Co. Name: *" %>
+      <%= text_field_tag "name", @florist.name%>
+      <%=label_tag "company_id", "Company Login ID: *" %>
+      <%= text_field_tag "company_id", @florist.company_id%>             
+      <%=label_tag "company_logo", "Company Logo: *" %>
+      <%=label_tag "status", "Company Status: *" %>
+      <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%>
+      <div class="row-fluid">
+        <div class="span2">   
+          <%=label_tag "primary_poc", "POC's Name: *" %> 
+          <%= text_field_tag "primary_poc", @employee.name, class: "span12"%>
+        </div>
+        <div class="span2">
+          <%=label_tag "username", "Username: *"%>
+          <%=text_field_tag "username", @employee.username, class: "span12"%>
+        </div>
+        <div class="span2">
+          <%=label_tag "password", "Password: *"%>
+          <%=password_field_tag "password", @employee.password, class: "span12"%>
+        </div>
+        <div class="span2">
+          <%=label_tag "password_confirmation", "Confirm P'word: *"%>
+          <%=password_field_tag "password_confirmation", @employee.password_confirmation, class: "span12"%>
+        </div>
+        <div class="span2">
+          <%=label_tag "admin_rights", "Admin Rights: *"%>
+          <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights), class: "span12"%>
+        </div>
+      </div>
+    <%=label_tag "poc_email", "Email: *" %>
+    <%= text_field_tag "poc_email", @employee.email %>
+    <%=label_tag "poc_phone_w", "Phone (w):" %>
+    <%= text_field_tag "poc_phone_w", @employee.w_phone %>
+    <%=label_tag "poc_phone_c", "Phone (c):" %>
+    <%= text_field_tag "poc_phone_c", @employee.c_phone %>
+      <div class="row-fluid">
+        <div class="span2">  
+          <%=label_tag "city", "City:" %>
+          <%= text_field_tag "city", @florist.city, class: "span12" %>
+        </div>
+        <div class="span2">  
+        <%=label_tag "state", "State:" %>
+        <%= text_field_tag "state", @florist.state, class: "span12" %>
+        </div>
+        <div class="span2">  
+        <%=label_tag "zip", "Zip:" %>
+        <%= text_field_tag "zip", @florist.zip, class: "span12" %>
+        </div>
+      </div>
+    </div>
+  </div>  
 
-         <% end %>
+<div class= 'label-spacer'></div> <button name= "action" value= "save">Save</button>
 
-
-<p><a href="/florists">Back to Florists</a></p><br>
+<% end %>
+  
 
 <p><b>Process to Add Customer Logo</b></p>
 <ol>

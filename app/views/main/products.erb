@@ -3,7 +3,7 @@
  <%= form_tag("/product_post/") do %>  
   
     <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
-      <button class="btn" name= "new" value= "new">Add New</button>
+      <button class="btn btn-small" name= "new" value= "new">Add New</button>
     <%else%>
     <%end%>
     <table class="table table-striped table-hover table-condensed ">

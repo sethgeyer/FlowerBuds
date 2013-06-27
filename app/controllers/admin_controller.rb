@@ -7,7 +7,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def florists
     if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"
       @florists = Florist.order("status", "name")
-      render(:florists, layout:false) and return    
+      render(:florists) and return    
     else
       redirect_to "/" and return
     end

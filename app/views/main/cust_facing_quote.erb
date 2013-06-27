@@ -1,7 +1,7 @@
 
     <br><br><br><br><br><br><br><br><br><br>  
     
-    <h1 align="middle"><a href= "/generate_quote/<%=@event.id%>"><img align="middle" src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="100" height="100" align="left"/></a><b></h1>
+    <h1 align="middle"><a href= "/generate_quote/<%=@event.id%>"><img align="middle" src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="100" height="100" class="img-polaroid" align="left"/></a><b></h1>
     
     <h1 align="middle"><%= Florist.where(id: session["found_florist_id"]).first.name%></h1><br><br>
   

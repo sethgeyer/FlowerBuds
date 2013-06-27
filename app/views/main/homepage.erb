@@ -11,12 +11,12 @@
     <div class="span9">
       <h4>Customer Search:</h4>
       <p> <%=text_field_tag "search_field"%> <br>
-      <%=button_tag "Search/Add", name: "search", class: "btn" %></p>
+      <%=button_tag "Search/Add", name: "search", class: "btn btn-small" %></p>
     </div>
     <div class="span3">
       <h4>Active Events For:</h4>
       <p><%= select_tag "view",  options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref), class: "input-medium"%><br>
-      <%=button_tag "Show Me", name: "update_view", class:"btn"%> </p>
+      <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small"%> </p>
     </div>  
   </div>
 <%end%>
