@@ -1,99 +1,69 @@
 <%= error_messages_for @customer %>
    
-<%= form_tag("/cust_edit", class: "form-horizontal") do %>
+<%= form_tag("/cust_edit") do %>
+ 
      
   <h3>Edit Customer</h3>
   
+  
+<div class="container-fluid">
   <div class="row-fluid">
+   
     <div class="span3">
-      <div class= "control-group">
-        <%= label_tag "contact_name", "Customer Name: *", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "contact_name", @customer.name%>
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "contact_email", "Email: *" , class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "contact_email", @customer.email%>     
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "phone1", "Phone (primary):", class:"control-label"%>    
-        <div class="controls">
-          <%= text_field_tag "phone1", @customer.phone1%>
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "phone2", "Phone (other):", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "phone2", @customer.phone2%> 
-        </div>
-      </div>    
-    </div>  
-<div class="span3">
-      <div class= "control-group">
-        <%=label_tag "company_name", "Company (if appl.):", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "company_name", @customer.company_name%>
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "groom_name", "Groom Name (if appl.):", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "groom_name", @customer.groom_name%>
-        </div>
-      </div>      
-      <div class= "control-group">
-        <%= label_tag "groom_email", "Groom Email:", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "groom_email", @customer.groom_email%>
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "groom_phone", "Groom Phone:", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "groom_phone", @customer.groom_phone%>
-        </div>
+      <%= label_tag "contact_name", "Customer Name: *"%>
+      <%= text_field_tag "contact_name", @customer.name, class: "span12"%>
+      <%= label_tag "contact_email", "Email: *"%>
+          <%= text_field_tag "contact_email", @customer.email, class: "span12"%>     
+        <%= label_tag "phone1", "Phone (primary):"%>    
+          <%= text_field_tag "phone1", @customer.phone1, class: "span12"%>
+        <%= label_tag "phone2", "Phone (other):"%>
+          <%= text_field_tag "phone2", @customer.phone2, class: "span12"%> 
       </div>
-    </div>      
-<div class="span3">
-      <div class= "control-group">
-        <%= label_tag "address", "Address", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "address", @customer.address, class: "input-xlarge"%>
-        </div>
-      </div>    
-      
-      <div class= "control-group">
-        <%= label_tag "city", "City:", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "city", @customer.city%>
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "state", "State:", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "state", @customer.state, class: "input-mini"%>
-        </div>
-      </div>    
-      <div class= "control-group">
-        <%= label_tag "zip", "Zip:", class:"control-label"%>
-        <div class="controls">
-          <%= text_field_tag "zip", @customer.zip, class: "input-mini"%>
-        </div>
-      </div>    
-      
-    </div>      
+  <div class="span3">
+  <%=label_tag "company_name", "Company (if appl.):"%>
+  
+          <%= text_field_tag "company_name", @customer.company_name, class: "span12"%>
+          <%= label_tag "groom_name", "Groom Name (if appl.):"%>
+  
+          <%= text_field_tag "groom_name", @customer.groom_name, class: "span12"%>
+          <%= label_tag "groom_email", "Groom Email:"%>
+            <%= text_field_tag "groom_email", @customer.groom_email, class: "span12"%>
+  
+        <%= label_tag "groom_phone", "Groom Phone:"%>
+            <%= text_field_tag "groom_phone", @customer.groom_phone, class: "span12"%>
+ 
+ 
+ 
   </div>
 
-  <div class="row-fluid">
-    <div class="span12">
-      <%= label_tag "notes", "Customer Notes:"%> 
-      <%= text_area_tag "notes", @customer.notes, rows: 3, cols: 450%>
-    </div>
+
+<div class="span3">
+   <%= label_tag "address", "Address:"%>
+            <%= text_field_tag "address", @customer.address, class: "span12"%>
+        <%= label_tag "city", "City:"%>
+           <%= text_field_tag "city", @customer.city%>
+          <%= label_tag "state", "State:"%>
+            <%= text_field_tag "state", @customer.state, class: "input-mini"%>
+          <%= label_tag "zip", "Zip:"%>
+            <%= text_field_tag "zip", @customer.zip, class: "input-mini"%>
   </div>
-    
+
+
+<div class="span3">
+   <%= label_tag "notes", "Customer Notes:"%> 
+      <%= text_area_tag "notes", @customer.notes, rows: 3, cols: 450%>
+  
+  
+  </div>
+
+</div>
+  
+       
+  
+         
+  
+     
+  
 <%=hidden_field_tag "customer_id", @customer.id%> 
    
     <br>
@@ -113,7 +83,7 @@
       <th>Event Notes</th>
       <th>Designer</th>
       <th>id</th>
-      <th><th>
+      <th></th>
       <% for event in @customer.events %>
         <tr>           
           <td> <a href="/event_edit/<%=event.id%>"> <%=event.name%> </a></td>

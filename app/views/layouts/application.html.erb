@@ -7,9 +7,9 @@
     <%= csrf_meta_tags %>
   </head>
     <body>
-      <div class="navbar navbar-fixed-top">
+      <div class="navbar navbar-fluid">
         <div class="navbar-inner">
-          <div class="container pull-left">
+          <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
               <span class="icon-th-list"></span>
             </a>
@@ -28,10 +28,12 @@
         </div>
       </div>
 
+<div class="container-fluid">
 <p>Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>!</p> 
 
-
 <%= yield %>
+
+</div>
 
 </body>
 </html>
