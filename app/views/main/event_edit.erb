@@ -40,15 +40,15 @@
             <div class="row-fluid">
               <div class="span4">
                 <%= label_tag "event_date", "Event Date: *"%>
-                <%= text_field_tag "event_date", @event.date_of_event, class: "span12 input-small"%> 
+                <%= text_field_tag "event_date", @event.date_of_event, class: "span12"%>
               </div>
               <div class="span4">
                 <%= label_tag "event_time", "Event Time:"%>   
-                <%= text_field_tag "event_time", @event.time, class: "span12 input-small"%>
+                <%= text_field_tag "event_time", @event.time, class: "span12"%>
               </div>
               <div class="span4">
                 <%= label_tag "setup_time", "Setup Time:"%>
-                <%= text_field_tag "setup_time", @event.delivery_setup_time, class: "span12 input-small"%>
+                <%= text_field_tag "setup_time", @event.delivery_setup_time, class: "span12"%>
               </div>
             </div>
                                    
@@ -89,7 +89,7 @@
     
     <div class="span3">
       <%= label_tag "notes", "Event Notes:"%>
-      <%= text_area_tag "notes", @event.notes, class: "span12"%>  
+      <%= text_area_tag "notes", @event.notes, class: "span12", :rows=>8%>  
     </div>
   </div>
 
@@ -120,7 +120,7 @@
              <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
             <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0%></td>          
                      
-            <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs%></td>
+            <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs,  :rows=>1, :columns=>90%></td>
            
             
             <td> <%= hidden_field_tag "spec_id", each.id%>

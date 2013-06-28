@@ -17,11 +17,12 @@
             <%= Florist.where(id: session["found_florist_id"]).first.name%></a>
             <div class = "nav-collapse collapse">
               <ul class="nav pull-right">
+
                 <li><a href="/home">Home</a></li>
                 <li><a href="/schedule_order_date">W'Sale Order Date</a></li>
                 <li><a href="/employees">Employees</a></li>
                 <li><a href="/products">Products</a></li>
-                <li><a href="/logout">Logout</a></li>
+                <li><a href="/logout">Logout <%=Employee.where(id: session["found_user_id"]).first.username%></a></li>
               </ul>
             </div>
           </div>
@@ -29,7 +30,6 @@
       </div>
 
 <div class="container-fluid">
-<p>Welcome <%=Employee.where(id: session["found_user_id"]).first.name%>!</p> 
 
 <%= yield %>
 

@@ -3,7 +3,7 @@
     <h3>Wholesaler Order List for <%=params["place_order_on"]%></h3>
     
     <h4>Events You're Shopping For</h4>
-    <table class="table table-striped table-hover ">
+    <table class="table table-striped table-hover table-condensed table-bordered ">
       <tr>
         <th>Florist</th>
         <th>Lead Designer</th>
@@ -32,7 +32,7 @@
                  </tr>
          <% end %>
     </table>
-  <p> Note: If there is a last second cancellation, select the Quote Name link to change the Quote Status.  Doing so, will clear the <br> event from the Wholesaler Order List.</p> 
+  <p> Note: If there is a last second cancellation, select the Quote Name link to change the Quote Status.  Doing so, will clear the event from the Wholesaler Order List.</p> 
   
   
 
@@ -42,7 +42,7 @@
     
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%>
-    <table class="table table-striped table-hover ">  
+    <table class="table table-striped table-hover table-condensed table-bordered ">  
       <tr>
         
         <th>Products</th>
@@ -50,9 +50,9 @@
         <th><%=order.event.name%></th>
       <%end%>
         <th>Total</th>
-        <th>Sold in Bundles of</th>
-      <th>Purchase This Many Bundles</thd>
-      <th>Leftover</th>
+        <th>#/Bundle</th>
+      <th>Order This Many</thd>
+      <th>Extras</th>
       </tr>
 
  <tr>

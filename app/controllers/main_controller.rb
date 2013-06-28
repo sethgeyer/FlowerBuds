@@ -608,7 +608,7 @@ end
       flash[:error] = "D. You need to create a Quote before viewing the Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     end
-    render(:design_day_details, layout:false) and return
+    render(:design_day_details) and return
   end
 
 ######### PRODUCTS

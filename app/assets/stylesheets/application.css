@@ -21,3 +21,6 @@
   color: #b94a48;
   padding: 15px;
 }
+
+
+.page-break { display:block; clear:both; page-break-after:always; }

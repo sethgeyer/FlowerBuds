@@ -1,7 +1,19 @@
 
-    <br><br><br><br><br><br><br><br><br><br>  
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flowerbuds</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+      <body>
+
+
+<div class="container">
+    <br><br><br><br><br><br><br>
     
-    <h1 align="middle"><a href= "/generate_quote/<%=@event.id%>"><img align="middle" src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="100" height="100" class="img-polaroid" align="left"/></a><b></h1>
+    <h1 align="middle"><img align="middle" src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="100" height="100" class="img-polaroid" align="left"/><b></h1>
     
     <h1 align="middle"><%= Florist.where(id: session["found_florist_id"]).first.name%></h1><br><br>
   
@@ -12,69 +24,68 @@
   
   <h2 align="middle"> <%= @event.date_of_event%> </h2>
   
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br>
+  
+  <p align="middle"><%=@event.employee.name%><br>
+    <%=@event.employee.w_phone%><br>
+    <%=@event.employee.email%><br>
   
 
-  
-  <h3> Contact Information</h3>
+<div class="page-break"></div>
 
-  <table align="left">
-      <tr><td>Name:           <%=@event.customer.name%>       
-      <tr><td>Phone:          <%= @event.customer.phone1%>
-      <tr><td>Email:          <%= @event.customer.email%>
-      <tr><td>Address:        <%= @event.customer.address%> <%= @event.customer.city%> <%= @event.customer.state%>
-      </table>
-    
-  <table align="right">
-      <tr><td>Quote Name:     <%=@quote.quote_name%>
-      <tr><td>Florist:        <%=@event.employee.name%></td>
-      <tr><td>Phone:          <%=@event.employee.w_phone%>
-      <tr><td>Email:          <%=@event.employee.email%>
+
+<hr/>
       
-  </table> 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+<h3> Event Details</h3>   
+<div class="row-fluid">
+  <div class="span3">  
+    <label><b>Locations(s):</b> <br>
+    <p><%= @event.locations%>
+    <div class="row-fluid">
+      <div class="span4">
+        <label><b>Event Date: </b>
+        <%=@event.date_of_event%> 
+      </div>
+      <div class="span4">
+        <b> Event Time: </b>   
+        <%=@event.time%>
+      </div>
+      <div class="span4">
+        <b>Setup Time:</b> 
+        <%=@event.delivery_setup_time%>
+      </div>
+    </div>
+  </div>                       
+  <div class="span3">
+    <p><label> <b>Colors:</b>
+    <%= @event.color_palette%></p>
+    <p><label><b> Flower Types:</b>
+    <%=@event.flower_types%>
+  </div>
 
+  <div class="span3">
+    <p><label><b>Feel/Theme:</b>
+    <%= @event.feel_of_day%></p>
+    <p><label><b>Attire:</b> 
+    <%= @event.attire%>
+  </div>
+  <div class="span2 ">
+    <p><label><b>Coordinator:</b>
+    <%= @event.coordinator%></p>
+    <label><b>Photographer:</b>
+    <%=@event.photographer%>    
+  </div>
+</div>
+
+<p><label><b>Event Notes:</b>    <%= @event.notes%> </tr>
+
+<div class="page-break"></div>
 <hr />    
 
-<h3> Details for "<%=@event.name%>"</h3>
-  <table align="right">    
-      <tr><td>Feel/Theme:    <%=@event.feel_of_day%>
-      <tr><td>Colors:  <%=@event.color_palette%>
-      <tr><td>Flower Preferences:   <%=@event.flower_types%>
-      <tr><td>Attire:         <%=@event.attire%>
-       <tr><td>Budget:  <%=@event.budget%>
-  </table>
-  
-<table align="left">    
-      <tr><td>Event Date:     <%=@event.date_of_event%>
-      <tr><td>Event Time:     <%=@event.time%>
-      <tr><td>Setup Time:     <%=@event.delivery_setup_time%>
-      <tr><td>Coordinator:    <%=@event.coordinator%>
-      <tr><td>Photographer:   <%=@event.photographer%>
-      <tr><td>Locations(s):   <%=@event.locations%> 
-      
-</table>
-  
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<tr> Event Notes:    <%= @event.notes%> </tr>
-
-<hr />
      
 <h3> Arrangements for Event </h3>  
   
-  <table border='1'>
+  <table class="table table-striped table-bordered">
       
 <tr>      
       <th>Item Name</th>
@@ -96,6 +107,9 @@
        </table>
       <th>Total Price: $ <%=(@event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
       <p> Note: Price does not include applicable state and local taxes.
+
+<div class="page-break"></div>
+<hr />  
 <br><br>
    <p> I agree to the terms and conditions of the contract.  This quote once executed will server as my order form... blah blah blah.</p>
    <br>
@@ -104,5 +118,8 @@
    
    Signature: _____________    Date: __________________ 
  </p>
-   
+ 
+ </div>
+  </body>
+  </html>
  
