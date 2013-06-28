@@ -1,9 +1,10 @@
 App::Application.routes.draw do
-  get "/"                                     => "main#login"
+  get "/"                                     => "main#webpage"
+  get "/login"                                     => "main#login"
   post "/login"                               => "main#logged_in", as: "login"
   get "/home"                                 => "main#home", as: "home"
   post "/homepage"                            => "main#homepage", as: "homepage"
-  get "/logout"                               => "main#logout", as: "logout"
+  get "/logout"                               => "main#webpage", as: "webpage"
   get "/search/:customer"                     => "main#search_results" #no route_path for this one
   
   get "/cust_new"                             => "main#cust_new"

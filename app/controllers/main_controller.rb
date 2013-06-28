@@ -6,7 +6,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 ######### SESSION SECURITY
-OPEN_PAGES = ["/", "/login", "logout", "/about_us"]
+OPEN_PAGES = ["/", "/login", "/logout", "/about_us"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
     render(:login, layout:false) and return
@@ -20,6 +20,19 @@ end
 ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
 EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
 PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
+
+
+######### WEBPAGE
+
+def webpage
+render(:webpage, layout:false) and return
+end
+
+
+
+
+
+
 
 ######### LOGIN
   def login
@@ -54,7 +67,7 @@ PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
   def home
       
       if Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
-        redirect_to "/" and return
+        redirect_to "/login" and return
       else
       end
       
@@ -721,7 +734,7 @@ end
     @employee.email = params["email"]
     @employee.w_phone = params["phone_w"]
     @employee.c_phone = params["phone_c"]
-    @employee.employee_type = params["employee_type"]
+   
     @employee.username = params["username"]
     @employee.password = params["password"]
     @employee.password_confirmation = params["password_confirmation"]

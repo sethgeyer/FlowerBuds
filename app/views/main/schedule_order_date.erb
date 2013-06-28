@@ -25,7 +25,7 @@
         
           <tr>
           <% for booked_quote in @booked_quotes %>
-          <td><%=check_box_tag "place_order-#{booked_quote.id}", "false", class:"checkbox"%>
+          <td><%=check_box_tag "place_order-#{booked_quote.id}", "false"%>
               </td>
               </td>
           <td> <%=booked_quote.event.employee.name%></td>

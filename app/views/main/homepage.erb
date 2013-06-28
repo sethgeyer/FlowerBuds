@@ -1,10 +1,7 @@
 
 <%= form_tag homepage_path do %>
   
-  <%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
-    <%=button_tag "Admin Access", name: "admin_access", class:"btn"%><br>
-  <%else%>
-  <%end%>
+  
   
 
   <div class= "row-fluid">
@@ -19,6 +16,13 @@
       <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small"%> </p>
     </div>  
   </div>
+
+<%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
+    <%=button_tag "Admin Access", name: "admin_access", class:"btn btn-small"%><br>
+  <%else%>
+  <%end%>
+
+
 <%end%>
 
 

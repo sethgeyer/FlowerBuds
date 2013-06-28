@@ -9,7 +9,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @florists = Florist.order("status", "name")
       render(:florists) and return    
     else
-      redirect_to "/" and return
+      redirect_to "/login" and return
     end
   end
 

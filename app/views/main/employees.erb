@@ -12,7 +12,7 @@
         <th>Email</th>
         <th>Phone(w)</th>             
         <th>Phone(c)</th>
-        <th>Type</th>
+        
         
         <th>Admin Rights</th>
         <th>View Preferences</th>
@@ -35,8 +35,7 @@
           <%= employee.w_phone %></td>
      <td><%= hidden_field_tag "phone_c", employee.c_phone%>
           <%= employee.c_phone%></td>
-     <td><%= hidden_field_tag "employee_type", employee.employee_type%>
-          <%= employee.employee_type%></td>
+    
      <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
          <%= employee.admin_rights%></td>
      <td><%= hidden_field_tag "view_pref", employee.view_pref%>
