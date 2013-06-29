@@ -14,11 +14,11 @@
  <div class="row-fluid">
   <div class="span6">  
  <h4> Quote for <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
-
+  Customer Name:<%=hidden_field_tag "customer_id", @event.customer.id%> 
+    <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
   </div>
   <div class="span6">  
-    <h4 class="pull-right">Customer Name:<%=hidden_field_tag "customer_id", @event.customer.id%> 
-    <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a></h4>
+  <h4 class="pull-right"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%>
   </div>
 </div>
 
@@ -31,7 +31,7 @@
 <div class="row-fluid">
   <div class="span3">  
     <label><b>Quote Name: *</b>
-    <%= text_field_tag "quote_name", @quote.quote_name, class: "span12"%>
+    <%= text_field_tag "quote_name", @quote.quote_name, class: "input-large"%>
     
     <label><b>Locations(s):</b>
     <%= @event.locations%><p></p>
@@ -76,19 +76,18 @@
   </div>
 </div>
 
-<p><label><b>Florist's Event Notes:</b><br>    <%= raw(@event.notes.gsub("\n", "<br>"))%> </p><hr />
-
+<hr />
 <div class="row-fluid">
+  
   <div class="span2">
-    <button class="btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
-  </div>
-  <div class="span3">
     <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-    <p><a href="JavaScript:newPopup('/generate_cust_facing_quote/<%=@event.id%>>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />Generate Customer Facing Quote</a></p> 
+    <a href="JavaScript:newPopup('/generate_cust_facing_quote/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
   </div>
-  <div class="span3">  
-    <label><b>Quote Status: </b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%> <br><tr> 
+ <div class="span10">
+    <button class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
   </div>
+ 
+ 
 </div>  <hr/>
         
     
@@ -96,7 +95,7 @@
         
         
          
-   <h3> Arrangements & Quotable Items for Event </h3>
+   <h4> Arrangements & Quotable Items for Event </h4>
      
   
   <table class="table table-striped table-hover table-condensed table-bordered ">
