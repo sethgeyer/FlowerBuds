@@ -69,15 +69,17 @@
 </div>
 <br> 
    
-<b>Event Notes:</b>    <%= @event.notes%> </tr>
+<b>Florist's Event Notes:</b>  <br>  
+<%= raw(@event.notes.gsub("\n", "<br>"))%>
+ </tr>
 
 <hr />    
      
 <h3> Arrangements & Specifications </h3>  
   
-<table class="table table-striped table-hover ">      
+<table class="table table-striped table-hover table-bordered ">      
   <tr>      
-      <th>Item Name</th>
+      <th class="span2">Item Name</th>
       <th>Quantity</th>
       <th size="200">Specifications</th> 
     </tr>
@@ -86,7 +88,7 @@
            <tr>
             <td> <%=each.item_name%></td> 
             <td align="middle"> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            <td> <%=each.item_specs%></td>
+            <td><%= raw(each.item_specs.gsub("\n", "<br>"))%></td>
   
         </tr>
         <%end%>
@@ -99,10 +101,10 @@
     
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%></b>
-    <table class="table table-striped table-hover ">  
+    <table class="table table-striped table-hover table-condensed table-bordered ">  
       <tr>
-        <th>Products</th>
-        <th>Total</th>
+        <th class="span6">Products</th>
+        <th>Quantity</th>
       </tr>
      
       <tr>
@@ -129,7 +131,7 @@
      
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%></b></p>
-    <table class="table table-striped table-hover ">
+    <table class="table table-striped table-hover table-condensed table-bordered">
       <tr>
         <th>Products</th>
         <%for specification in @specifications%>

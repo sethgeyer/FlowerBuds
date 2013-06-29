@@ -2,18 +2,15 @@
    
 <%= form_tag("/cust_edit") do %>
  
-     
+ <div class="container-fluid">    
   <h3>Edit Customer</h3>
-  
-  
-<div class="container-fluid">
   <div class="row-fluid">
    
     <div class="span3">
       <%= label_tag "contact_name", "Customer Name: *"%>
-      <%= text_field_tag "contact_name", @customer.name, class: "span12"%>
+      <%= text_field_tag "contact_name", @customer.name, class: "span12", placeholder: "required field"%>
       <%= label_tag "contact_email", "Email: *"%>
-          <%= text_field_tag "contact_email", @customer.email, class: "span12"%>     
+          <%= text_field_tag "contact_email", @customer.email, class: "span12", placeholder: "required field"%>     
         <%= label_tag "phone1", "Phone (primary):"%>    
           <%= text_field_tag "phone1", @customer.phone1, class: "span12"%>
         <%= label_tag "phone2", "Phone (other):"%>

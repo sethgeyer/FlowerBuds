@@ -1,36 +1,6 @@
 
-  <head>
-    <style>
-      label[for=florist_id],
-      label[for=customer_id],
-      label[for=event_type],
-      label[for=event_name],
-      label[for=event_date],
-      label[for=event_time],
-      label[for=setup_time],
-      label[for=feel_of_day],
-      label[for=color_palette],
-      label[for=flower_types],
-      label[for=attire],
-      label[for=lead_designer],
-      label[for=budget],
-      label[for=coordinator],
-      label[for=locations],
-      label[for=photographer]{
-        width: 130px;
-        float: left;
-      }
-      .label-spacer {
-        width: 100px;
-        height: 1px;
-        float: left;
-      }
-    </style>
-  </head>
-
-  <body>
-    
-    <h3>Create a New Event for <%=@customer.name%> </h3>
+ 
+    <h3>Create a New Event for <a href="/cust_edit/<%=@customer.id%>"> <%= @customer.name%></a> </h3>
     
     <%= form_tag("/create_new_event/#{@customer.id}") do%>
      
@@ -43,7 +13,7 @@
        else
         name = ""
        end %> 
-    <%=label_tag "lead_designer", "Designer:*"%>
+    <%=label_tag "lead_designer", "Designer: *"%>
     <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
     <br>
    
@@ -51,10 +21,10 @@
          
     
     <%=label_tag "event_name", "Event Name: *"%>
-    <%=text_field_tag "event_name", @event.name%>
+    <%=text_field_tag "event_name", @event.name, placeholder: "required field"%>
     <br>
     <%=label_tag "event_date", "Event Date: *"%>
-    <%=date_select :event_date, :element%>    
+    <%=date_select :event_date, :element, placeholder: "required field"%>    
     <br>
     <%=label_tag "event_time", "Event Time:" %>
     <%=text_field_tag "event_time", @event.time%>
@@ -87,8 +57,11 @@
       <%= text_field_tag "locations", @event.locations, class: "input-xlarge"%>    
     <br>    
     
-    <%= label_tag "notes", "Event Notes:"%>
-    <%= text_area_tag "notes", @event.notes%><br><br>
+    <%= label_tag "notes", "Florist's Event Notes:"%>
+    <%= text_area_tag "notes", @event.notes, placeholder: "These notes will not be reflected on customer quotes", :rows=>8%><br>
+    <i>Note: The above notes will not be reflected on customer quotes.
+
+    <p><i>Note:  These notes will not show on customer quotes</p>
      <button class= "btn btn-small" name= "action" value= "save">Save</button>
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>

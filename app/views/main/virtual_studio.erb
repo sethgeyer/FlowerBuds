@@ -12,8 +12,8 @@
          <b>Attire:</b> <%=@event.attire%>
     </div>
     <div class="span4">
-    <b>Event Notes:</b>
-    <%=@event.notes%>
+    <b>Florist's Event Notes:</b><br>
+     <%= raw(@event.notes.gsub("\n", "<br>"))%>
     
     </div>
 </div>
@@ -21,7 +21,7 @@
 <%=hidden_field_tag "event_id", value: @event.id%>
 <hr />
 <h3>Virtual Studio</h3>
-<p>The Event's Arrangements are shown below.  For each arrangement, select the individual items (from the dropdown list) that will be included and add it to the design table.  Determine how many of each item will be included for a particular arrangement. Design only a <u><b>single</u></b> arrangment for each type of arrangement.  Make sure to "save" often. flowerbuds will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
+<p>The Event's Arrangements are shown below.  For each arrangement, select the individual items (from the dropdown list) that will be included and add it to the design table.  Determine how many of each item will be included for a particular arrangement. Design only a <u><b>single</u></b> arrangement for each type of arrangement.  Make sure to "save" often. flowerbuds will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
 
 
 
@@ -49,8 +49,8 @@
         <%=hidden_field_tag "event_id", @event.id%>
       <thead>
         <tr>
-          <th>
-          <th>Items to Include</th>
+          <th class="span1"> </th>
+          <th class="span2">Items to Include:</th>
           <%for specification in @specifications%>
             <th><%=specification.item_name%></th>    
           <%end%>
@@ -79,10 +79,10 @@
   <script type="text/javascript">
 function newPopup(url) {
 	popupWindow = window.open(
-		url,'popUpWindow','height=300,width=600,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+		url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
 }
 </script>
 
-<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Specifications for this event</a></p> 
+<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Me the Specifications for each Arrangement</a></p> 
     
  

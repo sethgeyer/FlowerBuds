@@ -31,7 +31,7 @@
   <div class="row-fluid">
      <div class="span3">
       <%= label_tag "event_name", "Event Name: *"%>
-      <%= text_field_tag "event_name", @event.name, class: "span12"%>   
+      <%= text_field_tag "event_name", @event.name, class: "span12", placeholder: "Wedding at Central Park"%>   
       
     
             <%= label_tag "locations", "Locations(s):"%>
@@ -40,7 +40,7 @@
             <div class="row-fluid">
               <div class="span4">
                 <%= label_tag "event_date", "Event Date: *"%>
-                <%= text_field_tag "event_date", @event.date_of_event, class: "span12"%>
+                <%= text_field_tag "event_date", @event.date_of_event, class: "span12", placeholder: "ie: 2013-06-02"%>
               </div>
               <div class="span4">
                 <%= label_tag "event_time", "Event Time:"%>   
@@ -88,8 +88,9 @@
     </div>
     
     <div class="span3">
-      <%= label_tag "notes", "Event Notes:"%>
-      <%= text_area_tag "notes", @event.notes, class: "span12", :rows=>8%>  
+      <%= label_tag "notes", "Florist's Event Notes:"%>
+      <%= text_area_tag "notes", @event.notes, class: "span12", :rows=>8, placeholder: "These notes will not be reflected on customer quotes."%> 
+    
     </div>
   </div>
 
@@ -109,18 +110,18 @@
       
      
       
-      <th>Item Name *</th>
-      <th>Quantity *</th>
-      <th>Specifications</th>  
-      <th>id</th>  
-      <th></th>   
+      <th class="span3">Item Name *</th>
+      <th class="span1">Quantity *</th>
+      <th class="span9">Specifications</th>  
+      <th class="span1">id</th>  
+      <th class="span1"></th>   
        
         <% for each in @specifications %>
            <tr>
-             <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name%></td>
-            <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0%></td>          
+             <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name, class: "input-large"%></td>
+            <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0, class: "input-mini"%></td>          
                      
-            <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs,  :rows=>1, :columns=>90%></td>
+            <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span9", :rows=>2%></td>
            
             
             <td> <%= hidden_field_tag "spec_id", each.id%>
