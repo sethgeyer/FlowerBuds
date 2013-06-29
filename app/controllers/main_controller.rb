@@ -538,13 +538,13 @@ end
 ######### WHOLESALE ORDERS & DESIGN DAY DETAILS
 ###GET Handler from homepage.erb
   def schedule_order_date
-    @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked")
+    @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Ordered").where(wholesale_order_date: nil) + Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked").where(wholesale_order_date: nil)
     render(:schedule_order_date) and return
   end
   
 ###POST Handler from schedule_order_date.erb
   def assign_order_date
-    @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked")
+    @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Ordered").where(wholesale_order_date: nil) + Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked").where(wholesale_order_date: nil)
     for booked_quote in @booked_quotes
       if params["place_order-#{booked_quote.id}"]
         booked_quote.status = "Ordered"
