@@ -6,20 +6,20 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 ######### SESSION SECURITY
-
-before_filter(except: ["/", "/login", "/logout", "/about_us", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]) do
+=begin
+before_filter(except: ["/", "/login", "/logout", "/about_us"]) do
   if session["found_florist_id"] == nil && session["found_user_id"] == nil
     render(:login, layout:false) and return
   elsif Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
    render(:login, layout:false) and return
   end
 end
+=end
 
 
 
 
 
-=begin
 OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
@@ -28,7 +28,7 @@ before_filter do
      render(:login, layout:false) and return
   end 
 end
-=end
+
 
 ######### PAGE_VIEW_PERMISSIONS
 ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
