@@ -13,64 +13,26 @@
        else
         name = ""
        end %> 
-    <%=label_tag "lead_designer", "Designer: *"%>
-    <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
-    <br>
    
+   <div class="row-fluid">
+      <div class="span4"> 
+       
+        <%=label_tag "event_name", "Event Name: *"%>
+        <%=text_field_tag "event_name", @event.name, placeholder: "required field"%>
+        <%=label_tag "event_date", "Event Date: *"%>
+        <input type="date" name="event_date">
+        <%=label_tag "lead_designer", "Assigned Floral Designer: *"%>
+        <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
+        </div>
+ 
+    </div>
    
-         
-    
-    <%=label_tag "event_name", "Event Name: *"%>
-    <%=text_field_tag "event_name", @event.name, placeholder: "required field"%>
-    <br>
-    <%=label_tag "event_date", "Event Date: *"%>
-    <%=date_select :event_date, :element, placeholder: "required field"%>    
-    <br>
-    <%=label_tag "event_time", "Event Time:" %>
-    <%=text_field_tag "event_time", @event.time%>
-    <br>
-    <%=label_tag "setup_time", "Setup Time:"%>
-    <%=text_field_tag "setup_time", @event.delivery_setup_time%>
-    <br>
-     <%= label_tag "budget","Budget:"%>
-    <%= text_field_tag "budget", @event.budget%>
-    <br>
-    <%=label_tag "feel_of_day", "Feel/Theme:"%>
-    <%=text_field_tag "feel_of_day", @event.feel_of_day, class: "input-xlarge"%>
-    <br>
-    <%=label_tag "color_palette", "Colors:"%>
-    <%=text_field_tag "color_palette", @event.color_palette, class: "input-xlarge"%>
-    <br>
-    <%=label_tag "flower_types", "Flower Preferences:"%>
-    <%=text_field_tag "flower_types", @event.flower_types, class: "input-xlarge"%>
-    <br><br>
-    <%=label_tag "attire", "Attire:"%>
-    <%=text_field_tag "attire", @event.attire, class: "input-xlarge"%>
-    <br>
-    <%= label_tag "coordinator", "Coordinator:"%>
-      <%= text_field_tag "coordinator", @event.coordinator, class: "input-xlarge"%>
-      <br>
-      <%= label_tag "photographer", "Photographer:"%>
-      <%= text_field_tag "photographer", @event.photographer, class: "input-xlarge"%>
-      <br>
-      <%= label_tag "locations", "Locations(s):"%>
-      <%= text_field_tag "locations", @event.locations, class: "input-xlarge"%>    
-    <br>    
-    
-    <%= label_tag "notes", "Florist's Event Notes:"%>
-    <%= text_area_tag "notes", @event.notes, placeholder: "These notes will not be reflected on customer quotes", :rows=>8%><br>
-    
      <button class= "btn btn-small" name= "action" value= "save">Save</button>
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>
 
-     <br>
+     </div>
     
     <%end%>
-    
- 
-    
-    
-    
     
     

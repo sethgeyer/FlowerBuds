@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130629230131) do
+ActiveRecord::Schema.define(:version => 20130630013740) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -133,15 +133,15 @@ ActiveRecord::Schema.define(:version => 20130629230131) do
     t.integer  "event_id"
     t.string   "item_name"
     t.integer  "item_quantity"
-    t.string   "item_specs",          :limit => 1000
+    t.string   "item_specs",          :limit => 500
     t.boolean  "in_quote"
     t.integer  "per_item_cost"
     t.integer  "per_item_list_price"
     t.integer  "extended_list_price"
     t.integer  "quoted_price"
     t.string   "image"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "updated_by"
     t.integer  "florist_id"
     t.string   "image1"

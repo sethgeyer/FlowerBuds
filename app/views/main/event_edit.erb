@@ -31,71 +31,57 @@
   <div class="row-fluid">
      <div class="span3">
       <%= label_tag "event_name", "Event Name: *"%>
-      <%= text_field_tag "event_name", @event.name, class: "span12", placeholder: "Wedding at Central Park"%>   
+      <%= text_field_tag "event_name", @event.name, class: "span11", :tabindex => 1, placeholder: "required field"%>   
       
     
             <%= label_tag "locations", "Locations(s):"%>
-            <%= text_field_tag "locations", @event.locations, class: "span12 input-xlarge"%>
-           
+            <%= text_field_tag "locations", @event.locations, class: "span11", :tabindex => 2%>
+           <%= label_tag "event_date", "Event Date: *"%>
+          <input type="date" name="event_date" class="span8" tabindex=3 value=<%=@event.date_of_event%> ></input>
             <div class="row-fluid">
-              <div class="span4">
-                <%= label_tag "event_date", "Event Date: *"%>
-                <%= text_field_tag "event_date", @event.date_of_event, class: "span12", placeholder: "ie: 2013-06-02"%>
-              </div>
+            
               <div class="span4">
                 <%= label_tag "event_time", "Event Time:"%>   
-                <%= text_field_tag "event_time", @event.time, class: "span12"%>
+                <%= text_field_tag "event_time", @event.time, class: "span12" , placeholder: "ie: 7AM", :tabindex => 4%>
               </div>
               <div class="span4">
                 <%= label_tag "setup_time", "Setup Time:"%>
-                <%= text_field_tag "setup_time", @event.delivery_setup_time, class: "span12"%>
+                <%= text_field_tag "setup_time", @event.delivery_setup_time, class: "span12", :tabindex => 5%>
               </div>
             </div>
-                                   
+            <b><button class="btn btn-small" name= "save" value= "save" >Save</button>                       
           </div>
     
      <div class="span4">
-            <div class="row-fluid">
-              <div class="span6">
+            
                 <%= label_tag "color_palette", "Colors:"%>
-                <%= text_field_tag "color_palette", @event.color_palette, class: "span12 input-xlarge"%>
-              </div>
-              <div class="span6">
+                <%= text_field_tag "color_palette", @event.color_palette, class: "span12", :tabindex => 6%>
                 <%= label_tag "flower_types", "Flower Type:"%>
-                <%= text_field_tag "flower_types", @event.flower_types, class: "span12 input-xlarge"%>
-              </div>
-           
-            </div>
-            <div class="row-fluid">
-              <div class="span6">
+                <%= text_field_tag "flower_types", @event.flower_types, class: "span12", :tabindex => 7%>
                 <%= label_tag "feel_of_day", "Feel/Theme:"%>
-                <%= text_field_tag "feel_of_day", @event.feel_of_day, class: "span12 input-xlarge"%>
-              </div>
-                  
-              <div class="span6">
-               <%= label_tag "attire", "Attire:"%>
-                <%= text_field_tag "attire", @event.attire, class: "span12 input-xlarge"%>
-              </div>
-            </div>      
+                <%= text_field_tag "feel_of_day", @event.feel_of_day, class: "span12", :tabindex => 8%>
+                <%= label_tag "attire", "Attire:"%>
+                <%= text_field_tag "attire", @event.attire, class: "span12", :tabindex =>9 %>
+             
     </div>
     <div class="span2 ">
       <%= label_tag "coordinator", "Coordinator:"%>
-      <%= text_field_tag "coordinator", @event.coordinator, class: "span12 input-xlarge"%>
+      <%= text_field_tag "coordinator", @event.coordinator, class: "span12 input-xlarge", :tabindex => 10%>
       <%= label_tag "photographer", "Photographer:"%>
-      <%= text_field_tag "photographer", @event.photographer, class: "span12 input-xlarge"%>
+      <%= text_field_tag "photographer", @event.photographer, class: "span12 input-xlarge", :tabindex => 11%>
       <%= label_tag "budget", "Budget:"%>
-      <%= text_field_tag "budget", @event.budget, class: "span12 input-small"%> 
+      <%= text_field_tag "budget", @event.budget, class: "span12 input-small", :tabindex => 12%> 
     </div>
     
     <div class="span3">
       <%= label_tag "notes", "Florist's Event Notes:"%>
-      <%= text_area_tag "notes", @event.notes, class: "span12", :rows=>8, placeholder: "These notes will not be reflected on customer quotes."%> 
+      <%= text_area_tag "notes", @event.notes, class: "span12", placeholder: "These notes will not be reflected on customer quotes.  Limit: 500 characters." , :rows=>11, :tabindex => 13 %> 
     
     </div>
   </div>
 
 
- <td><b><button class="btn btn-small" name= "save" value= "save" >Save</button>
+ 
 
     
  <hr />
@@ -112,22 +98,23 @@
       
       <th class="span3">Item Name *</th>
       <th class="span1">Quantity *</th>
-      <th class="span9">Specifications</th>  
+      <th class="span8">Specifications</th>  
       <th class="span1">id</th>  
       <th class="span1"></th>   
        
         <% for each in @specifications %>
            <tr>
              <td> <%= text_field_tag "spec_item-#{each.id}", each.item_name, class: "input-large"%></td>
-            <td> <%= text_field_tag "spec_qty-#{each.id}", each.item_quantity / 100.0, class: "input-mini"%></td>          
-                     
-            <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span9", :rows=>2%></td>
+            <%x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,50]%>
+             <td><%= select_tag "spec_qty-#{each.id}", options_for_select(x, each.item_quantity / 100), class: "input-mini"%></td>
+        
+            <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span8", :rows=>2, placeholder: "Limit: 500 characters."%></td>
            
             
             <td> <%= hidden_field_tag "spec_id", each.id%>
                 <%=each.id%></td> 
                  <td> <div class = 'label-spacer'></div> 
-              <button class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
+              <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
                        
 
                     <%end%>

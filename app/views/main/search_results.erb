@@ -2,12 +2,12 @@
     <h3>Customer Search Results</h3>
     
   <%= form_tag homepage_path do %>  
-  <p><%=text_field_tag "search_field", nil, placeholder: "who are you looking for?"%><br> 
-  <button class="btn btn-small"name= "search" value= "search">Search Again</button> </p>
+  <p><%=text_field_tag "search_field", nil, placeholder: "who are you looking for?", :tabindex => 1%><br> 
+  <button class="btn btn-small"name= "search" tabindex=2 value= "search">Search Again</button> </p>
   <%end%>
   
   
-   <h4> <a href="/cust_new">Add New Customer</a></h4>
+   <h4 > <a tabindex=4 href="/cust_new">Add New Customer</a></h4>
     <table class="table table-striped table-hover ">   
      
      <th> Customer Name </th>
@@ -21,7 +21,7 @@
       <% for customer in @customers%>
         <tr>      
           
-            <td> <a href="/cust_edit/<%=customer.id%>"><%=customer.name%></a></td>
+            <td> <a tabindex=5 href="/cust_edit/<%=customer.id%>"><%=customer.name%></a></td>
             <td> <%=customer.city%></td>
             <td> <%=customer.state%></td>
             <td> <%=customer.phone1%></td>

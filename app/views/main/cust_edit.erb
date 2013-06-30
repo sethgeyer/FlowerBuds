@@ -2,20 +2,31 @@
    
 <%= form_tag("/cust_edit") do %>
  
- <div class="container-fluid">    
   <h3>Edit Customer</h3>
   <div class="row-fluid">
    
     <div class="span3">
       <%= label_tag "contact_name", "Customer Name: *"%>
       <%= text_field_tag "contact_name", @customer.name, class: "span12", placeholder: "required field"%>
-      <%= label_tag "contact_email", "Email: *"%>
-          <%= text_field_tag "contact_email", @customer.email, class: "span12", placeholder: "required field"%>     
+      <%= label_tag "contact_email", "Email:"%>
+          <%= text_field_tag "contact_email", @customer.email, class: "span12"%>     
         <%= label_tag "phone1", "Phone (primary):"%>    
           <%= text_field_tag "phone1", @customer.phone1, class: "span12"%>
         <%= label_tag "phone2", "Phone (other):"%>
           <%= text_field_tag "phone2", @customer.phone2, class: "span12"%> 
       </div>
+  
+  
+  
+  <div class="span3">
+   <%= label_tag "notes", "Customer Notes:"%> 
+      <%= text_area_tag "notes", @customer.notes, class: "span12", :rows=>11, placeholder: "Limit: 500 characters."%>
+  
+  
+  </div>
+  
+  
+  
   <div class="span3">
   <%=label_tag "company_name", "Company (if appl.):"%>
   
@@ -45,21 +56,9 @@
             <%= text_field_tag "zip", @customer.zip, class: "input-mini"%>
   </div>
 
-
-<div class="span3">
-   <%= label_tag "notes", "Customer Notes:"%> 
-      <%= text_area_tag "notes", @customer.notes, class: "span12", :rows=>11%>
-  
-  
-  </div>
-
-</div>
-  
+</div>  
        
-  
-         
-  
-     
+
   
 <%=hidden_field_tag "customer_id", @customer.id%> 
    
@@ -96,7 +95,7 @@
           <td> <%= event.employee.username %> </td>
           <td> <%=event.id%></td>
           <td> <div class = 'label-spacer'></div> 
-          <button class="btn btn-danger" name="delete" value= <%=event.id%>>Delete</button></td>
+          <button class="btn btn-danger" tabindex=-1 name="delete" value= <%=event.id%>>Delete</button></td>
         </tr>
      
       <%end%>

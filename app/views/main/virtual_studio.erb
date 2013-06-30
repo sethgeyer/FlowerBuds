@@ -52,7 +52,7 @@
           <th class="span1"> </th>
           <th class="span2">Items to Include:</th>
           <%for specification in @specifications%>
-            <th><%=specification.item_name%></th>    
+            <th class= "span2"><%=specification.item_name%></th>    
           <%end%>
         </tr>
       </thead>
@@ -60,12 +60,14 @@
       <tr>       
       <%for each in @list_of_products%>
         <%id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id%>
-        <td><button class="btn btn-danger btn-mini" name= "remove" value= <%=id%>>Delete</button></div> </td> 
+        <td><button  tabindex=-1 class="btn btn-danger btn-mini" name= "remove" value= <%=id%>>Delete</button></div> </td> 
         <td><%=each%></td> 
         <% for specification in @specifications%>
           <td><%x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first%>
              <%stem_count= x.product_qty / 100.0.round(2) %>
-             <%=text_field_tag "stemcount_#{x.id}", stem_count, class: "input-mini"%> </td>               
+            <%numbs = [0,0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00, 11.00, 12.00, 13.00, 14.00, 15.00, 16.00, 17.00, 18.00, 19.00, 20.00, 21.00, 22.00, 23.00, 24.00, 25.00, 26.00, 27.00, 28.00, 29.00, 30.00, 31.00, 32.00, 33.00, 34.00, 35.00, 36.00, 37.00, 38.00, 39.00, 40.00, 41.00, 42.00, 43.00, 44.00, 45.00, 46.00, 47.00, 48.00, 49.00, 50.00, 75.00, 100.00, 125.00, 150.00, 175.00, 200.00, 250.00, 300.00, 350.00, 400.00, 450.00, 500.00 ]%>
+            <%= select_tag "stemcount_#{x.id}", options_for_select(numbs, stem_count), class:  "input-mini"%></td>
+                     
           <%end%> 
           </tr>
       <%end%> 
@@ -83,6 +85,6 @@ function newPopup(url) {
 }
 </script>
 
-<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Me the Specifications for each Arrangement</a></p> 
+<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Me the Specifications for Each Arrangement</a></p> 
     
  

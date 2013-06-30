@@ -6,6 +6,20 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 ######### SESSION SECURITY
+
+before_filter(except: ["/", "/login", "/logout", "/about_us", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]) do
+  if session["found_florist_id"] == nil && session["found_user_id"] == nil
+    render(:login, layout:false) and return
+  elsif Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
+   render(:login, layout:false) and return
+  end
+end
+
+
+
+
+
+=begin
 OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
@@ -14,7 +28,7 @@ before_filter do
      render(:login, layout:false) and return
   end 
 end
-
+=end
 
 ######### PAGE_VIEW_PERMISSIONS
 ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
@@ -130,18 +144,7 @@ end
   def create_new_customer   
     @new_customer = Customer.new
     @new_customer.name = params["new_contact_name"]
-    @new_customer.company_name = params["company_name"]
-    @new_customer.phone1 = params["phone1"]
-    @new_customer.phone2 = params["phone2"]
     @new_customer.email = params["contact_email"]
-    @new_customer.groom_name = params["groom_name"]
-    @new_customer.groom_phone = params["groom_phone"]
-    @new_customer.groom_email = params["groom_email"]
-    @new_customer.address = params["address"]
-    @new_customer.city = params["city"]
-    @new_customer.state = params["state"]
-    @new_customer.zip = params["zip"]
-    @new_customer.notes = params["notes"]
     @new_customer.florist_id = session["found_florist_id"]
     if @new_customer.save
       redirect_to "/cust_edit/#{@new_customer.id}" and return
@@ -215,28 +218,16 @@ end
    
     @event = Event.new
     @event.name = params["event_name"]
-    @event.random_number = rand(100000)
-    @event.date_of_event = Date.civil(params[:event_date]["element(1i)"].to_i, params[:event_date]["element(2i)"].to_i, params[:event_date]["element(3i)"].to_i)
-
+#    @event.random_number = rand(100000)
+    @event.date_of_event = params["event_date"]
     
-    @event.time = params["event_time"]
-    @event.delivery_setup_time = params["setup_time"]
-    @event.feel_of_day = params["feel_of_day"]
-    @event.color_palette = params["color_palette"]
-    @event.flower_types = params["flower_types"]
-    @event.attire = params["attire"]
-    @event.photographer = params["photographer"]
-    @event.coordinator = params["coordinator"]
-    @event.locations = params["locations"]
-      if params["lead_designer"] != ""
+          if params["lead_designer"] != ""
         @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
       else
         @event.employee_id = nil
       end
     @event.florist_id = session["found_florist_id"]                                                                        #As well, you need to resolve the 3rd party and Site info
-    @event.budget = params["budget"]
-    @event.notes = params["notes"]
-    @event.customer_id = params["customer_id"]  # How Do I make non-editable elements of a form. IE:  Shouldn't be able to edit ID #s
+        @event.customer_id = params["customer_id"]  # How Do I make non-editable elements of a form. IE:  Shouldn't be able to edit ID #s
     @event.event_status = "Open Proposal"
     if @event.save
       redirect_to "/event_edit/#{@event.id}" and return
@@ -517,7 +508,7 @@ end
     random_number = params["random_number"].to_i
    
     
-    @event = Event.where(id: event_id).where(customer_id: cust_id).where(random_number: random_number).first     #   .where(florist_id: session["found_florist_id"])
+    @event = Event.where(id: event_id).where(customer_id: cust_id).first     #   .where(florist_id: session["found_florist_id"])
     @specifications = @event.specifications.order("id")
 
 

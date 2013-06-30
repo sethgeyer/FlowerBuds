@@ -13,12 +13,12 @@
  
  <div class="row-fluid">
   <div class="span6">  
- <h4> Quote for <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
+ <h4> Quote for <a tabindex=4 href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
   Customer Name:<%=hidden_field_tag "customer_id", @event.customer.id%> 
     <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
   </div>
   <div class="span6">  
-  <h4 class="pull-right"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status)%>
+  <h4 class="pull-right"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status), :tabindex=>2%>
   </div>
 </div>
 
@@ -81,10 +81,10 @@
   
   <div class="span2">
     <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-    <a href="JavaScript:newPopup('/quote/<%=@event.customer_id%>/<%=@event.id%>/<%=@event.random_number%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
+    <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.customer_id%>/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
   </div>
  <div class="span10">
-    <button class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
+    <button  tabindex=1 class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
   </div>
  
  
@@ -207,9 +207,9 @@
             <td> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
             
             <% if each.quoted_price != nil%>
-            <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price / 100.0.round(2), class: "input-small"%> </td>
+            <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price / 100.0.round(2), class: "input-small", :tabindex=>3%> </td>
             <%else%>
-            <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price, class: "input-small"%></td>
+            <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price, class: "input-small", :tabindex=>3%></td>
             <%end%>
            
         </tr>

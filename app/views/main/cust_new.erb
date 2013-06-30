@@ -3,52 +3,23 @@
 
 <%= error_messages_for @new_customer%>
 
-<body>
-
-<h3>Create a New Customer</b></h3>
-
-
-<%= form_tag("/create_new_customer") do %>
-  <%= label_tag "new_contact_name", "New Contact Name: *"%>
-  <%= text_field_tag "new_contact_name", @new_customer.name , placeholder: "required field"%>
-  <br>
-  <%= label_tag "contact_email", "Email: *"%>
-  <%= text_field_tag "contact_email", @new_customer.email , placeholder: "required field"%>
-  <br>  
-  <%=label_tag "company_name", "Company Name (if appl.):"%>
-  <%= text_field_tag "company_name", @new_customer.company_name%>
-  <br>
-  <%= label_tag "phone1", "Phone (primary):"%>
-  <%= text_field_tag "phone1", @new_customer.phone1%>
-  <br>
-  <%= label_tag "phone2", "Phone (other):"%>
-  <%= text_field_tag "phone2", @new_customer.phone2%>
-  <br>
   
-  <%= label_tag "groom_name", "Groom Name (if appl.):"%>
-  <%= text_field_tag "groom_name", @new_customer.groom_name%>
-  <br>
-  <%= label_tag "groom_phone", "Phone:"%>
-  <%= text_field_tag "groom_phone", @new_customer.groom_phone%>
-  <br>
-  <%= label_tag "groom_email", "Email:"%>
-  <%= text_field_tag "groom_email", @new_customer.groom_email%>
-  <br>
-  <%= label_tag "address", "Address:"%>
-  <%= text_field_tag "address", @new_customer.address%>
-  <br>
-  <%= label_tag "city", "City:"%>
-  <%= text_field_tag "city", @new_customer.city%>
-  <br>   
-  <%= label_tag "state", "State:"%>
-  <%= text_field_tag "state", @new_customer.state%>
-  <br>
-  <%= label_tag "zip", "Zip:"%>
-  <%= text_field_tag "zip", @new_customer.zip%>
-  <br>
-  <%= label_tag "notes", "Customer Notes:"%>
-  <%= text_area_tag "notes", @new_customer.notes%>
-  <br>
-<button class="btn btn-small" name= "action" value= "save">Create</button>
-<%end%>
+<h3>Create a New Customer</h3>
+  
+<%= form_tag("/create_new_customer") do %>
 
+<div class="row-fluid">
+  <div class="span3">
+    <%= label_tag "contact_name", "New Contact Name: *"%>
+    <%= text_field_tag "new_contact_name", @new_customer.name, placeholder: "required field", :tabindex =>1%>
+    <%= label_tag "contact_email", "Email:"%>
+    <%= text_field_tag "contact_email", @new_customer.email , :tabindex =>2%>
+   
+  </div>
+  
+</div>
+
+<div class="row-fluid">
+<button class="btn btn-small" tabindex=2.5 name= "action" value= "save">Create</button>
+<%end%>
+</div>

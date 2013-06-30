@@ -8,7 +8,7 @@
     <div class="span9">
       <h4>Customer Search:</h4>
       <p> <%=text_field_tag "search_field", nil, placeholder: "who are you looking for?"%> <br>
-      <%=button_tag "Search/Add", name: "search", class: "btn btn-small" %></p>
+      <%=button_tag "Search/Add", name: "search", class: "btn btn-small"%></p>
     </div>
     <div class="span3">
       <h4>Active Events For:</h4>
@@ -46,7 +46,7 @@
   </thead>
       <tr>
       <%for event in @events%>
-        <td><a href="cust_edit/<%=event.customer.id%>"> <%= event.customer.name %></a></td>
+        <td ><a href="cust_edit/<%=event.customer.id%>"> <%= event.customer.name %></a></td>
         <td><a href="event_edit/<%= event.id%>"> <%= event.name %>  </a></td>
         <td><%=event.date_of_event%></td>
         <td><%if event.quote != nil%>

@@ -21,7 +21,7 @@
     <%for specification in @specifications%>
      <tr>
       <td><%=specification.item_name%></td>
-      <td>    <%= raw(specification.item_specs.gsub("\n", "<br>"))%></td> </tr>
+      <td  tabindex=1>    <%= raw(specification.item_specs.gsub("\n", "<br>"))%></td> </tr>
    <%end%>
       
     
