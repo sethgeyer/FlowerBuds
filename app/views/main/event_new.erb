@@ -59,9 +59,7 @@
     
     <%= label_tag "notes", "Florist's Event Notes:"%>
     <%= text_area_tag "notes", @event.notes, placeholder: "These notes will not be reflected on customer quotes", :rows=>8%><br>
-    <i>Note: The above notes will not be reflected on customer quotes.
-
-    <p><i>Note:  These notes will not show on customer quotes</p>
+    
      <button class= "btn btn-small" name= "action" value= "save">Save</button>
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>

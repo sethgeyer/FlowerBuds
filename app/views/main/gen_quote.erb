@@ -81,7 +81,7 @@
   
   <div class="span2">
     <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-    <a href="JavaScript:newPopup('/generate_cust_facing_quote/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
+    <a href="JavaScript:newPopup('/quote/<%=@event.customer_id%>/<%=@event.id%>/<%=@event.random_number%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
   </div>
  <div class="span10">
     <button class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>

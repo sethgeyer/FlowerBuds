@@ -13,9 +13,9 @@
 <div class="container">
     <br><br><br><br><br><br>
     
-    <h1 align="middle"><img align="middle" src="/images/<%= Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="100" height="100" class="img-polaroid" align="left"/></b></h1>
+    <h1 align="middle"><img align="middle" src="/images/<%= Florist.where(id: @event.florist_id).first.company_logo%>" width="100" height="100" class="img-polaroid" align="left"/></b></h1>
     
-    <h1 align="middle"><%= Florist.where(id: session["found_florist_id"]).first.name%></h1><br><br>
+    <h1 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h1><br><br>
   
   
   <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>

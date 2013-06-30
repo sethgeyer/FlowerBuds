@@ -6,7 +6,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 ######### SESSION SECURITY
-OPEN_PAGES = ["/", "/login", "/logout", "/about_us"]
+OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
     render(:login, layout:false) and return
@@ -215,7 +215,7 @@ end
    
     @event = Event.new
     @event.name = params["event_name"]
-    #@event.date_of_event = params["event_date"]
+    @event.random_number = rand(100000)
     @event.date_of_event = Date.civil(params[:event_date]["element(1i)"].to_i, params[:event_date]["element(2i)"].to_i, params[:event_date]["element(3i)"].to_i)
 
     
@@ -513,8 +513,15 @@ end
 ### GET Handler from gen_quote.erb
   def generate_cust_facing_quote
     event_id = params["event_id"]
-    @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
+    cust_id = params["cust_id"]
+    random_number = params["random_number"].to_i
+   
+    
+    @event = Event.where(id: event_id).where(customer_id: cust_id).where(random_number: random_number).first     #   .where(florist_id: session["found_florist_id"])
     @specifications = @event.specifications.order("id")
+
+
+=begin
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
       
       redirect_to "/virtual_studio/#{event_id}" and return
@@ -532,8 +539,13 @@ end
     else
     end
     @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
+=end
     render(:cust_facing_quote, layout:false) and return
   end
+  
+  
+  
+  
   
 ######### WHOLESALE ORDERS & DESIGN DAY DETAILS
 ###GET Handler from homepage.erb
