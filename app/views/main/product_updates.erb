@@ -37,24 +37,34 @@
              
           <tr><%=label_tag "product_type", "Product Type: *" %>
               <%= select_tag "product_type", options_for_select(["", "1. Fresh Goods", "2. Hard Goods", "3. Rentals", "4. Labor", "5. Other"], @product.product_type) %></tr>
-          <br><br>
+          <br>
                
           <tr><%=label_tag "product_name", "Product Name: *" %>
               <%= text_field_tag "product_name", @product.name%></tr>
-          <br><br> 
-         <tr><%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>
-          <%if id != "new"%>
-              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%>
+          <br>
+          
+         <tr> <%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>         
+              <%if @product.cost_per_bunch != nil%>
+              <%=text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%></tr>
               <%else%>
-              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%>
-              <%end%></tr>
-          <br><br>
+              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
+              <%end%>
+          <br>
           <tr><%=label_tag "items_per_bunch", "Items per Bunch: *" %>
+              <%if @product.items_per_bunch != nil%>
               <%= text_field_tag "items_per_bunch", @product.items_per_bunch / 100.0.round(2)%></tr>
-          <br><br>
+              <%else%>
+              <%= text_field_tag "items_per_bunch", @product.items_per_bunch%></tr>
+              <%end%>
+          <br>
          
           <tr><%=label_tag "markup", "Markup: * " %>
+              <%if @product.markup != nil%>
               <%= text_field_tag "markup", @product.markup / 100.0.round(2)%></tr>
+              <%else%>
+              <%= text_field_tag "markup", @product.markup%></tr>
+              <%end%>
+
           <br><br>
          <tr><%=label_tag "status", "Status: *" %>
              <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 

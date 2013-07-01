@@ -4,8 +4,19 @@
     
     <%= form_tag("/create_new_event/#{@customer.id}") do%>
      
-   <%=error_messages_for @event%>
+ 
    
+  <% if @event.errors.size > 0 %>
+  Error(s):
+  <ul>
+  <% for error in @event.errors.full_messages %>
+    <li><%= error.gsub("Employee", "Designer") %></li>
+  <% end %>
+  </ul>
+<% end %>
+ 
+ 
+ 
    
 
    <% if Employee.where(id: @event.employee_id).first != nil

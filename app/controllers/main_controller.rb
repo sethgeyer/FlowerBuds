@@ -20,7 +20,7 @@ end
 
 
 
-OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
+OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/marketing", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
 before_filter do
   if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
     render(:login, layout:false) and return
@@ -43,7 +43,11 @@ render(:webpage, layout:false) and return
 end
 
 
+######### MARKETING 
 
+def marketing
+render(:marketing_data, layout:false) and return
+end
 
 
 
@@ -103,7 +107,7 @@ end
   def homepage
     if params["search"] #if they push the search button
       if params["search_field"] != ""
-        customer = params["search_field"]
+        customer = params["search_field"].gsub(" ", "_")
       else
         customer = "add_new_customer"
       end
@@ -128,6 +132,8 @@ end
   
 ######### SEARCH RESULTS  
   def search_results
+  search_name = params["customer"]
+  
     @customers = Customer.where(florist_id: session["found_florist_id"]).where("name ilike ?","%#{params["customer"]}%") 
     render(:search_results) and return
   end  
@@ -650,9 +656,9 @@ end
       id = params["product_id"]
       if id == "new"
         @product = Product.new
-        @product.cost_per_bunch = nil
-        @product.items_per_bunch = 100
-        @product.markup = 100
+      
+       @product.items_per_bunch = 100
+       @product.markup = 100
       else
         @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
       end
@@ -671,12 +677,19 @@ end
     else
       @product = Product.where(id: params["product_id"]).first
     end
-     @product.product_type= params["product_type"]
+    
+    @product.product_type= params["product_type"]
     @product.name = params["product_name"]
-    @product.items_per_bunch = params["items_per_bunch"].to_f * 100
-    @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100
-    @product.cost_for_one =(params["cost_per_bunch"].to_f) / (params["items_per_bunch"].to_f) * 100
+    if params["items_per_bunch"] && params["items_per_bunch"].to_f > 0
+      @product.items_per_bunch = params["items_per_bunch"].to_f * 100
+      if params["cost_per_bunch"] && params["cost_per_bunch"].to_f > 0
+      @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100
+      @product.cost_for_one =(params["cost_per_bunch"]).to_f / (params["items_per_bunch"]).to_f * 100
+      end
+    end
+    if params["markup"] && params["markup"].to_f > 0   
     @product.markup = params["markup"].to_f * 100
+    end
     @product.status = params["status"]
     @product.updated_by = Employee.where(id: session["found_user_id"]).first.name
     @product.florist_id = session["found_florist_id"]
