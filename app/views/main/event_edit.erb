@@ -9,7 +9,7 @@
 <h3>Edit Event for <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a> </h3>
 </div>
 <div class="span3 ">
-<%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name), class: "pull-right"%>
+Designer:<%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name), class: "pull-right"%>
 </div>
 </div>
 
@@ -113,9 +113,12 @@
             
             <td> <%= hidden_field_tag "spec_id", each.id%>
                 <%=each.id%></td> 
+              
+              
+            
                  <td> <div class = 'label-spacer'></div> 
               <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
-                       
+                    
 
                     <%end%>
         <%= hidden_field_tag "ev_id", @event.id%>

@@ -650,9 +650,9 @@ end
       id = params["product_id"]
       if id == "new"
         @product = Product.new
-        @product.cost_per_bunch = 0
-        @product.items_per_bunch = 0
-        @product.markup = 0
+        @product.cost_per_bunch = nil
+        @product.items_per_bunch = 100
+        @product.markup = 100
       else
         @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
       end

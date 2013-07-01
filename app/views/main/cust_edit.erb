@@ -94,9 +94,27 @@
           <td> <%=event.notes%> </td>
           <td> <%= event.employee.username %> </td>
           <td> <%=event.id%></td>
+          
+          
+      <% if Employee.where(id: session["found_user_id"]).first.admin_rights == "All Admin Rights"%>
+          
           <td> <div class = 'label-spacer'></div> 
-          <button class="btn btn-danger" tabindex=-1 name="delete" value= <%=event.id%>>Delete</button></td>
+          <button class="btn btn-danger btn-mini" tabindex=-1 name="delete" value= <%=event.id%>>Delete</button></td>
+                  <%else%>
+                  <td></td>
+                  <%end%>     
+    
+       
+       
         </tr>
+     
+     
+     
+     
+        
+     
+     
+     
      
       <%end%>
     </table>

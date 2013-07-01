@@ -47,7 +47,7 @@
           <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights), class: "span12"%>
         </div>
       </div>
-    <%=label_tag "poc_email", "Email: *" %>
+    <%=label_tag "poc_email", "Email:" %>
     <%= text_field_tag "poc_email", @employee.email %>
     <%=label_tag "poc_phone_w", "Phone (w):" %>
     <%= text_field_tag "poc_phone_w", @employee.w_phone %>

@@ -37,12 +37,17 @@
     <div class="span2">
       <button class="btn" name= "update" value= "update">Save Updates</button>  
     </div>
-    <div class="span2">
+    <div class="span3">
       <div class="input-append">
-        <%= select_tag "new_item", options_for_select(@dropdown)%> 
-        <button class="btn" name= "add" value= "add">Add</button> 
+      <%= select_tag "new_item", options_for_select(@dropdown)%> 
+      <button class="btn" name= "add" value= "add">Add</button> 
       </div>
     </div>
+    
+    <div class="span4">
+      <div><script type="text/javascript"> function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
+      <a class="span4" href="JavaScript:newPopup('/products');">Take Me to Products</a> </div>
+     </div>
   </div>
     
       
