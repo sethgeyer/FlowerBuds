@@ -37,7 +37,7 @@
 
 
 
-<%if Rails.env.production?%> <%= render 'layouts/ga'%><%end%>
+<%=render :partial => 'layouts/ga' if Rails.env == 'production'%>
 
 </body>
 </html>
