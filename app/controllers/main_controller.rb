@@ -607,7 +607,7 @@ end
   def design_day_details
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: params["event_id"]).first
     @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first
-    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
+    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).order("id")
     @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
     product_types = []
@@ -752,8 +752,8 @@ end
     @employee.c_phone = params["phone_c"]
    
     @employee.username = params["username"]
-    @employee.password = params["password"]
-    @employee.password_confirmation = params["password_confirmation"]
+    #@employee.password = params["password"]        #####################################################
+    #@employee.password_confirmation = params["password_confirmation"] ##################################
     @employee.admin_rights = params["admin_rights"]
     if @employee.save
       if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
