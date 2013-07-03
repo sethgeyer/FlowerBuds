@@ -1,77 +1,48 @@
 
-<head>
-    <style>
-      label[for=florist_id_new],
-      label[for=product_type_new],
-      label[for=product_name_new],
-      label[for=items_per_bunch_new],
-      label[for=cost_per_bunch_new], 
-      label[for=cost_for_one_new],
-      label[for=markup_new],
-      label[for=status_new],
-            {
-        width: 200px;
-        float: left;
-      }
-      .label-spacer {
-        width: 100px;
-        height: 1px;
-        float: left;
-      }
-    </style>
-  </head>
-
 <h3><b>Create/Edit Products</b></h3>
-<p> This includes all flowers from the wholesaler, vases you will resell, and labor charges. </p>
+  <p> This includes all flowers from the wholesaler, vases you will resell, and labor charges. </p>
 
-<%=error_messages_for @product%>
+  <%=error_messages_for @product%>
 
-   <% if @product.id == nil 
-        id = "new"%>
-      <%else
-        id = @product.id%>
-      <%end %>
-         <%= form_tag("/product_updates/#{id}") do %>
-      
-          <tr>
-             
-          <tr><%=label_tag "product_type", "Product Type: *" %>
-              <%= select_tag "product_type", options_for_select(["", "1. Fresh Goods", "2. Hard Goods", "3. Rentals", "4. Labor", "5. Other"], @product.product_type) %></tr>
-          <br>
-               
-          <tr><%=label_tag "product_name", "Product Name: *" %>
-              <%= text_field_tag "product_name", @product.name%></tr>
-          <br>
-          
-         <tr> <%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>         
-              <%if @product.cost_per_bunch != nil%>
-              <%=text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%></tr>
-              <%else%>
-              <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
-              <%end%>
-          <br>
-          <tr><%=label_tag "items_per_bunch", "Items per Bunch: *" %>
-              <%if @product.items_per_bunch != nil%>
-              <%= text_field_tag "items_per_bunch", @product.items_per_bunch / 100.0.round(2)%></tr>
-              <%else%>
-              <%= text_field_tag "items_per_bunch", @product.items_per_bunch%></tr>
-              <%end%>
-          <br>
-         
-          <tr><%=label_tag "markup", "Markup: * " %>
-              <%if @product.markup != nil%>
-              <%= text_field_tag "markup", @product.markup / 100.0.round(2)%></tr>
-              <%else%>
-              <%= text_field_tag "markup", @product.markup%></tr>
-              <%end%>
+  <% if @product.id == nil 
+    id = "new"%>
+  <%else
+    id = @product.id%>
+  <%end %>
+ 
+  <%= form_tag("/product_updates/#{id}") do %>
+    <tr>
+    <tr><%=label_tag "product_type", "Product Type: *" %>
+        <%= select_tag "product_type", options_for_select(["", "1. Fresh Goods", "2. Hard Goods", "3. Rentals", "4. Labor", "5. Other"], @product.product_type) %></tr>
+    <br> 
+    <tr><%=label_tag "product_name", "Product Name: *" %>
+        <%= text_field_tag "product_name", @product.name%></tr>
+    <br>
+   <tr> <%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>         
+      <%if @product.cost_per_bunch != nil%>
+        <%=text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%></tr>
+      <%else%>
+        <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
+      <%end%>
+    <br>
+    <tr><%=label_tag "items_per_bunch", "Items per Bunch: *" %>
+      <%if @product.items_per_bunch != nil%>
+        <%= text_field_tag "items_per_bunch", @product.items_per_bunch / 100.0.round(2)%></tr>
+      <%else%>
+        <%= text_field_tag "items_per_bunch", @product.items_per_bunch%></tr>
+      <%end%>
+    <br> 
+    <tr><%=label_tag "markup", "Markup: * " %>
+      <%if @product.markup != nil%>
+        <%= text_field_tag "markup", @product.markup / 100.0.round(2)%></tr>
+      <%else%>
+        <%= text_field_tag "markup", @product.markup%></tr>
+      <%end%>
+    <br><br>
+    <tr><%=label_tag "status", "Status: *" %>
+        <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 
+    <br><br>
+    <button class="btn btn-small" name= "action" value= "new">Save</button>
+  <% end %>
 
-          <br><br>
-         <tr><%=label_tag "status", "Status: *" %>
-             <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 
-        <br><br>
-        <button class="btn btn-small" name= "action" value= "new">Save</button>
-
-         <% end %>
-
-
-<p><a href="/products">Back to Products</a></p>
+  <p><a href="/products">Back to Products</a></p>

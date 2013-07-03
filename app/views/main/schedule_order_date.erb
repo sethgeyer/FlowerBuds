@@ -1,56 +1,43 @@
 
 
-  
-    <h3>Booked Events</h3>
-    <p> This page shows all booked events for which an "order date" has not yet been established.
-        Choose an Event(s) and identify the date in which you'll place the order w/ the wholesaler. <br> </p>
-    
-    <table class="table table-striped table-hover ">
-      <tr>
-        <th class="span1">Place Order?</th>
-        <th>Designer</th>
-        
-        <th>Customer Name</th>
-        <th>Event Name</th>
-        <th>Event Date</th>
-        <th>Quote Name</th>
-        <th>Value</th>
-        <th>Quote Status</th>
-       
-       
-      </tr>
-        
+
+<h3>Booked Events</h3>
+<p> This page shows all booked events for which an "order date" has not yet been established.
+    Choose an Event(s) and identify the date in which you'll place the order w/ the wholesaler. <br> </p>
+
+  <table class="table table-striped table-hover ">
+    <tr>
+      <th class="span1">Place Order?</th>
+      <th>Designer</th>
+      <th>Customer Name</th>
+      <th>Event Name</th>
+      <th>Event Date</th>
+      <th>Quote Name</th>
+      <th>Value</th>
+      <th>Quote Status</th>
+    </tr>
+
   <%= form_tag("/assign_order_date") do %> 
-  
-        
-          <tr>
-          <% for booked_quote in @booked_quotes %>
-          <td><%=check_box_tag "place_order-#{booked_quote.id}", "false"%>
-              </td>
-              </td>
+        <tr>
+        <% for booked_quote in @booked_quotes %>
+          <td><%=check_box_tag "place_order-#{booked_quote.id}", "false"%></td>
           <td> <%=booked_quote.event.employee.username%></td>
-          
           <td><%= booked_quote.event.customer.name %></td>
-          
           <td> <%=booked_quote.event.name%> </td>
           <td> <%=booked_quote.event.date_of_event%> </td>
           <td> <a href="/generate_quote/<%=booked_quote.event_id%>"> <%=booked_quote.quote_name%></td>
           <td> $ <%=sprintf("%.2f" ,booked_quote.total_price / 100.0).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-          <td> <%=booked_quote.status%></td>
-        
-         
+          <td> <%=booked_quote.status%></td>     
         </tr>
-         <% end %>
-    </table>
+        <% end %>
+  </table>
   <br>
   <br>
-   <td><%=label_tag "place_order_on", "Place Order On: *"%>
-   <input type="date" name="place_order_on">
- </td>
-  
+  <td><%=label_tag "place_order_on", "Place Order On: *"%>
+    <input type="date" name="place_order_on">
+  </td>  
   <p> * required field <p>
-  <button class="btn btn-small" name="action" value="generate_wholesale_order_list" >Generate Wholesale Order List</button>
-    
+  <button class="btn btn-small" name="action" value="generate_wholesale_order_list" >Generate Wholesale Order List</button>    
   <%end%>  
     
    

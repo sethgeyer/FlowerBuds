@@ -1,72 +1,55 @@
 
+<h3>Wholesaler Order List for <%=params["place_order_on"]%></h3>
 
-    <h3>Wholesaler Order List for <%=params["place_order_on"]%></h3>
-    
-    <h4>Events I'm Ordering For</h4>
+  <h4>Events I'm Ordering For</h4>
     <table class="table table-striped table-hover table-condensed table-bordered ">
       <tr>
-        <th class="span1">Event ID </th>
-      
+        <th class="span1">Event ID </th>  
         <th class="span1">Designer</th>
         <th class="span3" >Event Name</th>
         <th class="span2">Event Date</th>
-
         <th class="span2">Customer Name</th>
-
-       
         <th class="span2">Quote Name</th>
         <th>Quote Status</th>
-        
       </tr>
-              
-          <tr>
-
-          <% for order in @orders %>
+      <tr>
+        <% for order in @orders %>
           <td> <%=order.event.id%></td>          
-
           <td> <%=order.event.employee.username%></td>
           <td> <%=order.event.name%> </td>
           <td> <%=order.event.date_of_event%> </td>
-
           <td><%= order.event.customer.name %></td>
           <td> <a href="/generate_quote/<%=order.event_id%>"> <%=order.quote_name%></td>
           <td> <%=order.status%></td>
-                 </tr>
+      </tr>
          <% end %>
     </table>
+
   <i>Note: If there is a last second cancellation, select the Quote Name link to change the Quote Status.  Doing so, will clear the event from the Wholesaler Order List.</i>
   <hr />
   
-  
-
-
-
-  
-    
   <% for product_type in @list_of_product_types%>
-    <div class="page-break"></div>
-    <h4> Items I Need: <%=product_type%></h4>
-    
-    <table class="table table-striped table-hover table-condensed table-bordered ">  
-      <tr>
-        
-        <th class="span3">Products</th>
-        <% for order in @orders%>
-        <th><%=order.event.name%></th>
-      <%end%>
-        <th>Total</th>
-        <th>#/Bundle</th>
-      <th>Order This Many</thd>
-      <th>Extras</th>
-      </tr>
 
- <tr>
-      <%for product_id in @list_of_product_ids%>
-        
-        <% product = Product.where(id: product_id).where(product_type: product_type).first%>
-        <%if product != nil%>
-          <td><%=product.name%></td>
-          <%total_count = 0%>
+<div class="page-break"></div>
+  
+    <h4> Items I Need: <%=product_type%></h4>  
+      <table class="table table-striped table-hover table-condensed table-bordered ">  
+        <tr>        
+          <th class="span3">Products</th>
+          <% for order in @orders%>
+            <th><%=order.event.name%></th>
+          <%end%>
+          <th>Total</th>
+          <th>#/Bundle</th>
+          <th>Order This Many</thd>
+          <th>Extras</th>
+        </tr>
+        <tr>
+          <%for product_id in @list_of_product_ids%>
+            <% product = Product.where(id: product_id).where(product_type: product_type).first%>
+            <%if product != nil%>
+              <td><%=product.name%></td>
+              <%total_count = 0%>
               <% for order in @orders%>
                 <%designed_products =DesignedProduct.where(product_id: product_id).where(event_id: order.event_id)%>
                 <%count = 0%>
@@ -77,17 +60,14 @@
                 <%total_count =  total_count + count%> 
               <%end%>
             <td align="right"> <%=sprintf("%.2f" ,total_count).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-
             <td align="right"><%=items_per_bunch = Product.where(id: product_id).first.items_per_bunch / 100 %></td>
-           <td align="right"><%purchase = (total_count / items_per_bunch).ceil%>
-           <%=sprintf("%.2f" ,purchase).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
-          <td align="right"><%= ((purchase*items_per_bunch) - total_count).to_i%> 
-          </tr>   
-          <%end%>
-          <%end%>
-
-</table>
-
+            <td align="right"><%purchase = (total_count / items_per_bunch).ceil%>
+            <%=sprintf("%.2f" ,purchase).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+            <td align="right"><%= ((purchase*items_per_bunch) - total_count).to_i%> 
+            </tr>   
+            <%end%>
+            <%end%>
+    </table>
 <%end%>
 
 
