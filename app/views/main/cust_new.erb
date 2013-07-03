@@ -1,25 +1,20 @@
 
-
-
 <%= error_messages_for @new_customer%>
-
   
 <h3>Create a New Customer</h3>
   
 <%= form_tag("/create_new_customer") do %>
 
-<div class="row-fluid">
-  <div class="span3">
-    <%= label_tag "contact_name", "New Contact Name: *"%>
-    <%= text_field_tag "new_contact_name", @new_customer.name, placeholder: "required field", :tabindex =>1%>
-    <%= label_tag "contact_email", "Email:"%>
-    <%= text_field_tag "contact_email", @new_customer.email , :tabindex =>2%>
-   
+  <div class="row-fluid">
+    <div class="span3">
+      <%= label_tag "contact_name", "New Contact Name: *"%>
+      <%= text_field_tag "new_contact_name", @new_customer.name, placeholder: "required field", :tabindex =>1%>
+      <%= label_tag "contact_email", "Email:"%>
+      <%= text_field_tag "contact_email", @new_customer.email , :tabindex =>2%>
+    </div>
   </div>
-  
-</div>
 
-<div class="row-fluid">
-<button class="btn btn-small" tabindex=2.5 name= "action" value= "save">Create</button>
+  <div class="row-fluid">
+    <button class="btn btn-small" tabindex=2.5 name= "action" value= "save">Create</button>
 <%end%>
-</div>
+  </div>
