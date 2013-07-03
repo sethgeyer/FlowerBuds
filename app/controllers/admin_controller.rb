@@ -2,8 +2,9 @@ class AdminController < ApplicationController
 use Rack::Session::Cookie, secret: SecureRandom.hex 
 
 
-
 ######### FLORISTS
+
+### GET Handler for link on homegage.erb  
   def florists
     if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"
       @florists = Florist.order("status", "name")
@@ -12,7 +13,6 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       redirect_to "/login" and return
     end
   end
-
 
 ### POST Handler from florists.erb
   def florists_post
@@ -23,7 +23,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     end
   end
 
-### GET Handler from florists_post.erb
+### GET Handler from florists_post function (see above)
   def florist
     if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"
       id = params["florist_id"]
@@ -42,15 +42,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     else
       redirect_to "/" and return
     end
-  
   end
 
-### POST Handler for the above
+### POST Handler for florist_updates.erb
   def florist_updates
     if params["florist_id"] == "new"
       @florist = Florist.new
-      @employee = Employee.new
-              
+      @employee = Employee.new      
     else
       @florist = Florist.where(id: params["florist_id"]).first
       if @employee = Employee.where(florist_id: @florist.id).where(primary_poc: "yes").first != nil
@@ -62,7 +60,6 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @florist.name= params["name"]
     @florist.company_id = params["company_id"]
     @florist.status = params["status"]
-    
     @florist.city = params["city"]
     @florist.state = params["state"]
     @florist.zip = params["zip"]
@@ -83,12 +80,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee.view_pref = "all"
       @employee.save
       if @employee.save
-      redirect_to "/florists" and return
+        redirect_to "/florists" and return
       else
-      render(:florist_updates) and return
+        render(:florist_updates) and return
       end
     else
-    render(:florist_updates) and return
+      render(:florist_updates) and return
     end    
   end
+  
 end

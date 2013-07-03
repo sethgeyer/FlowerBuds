@@ -1,63 +1,62 @@
 class MainController < ApplicationController
 use Rack::Session::Cookie, secret: SecureRandom.hex 
 
-###
-
-
-
 ######### SESSION SECURITY
-=begin
-before_filter(except: ["/", "/login", "/logout", "/about_us"]) do
-  if session["found_florist_id"] == nil && session["found_user_id"] == nil
-    render(:login, layout:false) and return
-  elsif Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
-   render(:login, layout:false) and return
+
+  OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/marketing", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
+  before_filter do
+    if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
+      render(:login, layout:false) and return
+    elsif !OPEN_PAGES.include?(request.path_info) && (Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive")
+      render(:login, layout:false) and return
+    end 
   end
-end
+
+=begin     ** More appropriate Rails convention; however, struggling to get this to work like "OPEN PAGES"
+  before_filter(except: ["/", "/login", "/logout", "/about_us"]) do
+    if session["found_florist_id"] == nil && session["found_user_id"] == nil
+      render(:login, layout:false) and return
+    elsif Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
+     render(:login, layout:false) and return
+    end
+  end
 =end
 
 
 
-
-
-OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/marketing", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
-before_filter do
-  if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
-    render(:login, layout:false) and return
-  elsif !OPEN_PAGES.include?(request.path_info) && (Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive")
-     render(:login, layout:false) and return
-  end 
-end
-
-
 ######### PAGE_VIEW_PERMISSIONS
-ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
-EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
-PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
+  ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
+  EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
+  PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
 
 
-######### WEBPAGE
 
-def webpage
-render(:webpage, layout:false) and return
-end
+######### WEBPAGE aka: the landing page for someone searching for flowerbuds on the internet
+
+### GET handler from "/"
+  def webpage
+    render(:webpage, layout:false) and return
+  end
 
 
-######### MARKETING 
 
-def marketing
-render(:marketing_data, layout:false) and return
-end
+######### MARKETING - This will contain the marketing fluff for the landing page.
 
+### GET handler from the links on webpage.erb
+  def marketing
+    render(:marketing_data, layout:false) and return
+  end
 
 
 
 ######### LOGIN
+
+### GET handler from link on webpage.erb
   def login
     render(:login, layout:false) and return    
   end
 
-
+### POST handler from login.erb
   def logged_in
     found_florist = Florist.where(status: "Active").where(company_id: params["company_id"]).first    
     if found_florist != nil
@@ -66,7 +65,7 @@ end
         session["found_user_id"] = found_user.id
         session["found_florist_id"] = found_florist.id
         redirect_to home_path and return
-      else
+      else # do nothing
       end
     end
     render(:login, layout:false) and return
@@ -74,36 +73,39 @@ end
   
  
  
- ############ ABOUT US
+############ ABOUT US
+
+
+### Get handler from link on webpage.erb
  def about_us
- render(:about_us, layout:false) and return
+  render(:about_us, layout:false) and return
  end 
   
   
 
-######### DISPLAY HOMEPAGE
+######### DISPLAY HOMEPAGE - This is the logged in users homepage.  Different than the landing page (aka: webpage.erb)
   def home
-      
-      if Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
-        redirect_to "/login" and return
-      else
-      end
-      
-      
-      if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
+    if Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive"
+      redirect_to "/login" and return
+    else # do nothing
+    end  
+    if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
       Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
       @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 100)
-      else
+    else
       view_pref = Employee.where(id: session["found_user_id"]).first.view_pref
       employee_id = Employee.where(florist_id: session["found_florist_id"]).where(username: view_pref).first.id
       @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 100)
-      end
-      @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
-      render(:homepage) and return
+    end
+    @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
+    render(:homepage) and return
   end
+  
   
 
 ######### SEARCH OR LOGOUT BUTTONS ON HOMEPAGE
+
+### POST handler for buttons on homepage.erb (admittedly, a poorly named function for what its actually doing)
   def homepage
     if params["search"] #if they push the search button
       if params["search_field"] != ""
@@ -119,34 +121,36 @@ end
       emp_update.view_pref = params["view"]
       emp_update.save!
       redirect_to home_path and return
-   # else 
-   #   redirect_to logout_path and return
     end
   end
 
+### GET handler for logging out (in the header section)
   def logout
     session.clear
     render(:login, layout:false) and return
   end  
   
   
-######### SEARCH RESULTS  
-  def search_results
-  search_name = params["customer"]
   
+######### SEARCH RESULTS  
+
+### POST handler for customer search on homepage.erb
+  def search_results
+    search_name = params["customer"]
     @customers = Customer.where(florist_id: session["found_florist_id"]).where("name ilike ?","%#{params["customer"]}%") 
     render(:search_results) and return
   end  
 
+
 ######### NEW CUSTOMER
 
-###GET Request from search_results.erb
+### GET handler for link on search_results.erb
   def cust_new   
     @new_customer =Customer.new
     render(:cust_new) and return  
   end
 
-###POST Request from cust_new.erb 
+###POST Handler from cust_new.erb 
   def create_new_customer   
     @new_customer = Customer.new
     @new_customer.name = params["new_contact_name"]
@@ -159,9 +163,10 @@ end
     end
   end
 
+
 ######### EDIT CUSTOMER
 
-###GET Handler from cust_new.erb, search_results.erb, or homepage.erb
+###GET Handler from links on cust_new.erb, search_results.erb, or homepage.erb
   def edit_customer          
       cust_id = params["customer_id"]
       @customer = Customer.where(florist_id: session["found_florist_id"]).where(id: cust_id).first
@@ -186,10 +191,10 @@ end
       @customer.state = params["state"]
       @customer.zip = params["zip"]
       @customer.notes = params["notes"]
-        if @customer.save
-        else
-          render(:cust_edit) and return
-        end
+      if @customer.save
+      else
+        render(:cust_edit) and return
+      end
     elsif params["delete"]
       event = Event.where(id: params["delete"]).first
       event.destroy
@@ -202,7 +207,7 @@ end
       deleted_quote = Quote.where(event_id: params["delete"]).first
       if deleted_quote != nil
         deleted_quote.destroy
-      else
+      else # do nothing
       end    
     end
     redirect_to "/cust_edit/#{cust_id}" and return
@@ -210,7 +215,7 @@ end
   
 ######### EVENT NEW
 
-### GET Handler from cust_edit.erb
+### GET Handler link on cust_edit.erb
   def event_new
     cust_id = params["cust_id"]
     @customer = Customer.where(florist_id: session["found_florist_id"]).where(id: cust_id).first
@@ -219,21 +224,20 @@ end
     render(:event_new) and return
   end
 
+
 ### POST Handler from event_new.erb
   def create_new_event
-   
     @event = Event.new
     @event.name = params["event_name"]
-#    @event.random_number = rand(100000)
+#   @event.random_number = rand(100000)
     @event.date_of_event = params["event_date"]
-    
-          if params["lead_designer"] != ""
-        @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
-      else
-        @event.employee_id = nil
-      end
-    @event.florist_id = session["found_florist_id"]                                                                        #As well, you need to resolve the 3rd party and Site info
-        @event.customer_id = params["customer_id"]  # How Do I make non-editable elements of a form. IE:  Shouldn't be able to edit ID #s
+    if params["lead_designer"] != ""
+      @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
+    else
+      @event.employee_id = nil
+    end
+    @event.florist_id = session["found_florist_id"]                                                                        
+    @event.customer_id = params["customer_id"]
     @event.event_status = "Open Proposal"
     if @event.save
       redirect_to "/event_edit/#{@event.id}" and return
@@ -244,7 +248,10 @@ end
     end
   end
 
+
+
 ########## EDIT EVENT
+
 ###GET Handler from event_new.erb
   def event_edit
     event_id = params["event_id"]
@@ -256,42 +263,41 @@ end
   
 ###POST Handler from event_edit.erb
   def event_and_specs_edit
-    #Updates to Event Section
-      @event = Event.where(id: params["event_id"]).first
-      @event.name = params["event_name"]
-      @event.date_of_event = params["event_date"]
-      @event.time = params["event_time"]
-      @event.delivery_setup_time = params["setup_time"]
-      @event.feel_of_day = params["feel_of_day"]
-      @event.color_palette = params["color_palette"]
-      @event.flower_types = params["flower_types"]
-      @event.attire = params["attire"]
-      @event.photographer = params["photographer"]
-      @event.coordinator = params["coordinator"]
-      @event.locations = params["locations"]
-      @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
-                                                                            #As well, you need to resolve the 3rd party and Site info
-      @event.notes = params["notes"]
-      @event.budget = params["budget"]
-      @event.customer_id = params["customer_id"]  
-      if @event.save == false
-        @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
-        @specifications = @event.specifications.order("id")
-        render(:event_edit) and return
-      else # do nothing
-      end
-    #Updates to Event Specifications Section
-      for each in Specification.where(event_id: params["event_id"])  
-        each.item_name = params["spec_item-#{each.id}"]
-        each.item_quantity = params["spec_qty-#{each.id}"].to_i * 100.0
-        each.item_specs = params["spec_notes-#{each.id}"]
-        each.save      
-      end
+  #Updates to Event Section
+    @event = Event.where(id: params["event_id"]).first
+    @event.name = params["event_name"]
+    @event.date_of_event = params["event_date"]
+    @event.time = params["event_time"]
+    @event.delivery_setup_time = params["setup_time"]
+    @event.feel_of_day = params["feel_of_day"]
+    @event.color_palette = params["color_palette"]
+    @event.flower_types = params["flower_types"]
+    @event.attire = params["attire"]
+    @event.photographer = params["photographer"]
+    @event.coordinator = params["coordinator"]
+    @event.locations = params["locations"]
+    @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
+    @event.notes = params["notes"]
+    @event.budget = params["budget"]
+    @event.customer_id = params["customer_id"]  
+    if @event.save == false
+      @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
+      @specifications = @event.specifications.order("id")
+      render(:event_edit) and return
+    else # do nothing
+    end
+  #Updates to Event Specifications Section
+    for each in Specification.where(event_id: params["event_id"])  
+      each.item_name = params["spec_item-#{each.id}"]
+      each.item_quantity = params["spec_qty-#{each.id}"].to_i * 100.0
+      each.item_specs = params["spec_notes-#{each.id}"]
+      each.save      
+    end
     if params["delete"]
-        spec_id = params["delete"]
-        spec = Specification.where(id: spec_id).first
-        spec.destroy
-        designed_products = DesignedProduct.where(specification_id: spec_id)
+      spec_id = params["delete"]
+      spec = Specification.where(id: spec_id).first
+      spec.destroy
+      designed_products = DesignedProduct.where(specification_id: spec_id)
       for each in designed_products
         each.destroy
       end  
@@ -304,36 +310,24 @@ end
       new_spec.save!
     else #do nothing
     end
-    redirect_to "/event_edit/#{params["event_id"]}" and return
- 
-    end
+      redirect_to "/event_edit/#{params["event_id"]}" and return
+  end
   
   
 ########## VIRTUAL STUDIO
 
-###GET Handler from event_edit.erb
+###GET Handler from link on event_edit.erb
   def virtual_studio
     event_id = params["event_id"]    
     @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
     @specifications = @event.specifications.order("id")
-  
-  if @specifications == []
-    
+    if @specifications == []
       flash[:error] = "A. You need to create arrangements below before designing them in Virtual Studio."
-      redirect_to "/event_edit/#{params["event_id"]}" and return
-    
-    
+      redirect_to "/event_edit/#{params["event_id"]}" and return     
     else
-    end
-  
-  
-  
-  
-  
-  
-  
-  
-  #Creates a list of used products for the specification 
+    end  
+    
+  #Creates a list of used products for the arrangement 
     designedproducts = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
     used_products = []
     for each in designedproducts
@@ -341,8 +335,8 @@ end
     end
     @list_of_products = used_products.uniq.sort
 
-  #Creates a new designed_product for each specification for each product identified for the particular specification
-  #This addresses the issue associated specifications added at the end of the design process.
+  #Creates a new designed_product for each arrangement for each product identified in the virtual studio
+  #This addresses the issue associated with arrangements added at the end of the design process.
    for each in @list_of_products
       id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id
       for specification in @specifications
@@ -361,7 +355,7 @@ end
       end
     end
   
-  ## Generate dropdown list for adding new products to the Virtual Studio Page
+  #Generate dropdown list for adding new products to the Virtual Studio Page
     products = Product.where(status: "Active").where(florist_id: session["found_florist_id"]).order("name")
     dropdown = []
     for product in products
@@ -372,8 +366,7 @@ end
     end
     @dropdown = dropdown
     render(:virtual_studio) and return
-end
-
+  end
 
   
 ### POST Handler from virtual_studio.erb
@@ -386,7 +379,6 @@ end
       for specification in specifications
         if params["stemcount_#{each.id}"].to_f*100 != each.product_qty
           each.product_qty = params["stemcount_#{each.id}"].to_f * 100.round(2)
-          #each.product_type = Product.where(id: each.product_id).first.product_type  
           each.save!
         end
       end
@@ -399,7 +391,6 @@ end
         new_dp = DesignedProduct.new
         new_dp.specification_id = specification.id
         new_dp.product_qty = 0
-       # new_dp.product_type = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.product_type
         new_dp.florist_id = session["found_florist_id"]
         new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
         new_dp.event_id = event_id
@@ -413,17 +404,19 @@ end
       end
     else # do nothing
     end
-    redirect_to "/virtual_studio/#{event_id}" and return
+      redirect_to "/virtual_studio/#{event_id}" and return
   end
   
   
-### GET Handler from virtual_studio.erb 
+### GET Handler from link on virtual_studio.erb 
   def popup_specs
     event_id = params["event_id"]
     @event_id = event_id
     @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).order("id")
     render(:popup_specs, layout:false) and return
   end 
+  
+  
   
 ######### QUOTE GENERATION
 
@@ -436,13 +429,10 @@ end
     for each in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
       count = count + (each.product_qty / 100.0)
     end
-    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count < 1.0
-    
+    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count < 1.0  
       flash[:error] = "B. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
-    
-    
-    else
+    else # do nothing
     end
     if Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
       new_quote = Quote.new
@@ -456,10 +446,9 @@ end
       event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
       event.event_status = "Open Proposal"
       event.save!
-    else
+    else # do nothing
     end
-    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
-     
+    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first 
     render(:gen_quote) and return
   end
 
@@ -484,8 +473,7 @@ end
     for each in Specification.where(event_id: event_id)
       if each.quoted_price == nil
         each.quoted_price = 0
-      
-      else
+      else # do nothing
       end
       quoted_total_price = quoted_total_price + each.quoted_price
       total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
@@ -493,59 +481,35 @@ end
     quote.total_price = quoted_total_price
     if total_cost != 0
       quote.markup = (quote.total_price / total_cost)
-    else
+    else # do nothing
     end
     quote.status = params["status"]
     if params["status"] != "Completed"  && params["status"] != "Ordered"
       quote.wholesale_order_date = nil
-    else
+    else # do nothing
     end
     quote.save!
     event = Event.where(id: event_id).first
     event.event_status = params["status"]
     event.save!
     redirect_to "/generate_quote/#{event_id}" and return
-    end
+  end
 
-### GET Handler from gen_quote.erb
+### GET Handler from link on gen_quote.erb
   def generate_cust_facing_quote
     event_id = params["event_id"]
     cust_id = params["cust_id"]
     random_number = params["random_number"].to_i
-   
-    
     @event = Event.where(id: event_id).where(customer_id: cust_id).first     #   .where(florist_id: session["found_florist_id"])
     @specifications = @event.specifications.order("id")
-
-
-=begin
-    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
-      
-      redirect_to "/virtual_studio/#{event_id}" and return
-    else
-    end
-    if Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil
-      new_quote = Quote.new
-      new_quote.event_id = event_id
-      new_quote.status = "Open Proposal"
-      new_quote.florist_id = session["found_florist_id"] 
-      new_quote.save!
-      event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
-      event.event_status = "Open Proposal"
-      event.save!
-    else
-    end
-    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first
-=end
     render(:cust_facing_quote, layout:false) and return
   end
   
   
   
-  
-  
 ######### WHOLESALE ORDERS & DESIGN DAY DETAILS
-###GET Handler from homepage.erb
+
+###GET Handler from link on homepage.erb
   def schedule_order_date
     @booked_quotes = Quote.where(florist_id: session["found_florist_id"]).where(status: "Ordered").where(wholesale_order_date: nil) + Quote.where(florist_id: session["found_florist_id"]).where(status: "Booked").where(wholesale_order_date: nil)
     render(:schedule_order_date) and return
@@ -559,12 +523,11 @@ end
         booked_quote.status = "Ordered"
         #booked_quote.wholesale_order_date = Date.civil(params[:place_order_on]["element(1i)"].to_i, params[:place_order_on]["element(2i)"].to_i, params[:place_order_on]["element(3i)"].to_i)
         booked_quote.wholesale_order_date = params["place_order_on"]
-        
         booked_quote.save!
       else
       end
     end
-      redirect_to "/wholesale_order_list/#{params["place_order_on"]}" and return
+    redirect_to "/wholesale_order_list/#{params["place_order_on"]}" and return
   end
 
 ###GET Handler from schedule_order_date.erb
@@ -572,8 +535,6 @@ end
   def wholesale_order_list
     @orders = Quote.where(florist_id: session["found_florist_id"]).where(status: "Ordered").where(wholesale_order_date: params["place_order_on"])
     @list_of_event_ids = @orders.uniq.pluck(:event_id)
-    
-    
     list_of_product_ids = []
     list_of_product_types = []
     for each_id in @list_of_event_ids   
@@ -584,23 +545,9 @@ end
     end
     @list_of_product_ids = list_of_product_ids.uniq
     @list_of_product_types = list_of_product_types.uniq.sort
-    
     render(:wholesale_order_list) and return
   end
-  
-  
-=begin
-  @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
-    @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
-    @list_of_product_types = @designed_products.uniq.pluck(:product_type).sort!
-  
-=end
-  
-  
-  
-  
-  
-  
+
   
 ####GET Handler from event_edit.erb
   #Creates an order details summary for the individual event (to be used on the day of the design work).
@@ -615,17 +562,14 @@ end
       product_types = product_types + [Product.where(id: id).first.product_type]
     end
     @list_of_product_types = product_types.uniq.sort!
-
     count = 0
     for each in @designed_products
       count = count + (each.product_qty / 100.0)
     end
-
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil || count < 1.0
       flash[:error] = "C. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     end
-
     if Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil
       flash[:error] = "D. You need to create a Quote before viewing the Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
@@ -633,8 +577,11 @@ end
     render(:design_day_details) and return
   end
 
+
+
 ######### PRODUCTS
-### GET Handler from homepage.erb
+
+### GET Handler from link in header
   def products
     @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") 
     @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
@@ -650,15 +597,14 @@ end
     end
   end
 
-### GET Handler from product_post.erb
+### GET Handler from product_post function (above)
   def product
     if PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
       id = params["product_id"]
       if id == "new"
         @product = Product.new
-      
-       @product.items_per_bunch = 100
-       @product.markup = 100
+        @product.items_per_bunch = 100
+        @product.markup = 100
       else
         @product = Product.where(florist_id: session["found_florist_id"]).where(id: id).first
       end
@@ -666,7 +612,6 @@ end
     else
       redirect_to "/products" and return
     end
-  
   end
 
 ### POST Handler from new_product.erb
@@ -677,18 +622,17 @@ end
     else
       @product = Product.where(id: params["product_id"]).first
     end
-    
     @product.product_type= params["product_type"]
     @product.name = params["product_name"]
     if params["items_per_bunch"] && params["items_per_bunch"].to_f > 0
       @product.items_per_bunch = params["items_per_bunch"].to_f * 100
       if params["cost_per_bunch"] && params["cost_per_bunch"].to_f > 0
-      @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100
-      @product.cost_for_one =(params["cost_per_bunch"]).to_f / (params["items_per_bunch"]).to_f * 100
+        @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100
+        @product.cost_for_one =(params["cost_per_bunch"]).to_f / (params["items_per_bunch"]).to_f * 100
       end
     end
     if params["markup"] && params["markup"].to_f > 0   
-    @product.markup = params["markup"].to_f * 100
+      @product.markup = params["markup"].to_f * 100
     end
     @product.status = params["status"]
     @product.updated_by = Employee.where(id: session["found_user_id"]).first.name
@@ -703,13 +647,13 @@ end
 
 
 ######### EMPLOYEES
-### GET Handler from homepage.erb
+### GET Handler from link in header
   def employees
     if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
-    @employees = Employee.where(florist_id: session["found_florist_id"]).order("status",  "name")
-    render(:employees) and return
+      @employees = Employee.where(florist_id: session["found_florist_id"]).order("status",  "name")
+      render(:employees) and return
     else
-    redirect_to "/employee/#{session["found_user_id"]}" and return
+      redirect_to "/employee/#{session["found_user_id"]}" and return
     end
   end
 
@@ -722,7 +666,7 @@ end
     end
   end
 
-### GET Handler from employees.erb
+### GET Handler from employee_post function above
   def employee
     id = params["employee_id"]
     @ADMIN_RIGHTS = ADMIN_RIGHTS
@@ -736,7 +680,7 @@ end
     render(:employee_edit) and return
   end
 
-### POST Handler from employee_edit.erb
+### POST Handler from employee_updates.erb
   def employee_updates
     if params["employee_id"] == "new"
       @employee = Employee.new
@@ -750,10 +694,9 @@ end
     @employee.email = params["email"]
     @employee.w_phone = params["phone_w"]
     @employee.c_phone = params["phone_c"]
-   
     @employee.username = params["username"]
-    #@employee.password = params["password"]        #####################################################
-    #@employee.password_confirmation = params["password_confirmation"] ##################################
+    #@employee.password = params["password"]        #NOTE: STRIPPED OUT THE PASSWORD SAVE TO ALLOW FOR A BETA TESTER TO LOGIN ON THE HEROKU SITE W/OUT ALLOWING THEM TO JACK UP THE LOGIN FOR ANYONE ELSE THAT WANTED TO LOGIN 
+    #@employee.password_confirmation = params["password_confirmation"] #SEE NOTE ABOVE
     @employee.admin_rights = params["admin_rights"]
     if @employee.save
       if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
@@ -762,12 +705,9 @@ end
         redirect_to home_path and return
       end
     else
-       
     @ADMIN_RIGHTS = ADMIN_RIGHTS
     @EMPLOYEES_VIEW_MUST_HAVE = EMPLOYEES_VIEW_MUST_HAVE 
-   
-      render(:employee_edit) and return
+    render(:employee_edit) and return
     end
   end
-
 end
