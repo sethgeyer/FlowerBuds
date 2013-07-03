@@ -47,24 +47,24 @@
           <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights), class: "span12"%>
         </div>
       </div>
-    <%=label_tag "poc_email", "Email:" %>
-    <%= text_field_tag "poc_email", @employee.email %>
-    <%=label_tag "poc_phone_w", "Phone (w):" %>
-    <%= text_field_tag "poc_phone_w", @employee.w_phone %>
-    <%=label_tag "poc_phone_c", "Phone (c):" %>
-    <%= text_field_tag "poc_phone_c", @employee.c_phone %>
+      <%=label_tag "poc_email", "Email:" %>
+      <%= text_field_tag "poc_email", @employee.email %>
+      <%=label_tag "poc_phone_w", "Phone (w):" %>
+      <%= text_field_tag "poc_phone_w", @employee.w_phone %>
+      <%=label_tag "poc_phone_c", "Phone (c):" %>
+      <%= text_field_tag "poc_phone_c", @employee.c_phone %>
       <div class="row-fluid">
         <div class="span2">  
           <%=label_tag "city", "City:" %>
           <%= text_field_tag "city", @florist.city, class: "span12" %>
         </div>
         <div class="span2">  
-        <%=label_tag "state", "State:" %>
-        <%= text_field_tag "state", @florist.state, class: "span12" %>
+          <%=label_tag "state", "State:" %>
+          <%= text_field_tag "state", @florist.state, class: "span12" %>
         </div>
         <div class="span2">  
-        <%=label_tag "zip", "Zip:" %>
-        <%= text_field_tag "zip", @florist.zip, class: "span12" %>
+          <%=label_tag "zip", "Zip:" %>
+          <%= text_field_tag "zip", @florist.zip, class: "span12" %>
         </div>
       </div>
     </div>
