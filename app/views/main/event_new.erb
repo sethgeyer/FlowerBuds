@@ -1,49 +1,40 @@
-
  
-    <h3>Create a New Event for <a href="/cust_edit/<%=@customer.id%>"> <%= @customer.name%></a> </h3>
+<h3>Create a New Event for <a href="/cust_edit/<%=@customer.id%>"> <%= @customer.name%></a> </h3>
     
-    <%= form_tag("/create_new_event/#{@customer.id}") do%>
-     
- 
+<%= form_tag("/create_new_event/#{@customer.id}") do%>
    
   <% if @event.errors.size > 0 %>
-  Error(s):
-  <ul>
-  <% for error in @event.errors.full_messages %>
-    <li><%= error.gsub("Employee", "Designer") %></li>
+    Error(s):
+    <ul>
+      <% for error in @event.errors.full_messages %>
+        <li><%= error.gsub("Employee", "Designer") %></li>
+      <% end %>
+    </ul>
   <% end %>
-  </ul>
-<% end %>
  
- 
- 
-   
+  <% if Employee.where(id: @event.employee_id).first != nil
+    name = Employee.where(id: @event.employee_id).first.name
+  else
+    name = ""
+  end %>  
 
-   <% if Employee.where(id: @event.employee_id).first != nil
-        name = Employee.where(id: @event.employee_id).first.name
-       else
-        name = ""
-       end %> 
-   
-   <div class="row-fluid">
-      <div class="span4"> 
-       
-        <%=label_tag "event_name", "Event Name: *"%>
-        <%=text_field_tag "event_name", @event.name, placeholder: "required field"%>
-        <%=label_tag "event_date", "Event Date: *"%>
-        <input type="date" name="event_date">
-        <%=label_tag "lead_designer", "Assigned Floral Designer: *"%>
-        <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
-        </div>
- 
+  <div class="row-fluid">
+    <div class="span4">    
+      <%=label_tag "event_name", "Event Name: *"%>
+      <%=text_field_tag "event_name", @event.name, placeholder: "required field"%>
+      <%=label_tag "event_date", "Event Date: *"%>
+      <input type="date" name="event_date">
+      <%=label_tag "lead_designer", "Assigned Floral Designer: *"%>
+      <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
+      </div> 
     </div>
-   
-     <button class= "btn btn-small" name= "action" value= "save">Save</button>
+    <button class= "btn btn-small" name= "action" value= "save">Save</button>
+    
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>
 
-     </div>
+  </div>
     
-    <%end%>
+<%end%>
     
     

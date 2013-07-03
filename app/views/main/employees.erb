@@ -1,47 +1,39 @@
 <h3>Employees</h3>
 
-     <%= form_tag("/employee_post") do %>
-     <button class="btn btn-small" name= "new" value= "new">Add New</button>
-     
-     <table class="table table-striped table-hover ">
-        <th></th>       
-        
+  <%= form_tag("/employee_post") do %>
+    <button class="btn btn-small" name= "new" value= "new">Add New</button> 
+    <table class="table table-striped table-hover ">
+      <th></th>         
         <th>Name</th>
         <th>Username</th>
         <th>Status</th>
         <th>Email</th>
         <th>Phone(w)</th>             
         <th>Phone(c)</th>
-        
-        
         <th>Admin Rights</th>
         <th>View Preferences</th>
         <th>id</th>
-    
-   
       <tr>
-      <% for employee in @employees%> 
-    <td>  <button class="btn btn-small" name= "edit" value= <%=employee.id%>>Edit</button> </td>
-     
-      <td><%=hidden_field_tag "name", employee.name%>
-          <%=employee.name%></td>
-     <td><%= hidden_field_tag "username", employee.username%>
-          <%= employee.username %></td>
-      <td><%= hidden_field_tag "status", employee.status%>
-          <%= employee.status%></td>
-      <td><%= hidden_field_tag "email", employee.email%>
-          <%= employee.email %></td>
-     <td><%= hidden_field_tag "phone_w", employee.w_phone%>
-          <%= employee.w_phone %></td>
-     <td><%= hidden_field_tag "phone_c", employee.c_phone%>
-          <%= employee.c_phone%></td>
-    
-     <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
-         <%= employee.admin_rights%></td>
-     <td><%= hidden_field_tag "view_pref", employee.view_pref%>
-         <%= employee.view_pref%></td>
-     <td><%=hidden_field_tag "id", employee.id%>
-          <%=employee.id%></td>
-   </tr> <%end%>
-    
+        <% for employee in @employees%> 
+          <td>  <button class="btn btn-small" name= "edit" value= <%=employee.id%>>Edit</button> </td>
+          <td><%=hidden_field_tag "name", employee.name%>
+              <%=employee.name%></td>
+          <td><%= hidden_field_tag "username", employee.username%>
+              <%= employee.username %></td>
+          <td><%= hidden_field_tag "status", employee.status%>
+              <%= employee.status%></td>
+          <td><%= hidden_field_tag "email", employee.email%>
+              <%= employee.email %></td>
+          <td><%= hidden_field_tag "phone_w", employee.w_phone%>
+              <%= employee.w_phone %></td>
+          <td><%= hidden_field_tag "phone_c", employee.c_phone%>
+              <%= employee.c_phone%></td>
+          <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
+              <%= employee.admin_rights%></td>
+          <td><%= hidden_field_tag "view_pref", employee.view_pref%>
+              <%= employee.view_pref%></td>
+          <td><%=hidden_field_tag "id", employee.id%>
+             <%=employee.id%></td>
+      </tr> 
+       <%end%>
     <%end%>

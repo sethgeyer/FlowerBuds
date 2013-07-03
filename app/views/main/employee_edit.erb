@@ -1,82 +1,68 @@
 
-  <h3>Employee Details</h3>
-    
-    
-    <%= error_messages_for @employee %>
-   
-    <% if @employee.id == nil
-      action = "new"
-    else
-      action = @employee.id
-    end %>
-    
-    <%=form_tag("/employee_updates/#{action}") do %>
-       
-    <%if @EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>  
-   
-      <td><%=label_tag "name", "Name: *"%>
-          <%=text_field_tag "name", @employee.name%></td> <br>
-      <td><%=label_tag "status", "Status: *"%>
-          <%= select_tag "status", options_for_select(["Active", "Inactive"], @employee.status)%></td><br>
-     <td><%=label_tag "username", "Username: *"%>
-          <%= text_field_tag "username", @employee.username%></td><br>
-           <td><%=label_tag "email", "Email:"%>
-          <%= text_field_tag "email", @employee.email%></td><br>
-     <td><%=label_tag "phone_w", "Phone(w):"%>
-          <%= text_field_tag "phone_w", @employee.w_phone%></td><br>
-     <td><%=label_tag "phone_c", "Phone(c):"%>
-          <%= text_field_tag "phone_c", @employee.c_phone%></td><br>
-    
-         <td><%=label_tag "admin_rights", "Admin Rights:"%>
-         <%= select_tag "admin_rights", options_for_select(@ADMIN_RIGHTS, @employee.admin_rights)%></td><br>
-    
-    
-    <br>
-    <b>CHANGE / SET PASSWORD:</b> <br>
-    <td><%=label_tag "password", "New Password:"%>
-          <%= password_field_tag "password"%></td><br>
-      <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
-          <%=password_field_tag "password_confirmation"%></td><br>
-    
-    <a href="/employees">Return to Employees</a><br><br>
-    <%else%>
-
-      <div class="row">    
-      <div class="span12">
-      <p><b>Name: </b><%=hidden_field_tag "name", @employee.name%>
-          <%=@employee.name%> </p>
-          
-      <p><b>Status:</b> <%=hidden_field_tag "status", @employee.status%>
-          <%= @employee.status%></p>
-      
-      <p><b>Username: *</b>
-          <%= hidden_field_tag "username", @employee.username%>
-          <%=@employee.username%></p>
-      <label><b>Email: </b><br>
-          <%= text_field_tag "email", @employee.email%></p>
-      <p><b>Phone(w): </b><br>
-          <%= text_field_tag "phone_w", @employee.w_phone%></p>
-      <p><b>Phone(c): </b><br>
-          <%= text_field_tag "phone_c", @employee.c_phone%></p>
-      
-      <p><b>Admin Rights: </b>
-         <%= hidden_field_tag "admin_rights", @employee.admin_rights%>
-         <%= @employee.admin_rights%></p>
-        <br> 
-  <br>
+<h3>Employee Details</h3>
+<%= error_messages_for @employee %>
+ 
+  <% if @employee.id == nil
+    action = "new"
+  else
+    action = @employee.id
+  end %>
   
-  <b>CHANGE / SET PASSWORD:</b> <br>
-  <td><%=label_tag "password", "New Password:"%>
-          <%= password_field_tag "password"%></td><br>
-  <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
-          <%=password_field_tag "password_confirmation"%></td><br>
-<a href="/home">Return to Homepage</a><br><br>
-</div>
-</div>
-<%end%>
-
+  <%=form_tag("/employee_updates/#{action}") do %>
+     
+    <%if @EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>  
+      <td><%=label_tag "name", "Name: *"%>
+      <%=text_field_tag "name", @employee.name%></td> <br>
+      <td><%=label_tag "status", "Status: *"%>
+      <%= select_tag "status", options_for_select(["Active", "Inactive"], @employee.status)%></td><br>
+      <td><%=label_tag "username", "Username: *"%>
+      <%= text_field_tag "username", @employee.username%></td><br>
+      <td><%=label_tag "email", "Email:"%>
+      <%= text_field_tag "email", @employee.email%></td><br>
+      <td><%=label_tag "phone_w", "Phone(w):"%>
+      <%= text_field_tag "phone_w", @employee.w_phone%></td><br>
+      <td><%=label_tag "phone_c", "Phone(c):"%>
+      <%= text_field_tag "phone_c", @employee.c_phone%></td><br>
+      <td><%=label_tag "admin_rights", "Admin Rights:"%>
+      <%= select_tag "admin_rights", options_for_select(@ADMIN_RIGHTS, @employee.admin_rights)%></td><br>
+      <br>
+      <b>CHANGE / SET PASSWORD:</b> <br>
+      <td><%=label_tag "password", "New Password:"%>
+      <%= password_field_tag "password"%></td><br>
+      <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
+      <%=password_field_tag "password_confirmation"%></td><br>
+      <a href="/employees">Return to Employees</a><br><br>
+    <%else%>
+    <div class="row">    
+      <div class="span12">
+        <p><b>Name: </b><%=hidden_field_tag "name", @employee.name%>
+        <%=@employee.name%> </p>
+        <p><b>Status:</b> <%=hidden_field_tag "status", @employee.status%>
+        <%= @employee.status%></p>
+        <p><b>Username: *</b>
+        <%= hidden_field_tag "username", @employee.username%>
+        <%=@employee.username%></p>
+        <label><b>Email: </b><br>
+        <%= text_field_tag "email", @employee.email%></p>
+        <p><b>Phone(w): </b><br>
+        <%= text_field_tag "phone_w", @employee.w_phone%></p>
+        <p><b>Phone(c): </b><br>
+        <%= text_field_tag "phone_c", @employee.c_phone%></p>
+        <p><b>Admin Rights: </b>
+        <%= hidden_field_tag "admin_rights", @employee.admin_rights%>
+        <%= @employee.admin_rights%></p>
+        <br> 
+        <br>
+        <b>CHANGE / SET PASSWORD:</b> <br>
+        <td><%=label_tag "password", "New Password:"%>
+                <%= password_field_tag "password"%></td><br>
+        <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
+                <%=password_field_tag "password_confirmation"%></td><br>
+        <a href="/home">Return to Homepage</a><br><br>
+      </div>
+    </div>
+  <%end%>
 
     <td>  <button class="btn btn-small" name= "action" value= "save">Save</button> </td>
-    
-    <%end%>
+  <%end%>
    

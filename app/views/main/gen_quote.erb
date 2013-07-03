@@ -1,158 +1,131 @@
 
-
-
-
-    <% if flash[:update] != nil %>
-<div class="flash-error">
-  <%= flash[:update]%>
+<% if flash[:update] != nil %>
+  <div class="flash-error">
+    <%= flash[:update]%>
   </div><br>
-  <%end%>
+<%end%>
   
-     <%= form_tag("/save_quote") do %>  
- 
- 
- <div class="row-fluid">
-  <div class="span6">  
- <h4> Quote for <a tabindex=4 href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
-  Customer Name:<%=hidden_field_tag "customer_id", @event.customer.id%> 
-    <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
+<%= form_tag("/save_quote") do %>  
+  
+  <div class="row-fluid">
+    <div class="span6">  
+      <h4> Quote for <a tabindex=4 href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
+        Customer Name:<%=hidden_field_tag "customer_id", @event.customer.id%> 
+        <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
+    </div>
+    <div class="span6">  
+      <h4 class="pull-right"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status), :tabindex=>2%>
+    </div>
   </div>
-  <div class="span6">  
-  <h4 class="pull-right"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status), :tabindex=>2%>
-  </div>
-</div>
-
-<hr />  
-
+  <hr />  
 
 <%=hidden_field_tag "event_id", @event.id%> 
- 
-    
-<div class="row-fluid">
-  <div class="span3">  
-    <label><b>Quote Name: *</b>
-    <%= text_field_tag "quote_name", @quote.quote_name, class: "input-large"%>
-    
-    <label><b>Locations(s):</b>
-    <%= @event.locations%><p></p>
-    <div class="row-fluid">
-      <div class="span4">
-        <label><b>Event Date: </b><br>
-        <%=@event.date_of_event%> 
+     
+  <div class="row-fluid">
+    <div class="span3">  
+      <label><b>Quote Name: *</b>
+      <%= text_field_tag "quote_name", @quote.quote_name, class: "input-large"%> 
+      <label><b>Locations(s):</b>
+      <%= @event.locations%><p></p>
+      <div class="row-fluid">
+        <div class="span4">
+          <label><b>Event Date: </b><br>
+          <%=@event.date_of_event%> 
+        </div>
+        <div class="span4">
+          <b> Event Time: </b>   <br>
+          <%=@event.time%>
+        </div>
+        <div class="span4">
+          <b>Setup Time:</b> <br>
+          <%=@event.delivery_setup_time%>
+        </div>
       </div>
-      <div class="span4">
-        <b> Event Time: </b>   <br>
-        <%=@event.time%>
-      </div>
-      <div class="span4">
-        <b>Setup Time:</b> <br>
-        <%=@event.delivery_setup_time%>
-      </div>
+    </div>                       
+    <div class="span3">
+      <p><label> <b>Colors:</b>
+      <%= @event.color_palette%></p>
+      <p><label><b> Flower Types:</b>
+      <%=@event.flower_types%>
+      <p><label><b> Budget:</b> 
+      <%=@event.budget%>
     </div>
-  </div>                       
-  <div class="span3">
-    <p><label> <b>Colors:</b>
-    <%= @event.color_palette%></p>
-    <p><label><b> Flower Types:</b>
-    <%=@event.flower_types%>
-    <p><label><b> Budget:</b> 
-    <%=@event.budget%>
-
+    <div class="span3">
+      <p><label><b>Feel/Theme:</b>
+      <%= @event.feel_of_day%></p>
+      <p><label><b>Attire:</b> 
+      <%= @event.attire%>
+    </div>
+    <div class="span3 ">
+      <p><label><b>Coordinator:</b>
+      <%= @event.coordinator%></p>
+      <p><label><b>Photographer:</b>
+      <%=@event.photographer%></p>   
+      <label><b>Lead Designer: </b>
+      <%=@event.employee.name%> 
+    </div>
   </div>
-
-  <div class="span3">
-    <p><label><b>Feel/Theme:</b>
-    <%= @event.feel_of_day%></p>
-    <p><label><b>Attire:</b> 
-    <%= @event.attire%>
-  </div>
-  <div class="span3 ">
-    <p><label><b>Coordinator:</b>
-    <%= @event.coordinator%></p>
-    <p><label><b>Photographer:</b>
-    <%=@event.photographer%></p>   
-    <label><b>Lead Designer: </b>
-    <%=@event.employee.name%> 
-  </div>
-</div>
 
 <hr />
-<div class="row-fluid">
-  
-  <div class="span2">
-    <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-    <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.customer_id%>/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
-  </div>
- <div class="span10">
-    <button  tabindex=1 class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
-  </div>
- 
- 
-</div>  <hr/>
-        
-    
-        
-        
-        
-         
-   <h4> Arrangements & Quotable Items for Event </h4>
-     
-  
-  <table class="table table-striped table-hover table-condensed table-bordered ">
-       <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>Total_Cost:</th>
 
-      <th>Total Markup: </th>
-      <th>Total_Quoted:  </th>
+  <div class="row-fluid">
+    <div class="span2">
+      <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
+      <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.customer_id%>/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
+    </div>
+    <div class="span10">
+      <button  tabindex=1 class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
+    </div> 
+  </div>  <hr/>
+        
+
+  <h4> Arrangements & Quotable Items for Event </h4>     
+    <table class="table table-striped table-hover table-condensed table-bordered ">
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>Total_Cost:</th>
+        <th>Total Markup: </th>
+        <th>Total_Quoted:  </th>
       </tr>
-        <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-            <th></th>
-
-      <%total_cost = 0%>     
-      <% for each in @specifications
-          if each.per_item_cost != nil
-            each.per_item_cost
-          else
-            
-            each.per_item_cost = 0
-          end
-          total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
-          end%>
-      <th>$ <%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
-        
-        
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <%total_cost = 0%>     
+          <% for each in @specifications
+            if each.per_item_cost != nil
+              each.per_item_cost
+            else  
+              each.per_item_cost = 0
+            end
+            total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
+            end%>
+        <th>$ <%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
       <% if @event.quote.markup != 0%>
-          <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
+        <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
       <%else%>
         <th> - </th>  
       <%end%>    
-       <%price = @event.quote.total_price / 100.0 %>
-      <th>$ <%=sprintf("%.2f" , price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-           
-      </tr>
-      
-<tr>      
-      
+      <%price = @event.quote.total_price / 100.0 %>
+      <th>$ <%=sprintf("%.2f" , price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>     
+    </tr>  
+    <tr>      
       <th class="span2">Item Name</th>
       <th>Quantity</th>
       <th class="span8">Specifications</th> 
       <th>Budgeted Hours</th>
       <th>Per_Item Cost</th>
       <th>Extended Cost</th>
-
       <th>Per_Item List_Price</th>
       <th>Extended List_Price</th> 
       <th>Markup @ List_Price
@@ -160,74 +133,53 @@
     </tr>
        <% total_hours = 0%>
         <% for each in @specifications %>
-           <tr>
-           
+          <tr>
             <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
                  <%=each.item_name%></td> 
-            
             <td align="middle"> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity / 100%>          
                  <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            <td> <%=raw(each.item_specs.gsub("\n", "<br>"))%></td>
-           
-            
-            <% per_arrangement_cost = 0 %>
-            <% per_arrangement_list_price = 0%>
-            <% per_arrangement_hours = 0%>
-            <% designed_products = DesignedProduct.where(specification_id: each.id)%>
-            <%for designed_product in designed_products %>
-              <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
-              <% product_list_price = product_cost * (designed_product.product.markup / 100.0)%>
-              <% per_arrangement_cost = per_arrangement_cost + product_cost %>
-              <% per_arrangement_list_price = per_arrangement_list_price + product_list_price%>
-              <% if Product.where(id: designed_product.product_id).first.product_type == "4. Labor"%>
-                    <%hours = designed_product.product_qty / 100.0 %>
-                    <%per_arrangement_hours = per_arrangement_hours + hours %>
-              <%else%>
+            <td> <%=raw(each.item_specs.gsub("\n", "<br>"))%></td>        
+              <% per_arrangement_cost = 0 %>
+              <% per_arrangement_list_price = 0%>
+              <% per_arrangement_hours = 0%>
+              <% designed_products = DesignedProduct.where(specification_id: each.id)%>
+              <%for designed_product in designed_products %>
+                <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
+                <% product_list_price = product_cost * (designed_product.product.markup / 100.0)%>
+                <% per_arrangement_cost = per_arrangement_cost + product_cost %>
+                <% per_arrangement_list_price = per_arrangement_list_price + product_list_price%>
+                <% if Product.where(id: designed_product.product_id).first.product_type == "4. Labor"%>
+                  <%hours = designed_product.product_qty / 100.0 %>
+                  <%per_arrangement_hours = per_arrangement_hours + hours %>
+                <%else%>
+                <%end%>
               <%end%>
-            <%end%>
-            
-            
-             <td align="middle"><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
-             <% total_hours = total_hours + item_hours%>
+            <td align="middle"><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
+            <% total_hours = total_hours + item_hours%>
             <td align="right"> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
-                 $ <%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-
+              $ <%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
-                 <% extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
-                 $ <%=sprintf("%.2f" , extended_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            
-            
+              <% extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
+              $ <%=sprintf("%.2f" , extended_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = per_arrangement_list_price.round(2)%>
                  $ <%=sprintf("%.2f" , per_arrangement_list_price.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            
-            
             <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)%>
                  $ <%=sprintf("%.2f" , (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            
             <td> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
-            
             <% if each.quoted_price != nil%>
-            <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price / 100.0.round(2), class: "input-small", :tabindex=>3%> </td>
+              <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price / 100.0.round(2), class: "input-small", :tabindex=>3%> </td>
             <%else%>
-            <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price, class: "input-small", :tabindex=>3%></td>
-            <%end%>
-           
-        </tr>
+              <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price, class: "input-small", :tabindex=>3%></td>
+            <%end%>       
+          </tr>
         <%end%>
-       
-       
-      
-       </table>
-       
-       <p> Total Estimated Hours are: <%=total_hours%></p> 
-         Estimated Profit: <% if @event.quote.markup != 0%>
-        <%profit = @event.quote.total_price / 100 - (@event.quote.total_price / @event.quote.markup) %>
-        $ <%=profit.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
-        
+      </table>   
+      <p> Total Estimated Hours are: <%=total_hours%></p> 
+      Estimated Profit: 
+        <% if @event.quote.markup != 0%>
+          <%profit = @event.quote.total_price / 100 - (@event.quote.total_price / @event.quote.markup) %>
+          $ <%=profit.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
         <%else%> - 
-        <%end%>
-        
-        
-         
+      <%end%>   
     <%end%>   
   
