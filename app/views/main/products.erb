@@ -16,7 +16,6 @@
       <th>Items/Bunch</th>             
       <th>Cost for One</th>
       <th>Markup</th>      
-      <th>id</th>
       <th>Last Updated</th>
       <th>Updated by</th>      
       <tr>
@@ -40,8 +39,8 @@
             $<%=sprintf("%.2f" , product.cost_for_one / 100.round(2)) %></td>
         <td><%=hidden_field_tag "markup", product.markup / 100.round(2) %>
             <%=sprintf("%.2f" , product.markup / 100.round(2))%> x</td>
-        <td><%=hidden_field_tag "product_id", product.id%>
-            <%=product.id%></td>   
+        <%=hidden_field_tag "product_id", product.id%>
+              
         <td><%=hidden_field_tag "updated_at", product.updated_at%>
             <%=product.updated_at%></td>
         <td><%= hidden_field_tag "updated_by", product.updated_by%>
