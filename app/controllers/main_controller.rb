@@ -202,7 +202,10 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         each.destroy
       end  
       for specification in Specification.where(event_id: params["delete"])
-        specification.destroy    
+        specification.destroy
+        for image in specification.images
+          image.destroy
+        end    
       end
       deleted_quote = Quote.where(event_id: params["delete"]).first
       if deleted_quote != nil
@@ -301,6 +304,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       for each in designed_products
         each.destroy
       end  
+      for image in spec.images
+        image.destroy
+      end    
     elsif params["add"]
       new_spec = Specification.new
       new_spec.event_id = params["ev_id"]
@@ -344,11 +350,16 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
   def add_captions
-    specification = Specification.where(id: params["spec_id"]).first
-    for image in specification.images
-    image.caption = params["caption-#{image.id}"]
-    image.on_quote_cover = params["on_quote-#{image.id}"]
-    image.save!
+    if params["delete"]
+      deleted_image = Image.where(id: params["delete"]).first
+      deleted_image.destroy
+    else
+      specification = Specification.where(id: params["spec_id"]).first
+      for image in specification.images
+      image.caption = params["caption-#{image.id}"]
+      image.on_quote_cover = params["on_quote-#{image.id}"]
+      image.save!
+      end
     end
     redirect_to "/images/#{params["spec_id"]}" and return
   end
