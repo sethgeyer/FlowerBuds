@@ -15,6 +15,10 @@
       <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>  
       <h2 align="middle"> "<%= @event.name%>" </h2>
       <h2 align="middle"> <%= @event.date_of_event%> </h2>
+      
+    
+      
+      
       <br><br><br><br><br><br>
       <p align="middle"><%=@event.employee.name%><br>
         <%=@event.employee.w_phone%><br>
@@ -74,16 +78,41 @@
         <tr>      
           <th class="span2">Item Name</th>
           <th class="span1">Quantity</th>
-          <th class="span8">Specifications</th> 
+          <th class="span10">Specifications</th> 
           <th class="span2">Price</th>
         </tr>
         <% for each in @specifications %>
           <tr>
             <td> <%=each.item_name%></td> 
             <td> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
-            <td> <%=raw(each.item_specs.gsub("\n", "<br>"))%></td>
+            <td> <%=raw(each.item_specs.gsub("\n", "<br>"))%>
+            
+           
+           
+            
+            <br>
+            <% for image in each.images %>
+              <div class="span2">
+                <div class="thumbnail">    
+                  <img height="100" src="<%= image_data_path(image.id, image.extension) %>">
+                </div>
+              </div>
+            <%end%> 
+            </td>
+            
             <td>$ <%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>            
           </tr>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <%end%>
       </table>
       <th>Total Price: $       
