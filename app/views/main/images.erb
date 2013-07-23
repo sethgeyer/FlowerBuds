@@ -3,6 +3,8 @@
 <p> <b>Specifications:</b> <%=@specification.item_specs%></p> <br>
 <hr />
 
+<p>Add up to a <b><u>Maximum</b></u> of 5 images per arrangement</p>
+
 <%= form_tag upload_path, multipart: true, class: "dropzone",
       id: "image-upload", style: "min-height:inherit; height:200px" do %>
   <div class="fallback">
@@ -20,28 +22,31 @@
   };
 </script>
 
-
-<ul class="thumbnails">
+<%=form_tag "/add_captions" do %>
+<ul class="row-fluid">
 <% for image in Image.where(specification_id: @specification.id) %>
-<li class="span2">
-<div class="thumbnail">    
-
-      <img height="100" src="<%= image_data_path(image.id, image.extension) %>">
-      <p>caption</p>
-</div>
-<p>On Cover Page?</p>
+  <li class="span2">
+    <div class="thumbnail">    
+    <img height="100" src="<%= image_data_path(image.id, image.extension) %>">
+    </div>
+  <%=text_field_tag "caption-#{image.id}", image.caption, class: "span12", placeholder: "brief description"%>
+  <div class='label-spacer'></div>
+ <label class="checkbox">
+   <%=check_box_tag "on_quote-#{image.id}", "1", image.on_quote_cover%>On Cover of Quote
+ </label>
+ 
 </li>
 <%end%>
 </ul>
 
+<div class = 'label-spacer'></div>
+  <button class="btn btn-small" name="save" value= "save">Save Descriptions/Checks</button> 
 
 
 
+<%= hidden_field_tag "spec_id", @specification.id%>
 
-
-
-
-
+<%end%>
 
 
 

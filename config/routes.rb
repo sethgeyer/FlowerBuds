@@ -24,6 +24,7 @@ App::Application.routes.draw do
   get "/images/:specification_id"             => "main#add_images", as: "form"
   post "/upload"                              => "main#upload", as: "upload"
   get "/imaged:id.:ext"                       => "main#image_data", as: "image_data"
+  post "/add_captions"                        => "main#add_captions", as: "add_captions"
   
   get "/virtual_studio/:event_id"             => "main#virtual_studio"
   post "/virtual_studio_update"               => "main#virtual_studio_update"

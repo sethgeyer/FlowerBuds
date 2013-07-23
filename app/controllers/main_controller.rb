@@ -343,7 +343,15 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   end
 
 
-
+  def add_captions
+    specification = Specification.where(id: params["spec_id"]).first
+    for image in specification.images
+    image.caption = params["caption-#{image.id}"]
+    image.on_quote_cover = params["on_quote-#{image.id}"]
+    image.save!
+    end
+    redirect_to "/images/#{params["spec_id"]}" and return
+  end
 
   
 ########## VIRTUAL STUDIO
