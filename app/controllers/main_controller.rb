@@ -308,11 +308,43 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_spec.item_name = ""
       new_spec.florist_id = session["found_florist_id"] 
       new_spec.save!
+    elsif params["add_image"]
+      redirect_to "/images/#{params["add_image"]}" and return
     else #do nothing
     end
       redirect_to "/event_edit/#{params["event_id"]}" and return
   end
   
+######### ADD IMAGES TO SPECIFICATION
+  def add_images
+  @specification = Specification.where(florist_id: session["found_florist_id"]).where(id: params["specification_id"]).first 
+  render(:images) and return
+  end
+
+  def upload
+    upload = params[:file]
+    image = Image.new
+    image.data = upload.read
+    image.content_type = upload.content_type
+    image.extension = upload.original_filename.downcase.split(".").last
+    image.florist_id = session["found_florist_id"]
+    image.specification_id = params["spec_id"]
+    image.save!
+
+    respond_to do |format|
+      format.html { redirect_to form_path and return }
+      format.json {render :json => image.id and return }
+    end
+  end
+
+  def image_data
+    image = Image.find(params[:id])
+    send_data image.data, type: image.content_type, disposition: "inline"
+  end
+
+
+
+
   
 ########## VIRTUAL STUDIO
 

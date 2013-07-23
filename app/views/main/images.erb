@@ -1,0 +1,60 @@
+<h2> <a href="/event_edit/<%=@specification.event.id%>"> <%= @specification.event.name%></a>
+<h3> Images for:  <%=@specification.item_name%> </h3>
+<p> <b>Specifications:</b> <%=@specification.item_specs%></p> <br>
+<hr />
+
+<%= form_tag upload_path, multipart: true, class: "dropzone",
+      id: "image-upload", style: "min-height:inherit; height:200px" do %>
+  <div class="fallback">
+    <%= file_field_tag :file, multiple: true %>
+    <%= submit_tag "Upload" %>
+  </div>
+  <%= hidden_field_tag "spec_id", @specification.id%>
+<% end %>
+
+<script>
+  Dropzone.options.imageUpload = {
+   // forceFallback: true, // uncomment to test uploading without Dropzone
+    dictFallbackMessage: "Choose an image to upload...",
+    success: function() { window.location.reload(); }
+  };
+</script>
+
+
+<ul class="thumbnails">
+<% for image in Image.where(specification_id: @specification.id) %>
+<li class="span2">
+<div class="thumbnail">    
+
+      <img height="100" src="<%= image_data_path(image.id, image.extension) %>">
+      <p>caption</p>
+</div>
+<p>On Cover Page?</p>
+</li>
+<%end%>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

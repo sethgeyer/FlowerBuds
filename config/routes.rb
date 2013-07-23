@@ -21,6 +21,10 @@ App::Application.routes.draw do
   get "/event_edit/:event_id"                 => "main#event_edit"
   post "/event_edit"                          => "main#event_and_specs_edit"
 
+  get "/images/:specification_id"             => "main#add_images", as: "form"
+  post "/upload"                              => "main#upload", as: "upload"
+  get "/imaged:id.:ext"                       => "main#image_data", as: "image_data"
+  
   get "/virtual_studio/:event_id"             => "main#virtual_studio"
   post "/virtual_studio_update"               => "main#virtual_studio_update"
   get "/popup_specs/:event_id"                => "main#popup_specs"
