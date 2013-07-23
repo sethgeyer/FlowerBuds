@@ -3,24 +3,27 @@
 <p> <b>Specifications:</b> <%=@specification.item_specs%></p> <br>
 <hr />
 
-<p>Add up to a <b><u>Maximum</b></u> of 5 images per arrangement</p>
+<% total_images = Image.where(specification_id: @specification.id).size%>
+<% if total_images < 5 %>
+  <p>Add up to a <b><u>Maximum</b></u> of 5 images per arrangement</p>
 
-<%= form_tag upload_path, multipart: true, class: "dropzone",
-      id: "image-upload", style: "min-height:inherit; height:200px" do %>
-  <div class="fallback">
-    <%= file_field_tag :file, multiple: true %>
-    <%= submit_tag "Upload" %>
-  </div>
-  <%= hidden_field_tag "spec_id", @specification.id%>
-<% end %>
+  <%= form_tag upload_path, multipart: true, class: "dropzone",
+        id: "image-upload", style: "min-height:inherit; height:200px" do %>
+    <div class="fallback">
+      <%= file_field_tag :file, multiple: true %>
+      <%= submit_tag "Upload" %>
+    </div>
+    <%= hidden_field_tag "spec_id", @specification.id%>
+  <% end %>
 
-<script>
-  Dropzone.options.imageUpload = {
-   // forceFallback: true, // uncomment to test uploading without Dropzone
-    dictFallbackMessage: "Choose an image to upload...",
-    success: function() { window.location.reload(); }
-  };
-</script>
+  <script>
+    Dropzone.options.imageUpload = {
+     // forceFallback: true, // uncomment to test uploading without Dropzone
+      dictFallbackMessage: "Choose an image to upload...",
+      success: function() { window.location.reload(); }
+    };
+  </script>
+<%end%>
 
 <%=form_tag "/add_captions" do %>
 <ul class="row-fluid">
@@ -34,7 +37,8 @@
  <label class="checkbox">
    <%=check_box_tag "on_quote-#{image.id}", "1", image.on_quote_cover%>On Cover of Quote
  </label>
- 
+ <div class = 'label-spacer'></div> 
+        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
 </li>
 <%end%>
 </ul>
