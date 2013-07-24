@@ -9,17 +9,38 @@
   </head>
   <body>
     <div class="container">
-    <br><br><br><br><br><br>
+    <br><br><br>
       <h1 align="middle"><img align="middle" src="/images/<%= Florist.where(id: @event.florist_id).first.company_logo%>" width="100" height="100" class="img-polaroid" align="left"/></b></h1>
       <h1 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h1><br><br>
       <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>  
       <h2 align="middle"> "<%= @event.name%>" </h2>
-      <h2 align="middle"> <%= @event.date_of_event%> </h2>
+      <h2 align="middle"> <%= @event.date_of_event%> </h2><br><br>
       
-    
+  
+      
+     
+     
+   <ul class="nails">  
+       <% for each in @specifications %>
+      <% for image in each.images %>
+          <%if image.on_quote_cover != nil%>
+              <li>
+                <div class="thumbnail" >    
+                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                </div>
+              </li>
+              <%end%>
+            <%end%> 
+            <%end%>
+            
+  </ul>
+<br><br><br>
+   
+   
       
       
-      <br><br><br><br><br><br>
+      
+      <br>
       <p align="middle"><%=@event.employee.name%><br>
         <%=@event.employee.w_phone%><br>
         <%=@event.employee.c_phone%><br>
@@ -91,10 +112,11 @@
            
             
             <br>
+            
             <% for image in each.images %>
               <div class="span2">
                 <div class="thumbnail">    
-                  <img height="100" src="<%= image_data_path(image.id, image.extension) %>">
+                  <img style="height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
                 </div>
               </div>
             <%end%> 
