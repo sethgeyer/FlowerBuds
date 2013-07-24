@@ -109,7 +109,7 @@
        <%= hidden_field_tag "spec_id", each.id%>
        <%=each.id%></td>
         <td> <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=each.id%>>Delete</button></td>
+        <button tabindex=-1 class="btn btn-danger btn-mini" data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>Delete</button></td>
 
 
 

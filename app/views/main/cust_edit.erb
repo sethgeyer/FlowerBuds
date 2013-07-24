@@ -44,7 +44,7 @@
 
     <br>    
     <div class = 'label-spacer'></div>
-      <button class= "btn btn-small" name= "save" value= "save">Save Updates</button>       
+      <button class= "btn btn-small" name= "save" data-disable-with="Please wait..." value= "save">Save Updates</button>       
     <hr/>
 
   <h3> Events </h3>
@@ -75,7 +75,7 @@
           <td> <%=event.id%></td>
           <% if Employee.where(id: session["found_user_id"]).first.admin_rights == "All Admin Rights"%>
             <td> <div class = 'label-spacer'></div> 
-            <button class="btn btn-danger btn-mini" tabindex=-1 name="delete" value= <%=event.id%>>Delete</button></td>
+            <button class="btn btn-danger btn-mini" tabindex=-1 name="delete" data-confirm="This event will be permanently deleted... OK?" value= <%=event.id%>>Delete</button></td>
           <%else%>
             <td></td>
           <%end%>     
@@ -83,4 +83,7 @@
       <%end%>
     </table>
      <%end%>
+     
+     
+     
  
