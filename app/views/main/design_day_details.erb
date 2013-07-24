@@ -83,7 +83,33 @@
     <tr>
       <td> <%=each.item_name%></td> 
       <td align="middle"> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-      <td><%= raw(each.item_specs.gsub("\n", "<br>"))%></td>
+      <td><%= raw(each.item_specs.gsub("\n", "<br>"))%>
+      
+      
+       <br>
+              <% for image in each.images %>
+                <div class="span2">
+                  <div class="thumbnail">    
+                    <img style="height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                  </div>
+                </div>
+              <%end%> 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      </td>
     </tr>
   <%end%>
 </table>
