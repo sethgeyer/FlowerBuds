@@ -69,6 +69,8 @@
 <%= raw(@event.notes.gsub("\n", "<br>"))%>
  </tr>
 
+
+<div class="page-break"></div>   
 <hr />    
      
 <h3> Arrangements & Specifications </h3>  
@@ -87,13 +89,15 @@
       
       
        <br>
+              <ul class="nails2">
               <% for image in each.images %>
-                <div class="span2">
+                <li>
                   <div class="thumbnail">    
-                    <img style="height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                    <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
                   </div>
-                </div>
+                </li>
               <%end%> 
+              </ul>
       
       
       
@@ -142,7 +146,6 @@
     </table>
   <%end%>
 
-<div class="page-break"></div>   
 <hr />     
 
 <h3> Total Items per Arrangement </h3>     

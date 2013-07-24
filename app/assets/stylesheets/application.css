@@ -36,3 +36,14 @@
     *display:inline; /* ie7 fix */
     float: none; /* this is the part that makes it work */
 }
+
+
+.nails2 {
+    text-align:left;
+}
+
+.nails2 > li {
+    display: inline-block;
+    *display:inline; /* ie7 fix */
+    float: none; /* this is the part that makes it work */
+}

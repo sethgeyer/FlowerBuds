@@ -22,12 +22,13 @@
             <td  tabindex=1>    <%= raw(specification.item_specs.gsub("\n", "<br>"))%>
           
               <br>
+              <ul class="nails2">
               <% for image in specification.images %>
-                <div class="span2">
+                <li>
                   <div class="thumbnail">    
-                    <img style="height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                    <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
                   </div>
-                </div>
+                </li>
               <%end%> 
     </div
           

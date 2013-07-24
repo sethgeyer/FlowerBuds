@@ -72,7 +72,7 @@
  <hr />
 
  <h3> Arrangements & Quotable Items for Event </h3>        
-  <table class="table table-hover table-condensed">
+  <table class="table table-hover table-striped table-condensed">
   <tr>
     <th class="span3">Item Name *</th>
     <th class="span1"></th>
@@ -88,7 +88,23 @@
           <button class="btn btn-success btn-mini" name="add_image" value= <%=each.id%>>Image</button></td>
         <%x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,50]%>
         <td><%= select_tag "spec_qty-#{each.id}", options_for_select(x, each.item_quantity / 100), class: "input-mini"%></td>        
-        <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span8", :rows=>2, placeholder: "Limit: 500 characters."%></td>
+        <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span8", :rows=>3, placeholder: "Limit: 500 characters."%>
+         <br>
+            
+            <ul class="nails2">
+            <% for image in each.images %>
+              <li>
+                <div class="thumbnail">    
+                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                </div>
+              </li>
+            <%end%> 
+            </ul>
+        
+        
+        
+        
+        </td>
        <td>
        <%= hidden_field_tag "spec_id", each.id%>
        <%=each.id%></td>
@@ -97,19 +113,6 @@
 
 
 
-<tr>
-<tr class="row-fluid">
-<td>
-<td>
-<td>
-<% for image in each.images %>
-  <li class="span2">
-    <div class="thumbnail">    
-    <img style="height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
-    </div>
-    </li>
-<%end%>
-</td>
 
 </tr>
 
