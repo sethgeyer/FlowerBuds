@@ -356,7 +356,6 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     else
       specification = Specification.where(id: params["spec_id"]).first
       for image in specification.images
-      image.caption = params["caption-#{image.id}"]
       image.on_quote_cover = params["on_quote-#{image.id}"]
       image.save!
       end

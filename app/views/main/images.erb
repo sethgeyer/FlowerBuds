@@ -26,25 +26,26 @@
 <%end%>
 
 <%=form_tag "/add_captions" do %>
+<div class = 'label-spacer'></div>
+  <button class="btn btn-small" name="save" value= "save">Save My Checks</button><br><br>
+
 <ul class="row-fluid">
 <% for image in Image.where(specification_id: @specification.id) %>
   <li class="span2">
     <div class="thumbnail">    
     <img style="height: 160px" src="<%= image_data_path(image.id, image.extension) %>">
     </div>
-  <%=text_field_tag "caption-#{image.id}", image.caption, class: "span12", placeholder: "brief description"%>
-  <div class='label-spacer'></div>
+   <div class='label-spacer'></div>
  <label class="checkbox">
    <%=check_box_tag "on_quote-#{image.id}", "1", image.on_quote_cover%>On Cover of Quote
- </label>
+ </label><br>
  <div class = 'label-spacer'></div> 
         <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
 </li>
 <%end%>
 </ul>
-
-<div class = 'label-spacer'></div>
-  <button class="btn btn-small" name="save" value= "save">Save Descriptions/Checks</button> 
+<br><br><br>
+ 
 
 
 
