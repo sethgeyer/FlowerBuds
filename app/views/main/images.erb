@@ -4,8 +4,8 @@
 <hr />
 
 <% total_images = Image.where(specification_id: @specification.id).size%>
-<% if total_images < 5 %>
-  <p>Add up to a <b><u>Maximum</b></u> of 5 images per arrangement</p>
+<% if total_images < 10 %>
+  <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement</p>
 
   <%= form_tag upload_path, multipart: true, class: "dropzone",
         id: "image-upload", style: "min-height:inherit; height:200px" do %>
@@ -30,7 +30,7 @@
 <% for image in Image.where(specification_id: @specification.id) %>
   <li class="span2">
     <div class="thumbnail">    
-    <img height="100" src="<%= image_data_path(image.id, image.extension) %>">
+    <img style="height: 160px" src="<%= image_data_path(image.id, image.extension) %>">
     </div>
   <%=text_field_tag "caption-#{image.id}", image.caption, class: "span12", placeholder: "brief description"%>
   <div class='label-spacer'></div>
