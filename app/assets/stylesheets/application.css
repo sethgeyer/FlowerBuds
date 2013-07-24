@@ -25,3 +25,14 @@
 
 .page-break { display:block; clear:both; page-break-after:always; }
 
+
+
+.nails {
+    text-align:center;
+}
+
+.nails > li {
+    display: inline-block;
+    *display:inline; /* ie7 fix */
+    float: none; /* this is the part that makes it work */
+}
