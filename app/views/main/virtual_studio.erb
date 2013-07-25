@@ -23,18 +23,20 @@
 <h3>Virtual Studio</h3>
   <p>The Event's Arrangements are shown below.  For each arrangement, select the individual items (from the dropdown list) that will be included and add it to the design table.  Determine how many of each item will be included for a particular arrangement. Design only a <u><b>single</u></b> arrangement for each type of arrangement.  Make sure to "save" often. flowerbuds will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
 
+
+<%= form_tag("/virtual_studio_update") do %>
+
   <table class="table table-striped table-hover table-condensed">
          
-  <%= form_tag("/virtual_studio_update") do %>
-
+  
   <div class="row-fluid">
     <div class="span2">
-      <button class="btn" name= "update" value= "update">Save Updates</button>  
+      <button class="btn" name= "update" data-disable-with="..." value= "update">Save Updates</button>  
     </div>
     <div class="span3">
       <div class="input-append">
         <%= select_tag "new_item", options_for_select(@dropdown)%> 
-        <button class="btn" name= "add" value= "add">Add</button> 
+        <button class="btn" name= "add" data-disable-with="..." value= "add">Add</button> 
       </div>
     </div>
     
@@ -57,7 +59,7 @@
       <tr>       
       <%for each in @list_of_products%>
         <%id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id%>
-        <td><button  tabindex=-1 class="btn btn-danger btn-mini" name= "remove" value= <%=id%>>Delete</button></div> </td> 
+        <td><button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed... OK?" name= "remove" value= <%=id%>>Remove</button></div> </td> 
         <td><%=each%></td> 
         <% for specification in @specifications%>
           <td><%x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first%>
@@ -75,4 +77,9 @@
 
 <p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Me the Specifications for Each Arrangement</a></p> 
     
+ 
+  
+ 
+ 
+ 
  
