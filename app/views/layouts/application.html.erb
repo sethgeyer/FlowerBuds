@@ -15,8 +15,28 @@
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
               <span class="icon-th-list"></span>
             </a>
-            <a tabindex=-1 href= "/home" class="brand"><img src="/images/<%=Florist.where(id: session["found_florist_id"]).first.company_logo%>" width="30" />
+            <% image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%>
+            <% if image != nil%>
+            <a tabindex=-1 href= "/home" class="brand"> <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extension) %>">
+            <%else%>
+            <a tabindex=-1 href= "/home" class="brand"> No Image for
+            <%end%>
             <%= Florist.where(id: session["found_florist_id"]).first.name%></a>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
             <div class = "nav-collapse collapse">
               <ul class="nav pull-right">
 

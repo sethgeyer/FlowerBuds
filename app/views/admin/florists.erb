@@ -22,10 +22,15 @@
       <th>City:</th>
       <th>State:</th>
       <th>Zip:</th>  
-      <th>Company Logo: *</th>      
       <tr>
         <% for florist in @florists%>  
-          <td><img src="/images/<%=florist.company_logo%>" width="30" height="30" align="left" />
+          <td>
+            <% image = Image.where(florist_id: florist.id).where(image_type: "florist").first%>
+            <% if image != nil%>
+             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extension) %>">
+          <%else%>
+          none
+          <%end%></td>
           <td><%= hidden_field_tag "florist_id", florist.id%>
               <%=florist.id%></td>
           <td><button class="btn btn-mini" name= "edit" value= <%=florist.id%>>Edit</button> </td>
@@ -50,8 +55,7 @@
                 <%=florist.state %></td>
             <td><%=hidden_field_tag "zip", florist.zip %>
                 <%=florist.zip %></td>
-            <td><%=hidden_field_tag "company_logo", florist.company_logo %>
-                <%=florist.company_logo %></td>
+            
           <%else%>
             <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
           <%end%>
