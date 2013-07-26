@@ -8,9 +8,16 @@
     action = @employee.id
   end %>
   
+  <div class="row-fluid">
+  <div class="span6">
   <%=form_tag("/employee_updates/#{action}") do %>
+   
+   
+      
      
     <%if @EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>  
+       
+      
       <td><%=label_tag "name", "Name: *"%>
       <%=text_field_tag "name", @employee.name%></td> <br>
       <td><%=label_tag "status", "Status: *"%>
@@ -33,8 +40,7 @@
       <%=password_field_tag "password_confirmation"%></td><br>
       <a href="/employees">Return to Employees</a><br><br>
     <%else%>
-    <div class="row">    
-      <div class="span12">
+   
         <p><b>Name: </b><%=hidden_field_tag "name", @employee.name%>
         <%=@employee.name%> </p>
         <p><b>Status:</b> <%=hidden_field_tag "status", @employee.status%>
@@ -59,10 +65,77 @@
         <td><%=label_tag "password_confirmation", "Re-confirm New Password:"%>    
                 <%=password_field_tag "password_confirmation"%></td><br>
         <a href="/home">Return to Homepage</a><br><br>
-      </div>
-    </div>
+      
   <%end%>
+  <td>  <button class="btn btn-small" name= "action" value= "save">Save</button> </td>
 
-    <td>  <button class="btn btn-small" name= "action" value= "save">Save</button> </td>
+</div>
+    
+
+    
   <%end%>
+  
+  
+  
+  
+      <div class="span6">
+  
+<div><b>Homepage Image:</b></>
+
+<% if action == "new"%>
+<p> "You must first "save" before adding an image"
+<%else%>
+
+
+<% if Image.where(employee_id: @employee.id).where(image_type: "employee").first == nil %>
+  
+  <%= form_tag upload_path, multipart: true, class: "dropzone",
+        id: "image-upload", style: "min-height:inherit; height:200px" do %>
+    <div class="fallback">
+      <%= file_field_tag :file, multiple: true %>
+      <%= submit_tag "Upload" %>
+    </div>
+    <%= hidden_field_tag "spec_id", "employee"%>
+    <%= hidden_field_tag "emp_id", @employee.id%>
+  <% end %>
+
+  <script>
+    Dropzone.options.imageUpload = {
+    // forceFallback: true, // uncomment to test uploading without Dropzone
+      dictFallbackMessage: "Choose an image to upload...",
+      success: function() { window.location.reload(); }
+    };
+  </script>
+<%end%>
+
+<%=form_tag "/update_image" do %>
+
+<ul class="row-fluid">
+<% image = Image.where(employee_id: @employee.id).where(image_type: "employee").first%>
+  <% if image != nil%>
+  <li class="span4">
+    <div class="thumbnail">    
+    <img src="<%= image_data_path(image.id, image.extension) %>">
+    </div><br><br>
+ 
+ <div class = 'label-spacer'></div> 
+        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        
+</li>
+<%end%>
+</ul>
+
+ 
+
+
+
+<%= hidden_field_tag "spec_id", "employee"%>
+<%= hidden_field_tag "emp_id", @employee.id %>
+
+<%end%>
+<%end%>
+
+</div>
+</div>
+
    
