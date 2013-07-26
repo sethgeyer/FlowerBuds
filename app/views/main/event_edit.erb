@@ -75,11 +75,11 @@
   <table class="table table-hover table-striped table-condensed">
   <tr>
     <th class="span3">Item Name *</th>
-    <th class="span1"></th>
+    <th></th>
     <th class="span1">Quantity *</th>
     <th class="span8">Specifications</th> 
-    <th class="span1">id</th>
-    <th class="span1"></th>          
+    
+    <th></th>          
     </tr>
     <% for each in @specifications %>
       <tr>
@@ -114,9 +114,9 @@
         
         
     
-       <td>
+       
        <%= hidden_field_tag "spec_id", each.id%>
-       <%=each.id%></td>
+       
         <td> <div class = 'label-spacer'></div> 
         <button tabindex=-1 class="btn btn-danger btn-mini" data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>Delete</button></td>
 

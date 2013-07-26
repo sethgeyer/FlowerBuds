@@ -333,8 +333,17 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     image.data = upload.read
     image.content_type = upload.content_type
     image.extension = upload.original_filename.downcase.split(".").last
-    image.florist_id = session["found_florist_id"]
+   
+    if params["spec_id"] == "florist"
+    image.image_type = "florist"
+    image.florist_id =  params["fl_id"]
+    elsif params["spec_id"] == "employee"
+    image.image_type = "employee"
+    image.employee_id = params["emp_id"]
+    else
     image.specification_id = params["spec_id"]
+     image.florist_id = session["found_florist_id"]
+    end
     image.save!
 
     respond_to do |format|
@@ -349,7 +358,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   end
 
 
-  def add_captions
+
+
+  def update_image
     if params["delete"]
       deleted_image = Image.where(id: params["delete"]).first
       deleted_image.destroy
@@ -360,7 +371,16 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       image.save!
       end
     end
+    
+    if params["spec_id"] == "florist"
+    redirect_to "/florists/#{params["fl_id"]}" and return
+    
+        elsif params["spec_id"] == "employee"
+    redirect_to "/employee/#{params["emp_id"]}" and return
+        else
     redirect_to "/images/#{params["spec_id"]}" and return
+    end
+
   end
 
   
@@ -384,7 +404,12 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       used_products << each.product.name
     end
     @list_of_products = used_products.uniq.sort
-
+    list_of_product_types = []
+    for each in @list_of_products
+    product = Product.where(florist_id: session["found_florist_id"]).where(name: each).first
+    list_of_product_types << product.product_type
+    end
+    @list_of_product_types = list_of_product_types.uniq.sort
   #Creates a new designed_product for each arrangement for each product identified in the virtual studio
   #This addresses the issue associated with arrangements added at the end of the design process.
    for each in @list_of_products
@@ -745,8 +770,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @employee.w_phone = params["phone_w"]
     @employee.c_phone = params["phone_c"]
     @employee.username = params["username"]
-    #@employee.password = params["password"]        #NOTE: STRIPPED OUT THE PASSWORD SAVE TO ALLOW FOR A BETA TESTER TO LOGIN ON THE HEROKU SITE W/OUT ALLOWING THEM TO JACK UP THE LOGIN FOR ANYONE ELSE THAT WANTED TO LOGIN 
-    #@employee.password_confirmation = params["password_confirmation"] #SEE NOTE ABOVE
+    @employee.password = params["password"]        #NOTE: STRIPPED OUT THE PASSWORD SAVE TO ALLOW FOR A BETA TESTER TO LOGIN ON THE HEROKU SITE W/OUT ALLOWING THEM TO JACK UP THE LOGIN FOR ANYONE ELSE THAT WANTED TO LOGIN 
+    @employee.password_confirmation = params["password_confirmation"] #SEE NOTE ABOVE
     @employee.admin_rights = params["admin_rights"]
     if @employee.save
       if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
