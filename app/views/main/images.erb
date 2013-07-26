@@ -1,11 +1,12 @@
+<h1> Add Images to Include in your Proposal
 <h2> <a href="/event_edit/<%=@specification.event.id%>"> <%= @specification.event.name%></a>
-<h3> Images for:  <%=@specification.item_name%> </h3>
+<h3> Arrangement:  <%=@specification.item_name%> </h3>
 <p> <b>Specifications:</b> <%=@specification.item_specs%></p> <br>
 <hr />
 
 <% total_images = Image.where(specification_id: @specification.id).size%>
 <% if total_images < 10 %>
-  <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement</p>
+  <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement.  Large image sizes will take much longer to load.</p>
 
   <%= form_tag upload_path, multipart: true, class: "dropzone",
         id: "image-upload", style: "min-height:inherit; height:200px" do %>
@@ -14,6 +15,7 @@
       <%= submit_tag "Upload" %>
     </div>
     <%= hidden_field_tag "spec_id", @specification.id%>
+    
   <% end %>
 
   <script>
@@ -25,7 +27,7 @@
   </script>
 <%end%>
 
-<%=form_tag "/add_captions" do %>
+<%=form_tag "/update_image" do %>
 <div class = 'label-spacer'></div>
   <button class="btn btn-small" name="save" value= "save">Save My Checks</button><br><br>
 
@@ -37,10 +39,11 @@
     </div>
    <div class='label-spacer'></div>
  <label class="checkbox">
-   <%=check_box_tag "on_quote-#{image.id}", "1", image.on_quote_cover%>On Cover of Quote
+   <%=check_box_tag "on_quote-#{image.id}", "1", image.on_quote_cover%>On Cover of Quote?
  </label><br>
  <div class = 'label-spacer'></div> 
         <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        <br><br><br><br>
 </li>
 <%end%>
 </ul>
