@@ -17,14 +17,15 @@
   </div>
 </div>
 
-<%=hidden_field_tag "event_id", value: @event.id%>
+<%=hidden_field_tag "event_id", @event.id%>
 <hr />
 
 <h3>Virtual Studio</h3>
-  <p>The Event's Arrangements are shown below.  For each arrangement, select the individual items (from the dropdown list) that will be included and add it to the design table.  Determine how many of each item will be included for a particular arrangement. Design only a <u><b>single</u></b> arrangement for each type of arrangement.  Make sure to "save" often. flowerbuds will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
+  <p>For each arrangement, select the individual items (from the dropdown list) that will be included and add it to the design table.  Determine how many of each item will be included for a particular arrangement. Design only a <u><b>single</u></b> arrangement for each type of arrangement.  Make sure to "save" often. flowerbuds will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
 
 
 <%= form_tag("/virtual_studio_update") do %>
+
 
   <div class="row-fluid">
     <div class="span2">
@@ -42,12 +43,14 @@
       <p class="pull-right" ><a class="span12" href="JavaScript:newPopup('/products');">Popup Products<img src="/images/orange_gerber.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
     </div>
       
+      <%=hidden_field_tag "event_id", @event.id%>
+      
    <%for product_type in @list_of_product_types%>
     <p><b><%=product_type%></b>
 
   <table class="table table-striped table-hover table-condensed">
                
-    <%=hidden_field_tag "event_id", @event.id%>
+    
     
     <thead>
       <tr>
