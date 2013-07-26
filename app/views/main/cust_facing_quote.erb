@@ -12,8 +12,9 @@
     <br><br><br>
       
       <% image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%> 
-      
+      <% if image != nil %>
       <h1 align="middle"><img align="middle" src="<%= image_data_path(image.id, image.extension) %>" width="100" height="100" class="img-polaroid" align="left"/></b></h1>
+      <%end%>
       <h1 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h1><br><br>
       <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>  
       <h2 align="middle"> "<%= @event.name%>" </h2>
