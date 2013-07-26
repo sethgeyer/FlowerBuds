@@ -15,14 +15,12 @@
          
   <div class="row-fluid">
     <div class="span12">
-      <img src="/images/<%=@florist.company_logo%>" width="40" height="40" align="left"/>           
-      <%= hidden_field_tag "company_logo", @florist.company_logo %>
-      <%=@florist.company_logo%><br><br><br>
+      
       <%=label_tag "name", "Florist Co. Name: *" %>
       <%= text_field_tag "name", @florist.name%>
       <%=label_tag "company_id", "Company Login ID: *" %>
       <%= text_field_tag "company_id", @florist.company_id%>             
-      <%=label_tag "company_logo", "Company Logo: *" %>
+      
       <%=label_tag "status", "Company Status: *" %>
       <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%>
       <div class="row-fluid">
@@ -75,15 +73,61 @@
 <% end %>
   
 
-<p><b>Process to Add Customer Logo</b></p>
-<ol>
-<li>Get Customer Logo.
-<li>Name it:  "logo_" and append to it the Company Login ID you just created and then add ".jpeg" to the end</li>
-  <ul><li> Example:  Customer's Name is ABC Flower Company.  You establish the company login id as: abc</li>
-      <li> The file should be named: logo_abc.jpeg</li></ul>
-<li>Save the file in the flowerbuds/public/images folder</li>
-<li>Commit changes to github  (gitx and git push)
-<li>Run "git push heroku master"
-<li>Confirm that the image now shows up on heroku
 
+
+
+<div>Florist's Logo:</b></>
+
+<% if id == "new"%>
+<p> "You must first "save" before adding the customer_logo"
+<%else%>
+
+
+<% if Image.where(florist_id: @florist.id).where(image_type: "florist").first == nil %>
+  
+  <%= form_tag upload_path, multipart: true, class: "dropzone",
+        id: "image-upload", style: "min-height:inherit; height:200px" do %>
+    <div class="fallback">
+      <%= file_field_tag :file, multiple: true %>
+      <%= submit_tag "Upload" %>
+    </div>
+    <%= hidden_field_tag "spec_id", "florist"%>
+    <%= hidden_field_tag "fl_id", @florist.id%>
+  <% end %>
+
+  <script>
+    Dropzone.options.imageUpload = {
+    // forceFallback: true, // uncomment to test uploading without Dropzone
+      dictFallbackMessage: "Choose an image to upload...",
+      success: function() { window.location.reload(); }
+    };
+  </script>
+<%end%>
+
+<%=form_tag "/update_image" do %>
+
+<ul class="row-fluid">
+<% image = Image.where(florist_id: @florist.id).where(image_type: "florist").first%>
+  <% if image != nil%>
+  <li class="span4">
+    <div class="thumbnail">    
+    <img src="<%= image_data_path(image.id, image.extension) %>">
+    </div><br><br>
+ 
+ <div class = 'label-spacer'></div> 
+        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        
+</li>
+<%end%>
+</ul>
+
+ 
+
+
+
+<%= hidden_field_tag "spec_id", "florist"%>
+<%= hidden_field_tag "fl_id", @florist.id %>
+
+<%end%>
+<%end%>
 

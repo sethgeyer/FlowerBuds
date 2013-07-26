@@ -63,7 +63,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @florist.city = params["city"]
     @florist.state = params["state"]
     @florist.zip = params["zip"]
-    @florist.company_logo = "logo_#{@florist.company_id}.jpeg"
+    
     @florist.updated_by = Employee.where(id: session["found_user_id"]).first.name
     if @florist.save
       @employee.florist_id = @florist.id
@@ -80,7 +80,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee.view_pref = "all"
       @employee.save
       if @employee.save
-        redirect_to "/florists" and return
+        redirect_to "/florists/#{@florist.id}" and return
       else
         render(:florist_updates) and return
       end
