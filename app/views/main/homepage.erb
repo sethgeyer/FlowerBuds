@@ -72,8 +72,11 @@
       <%else%>
         No Quote
       <%end%></td>
-      <td><%if event.quote.wholesale_order_date !=nil%>
-        <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date.strftime("%b-%d-%y")%>
+      <td><%if event.quote !=nil%>
+        <%if event.quote.wholesale_order_date !=nil%>
+          <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date.strftime("%b-%d-%y")%>
+        <%else%>
+        <%end%>
       <%else%>
       <%end%></td>
       <td><%=event.customer.phone1%></td>
