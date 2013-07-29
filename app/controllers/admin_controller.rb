@@ -25,7 +25,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### GET Handler from florists_post function (see above)
   def florist
-    if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds" # && Florist.where(id: params["florist_id"]).first.company_id != "flowerbuds"
       id = params["florist_id"]
       if id == "new"
         @florist = Florist.new
@@ -58,14 +58,17 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       end
     end
     @florist.name= params["name"]
-    @florist.company_id = params["company_id"]
-    @florist.status = params["status"]
+    if @florist.company_id != "flowerbuds"
+      @florist.company_id = params["company_id"]
+      @florist.status = params["status"]
+    else
+    end
     @florist.city = params["city"]
     @florist.state = params["state"]
     @florist.zip = params["zip"]
     
     @florist.updated_by = Employee.where(id: session["found_user_id"]).first.name
-    if @florist.save
+    if @florist.save &&  @florist.company_id != "flowerbuds"
       @employee.florist_id = @florist.id
       @employee.name = params["primary_poc"]
       @employee.email = params["poc_email"]

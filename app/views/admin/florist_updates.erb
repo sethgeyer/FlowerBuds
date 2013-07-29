@@ -24,6 +24,7 @@
       <%=label_tag "status", "Company Status: *" %>
       <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%>
       <div class="row-fluid">
+       <p> The POC is typically the business owner.  Their information should be input here at initial setup.  Any other modifications should be done by the florist themselves.
         <div class="span2">   
           <%=label_tag "primary_poc", "POC's Name: *" %> 
           <%= text_field_tag "primary_poc", @employee.name, class: "span12"%>
