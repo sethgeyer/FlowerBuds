@@ -6,7 +6,7 @@
 
 <% total_images = Image.where(specification_id: @specification.id).size%>
 <% if total_images < 10 %>
-  <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement.  Large image sizes will take much longer to load.</p>
+  <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement.  Max file size = 0.2Mb.</p>
 
   <%= form_tag upload_path, multipart: true, class: "dropzone",
         id: "image-upload", style: "min-height:inherit; height:200px" do %>
