@@ -6,7 +6,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### GET Handler for link on homegage.erb  
   def florists
-    if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
       @florists = Florist.order("status", "name")
       render(:florists) and return    
     else
@@ -25,7 +25,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### GET Handler from florists_post function (see above)
   def florist
-    if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds" # && Florist.where(id: params["florist_id"]).first.company_id != "flowerbuds"
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
       id = params["florist_id"]
       if id == "new"
         @florist = Florist.new
@@ -58,7 +58,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       end
     end
     @florist.name= params["name"]
-    if @florist.company_id != "flowerbuds"
+    if @florist.company_id != "centerpiece"
       @florist.company_id = params["company_id"]
       @florist.status = params["status"]
     else
@@ -68,7 +68,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @florist.zip = params["zip"]
     
     @florist.updated_by = Employee.where(id: session["found_user_id"]).first.name
-    if @florist.save &&  @florist.company_id != "flowerbuds"
+    if @florist.save &&  @florist.company_id != "centerpiece"
       @employee.florist_id = @florist.id
       @employee.name = params["primary_poc"]
       @employee.email = params["poc_email"]

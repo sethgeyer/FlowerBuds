@@ -31,7 +31,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 
-######### WEBPAGE aka: the landing page for someone searching for flowerbuds on the internet
+######### WEBPAGE aka: the landing page for someone searching for centerpiece on the internet
 
 ### GET handler from "/"
   def webpage

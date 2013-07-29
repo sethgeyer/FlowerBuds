@@ -33,7 +33,7 @@
     </div>  
   </div>
 
-  <%if Florist.where(id: session["found_florist_id"]).first.company_id == "flowerbuds"%>
+  <%if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"%>
     <%=button_tag "Admin Access", name: "admin_access", class:"btn btn-small"%><br>
   <%else%>
   <%end%>
