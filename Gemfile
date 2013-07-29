@@ -41,7 +41,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'debugger'
 
 
-
+gem 'google-analytics-rails'
 
 gem 'activerecord', '~> 3.2'
 gem 'activerecord-postgresql-adapter'
