@@ -3,7 +3,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ######### SESSION SECURITY
 
-  OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/marketing", "/quote/#{:cust_id}/#{:event_id}/#{:random_number}"]
+  OPEN_PAGES = ["/", "/login", "/logout", "/about_us", "/marketing"]
   before_filter do
     if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
       render(:login, layout:false) and return
@@ -573,9 +573,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from link on gen_quote.erb
   def generate_cust_facing_quote
     event_id = params["event_id"]
-    cust_id = params["cust_id"]
-    random_number = params["random_number"].to_i
-    @event = Event.where(id: event_id).where(customer_id: cust_id).first     #   .where(florist_id: session["found_florist_id"])
+    
+    
+    @event = Event.where(id: event_id).where(florist_id: session["found_florist_id"]).first
     @specifications = @event.specifications.order("id")
     render(:cust_facing_quote, layout:false) and return
   end

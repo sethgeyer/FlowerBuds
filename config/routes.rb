@@ -32,7 +32,7 @@ App::Application.routes.draw do
   
   get "/generate_quote/:event_id"             => "main#quote_generation"
   post "/save_quote"                          => "main#save_quote"
-  get "/quote/:cust_id/:event_id"             => "main#generate_cust_facing_quote"
+  get "/quote/:event_id"             => "main#generate_cust_facing_quote"
   
   get "/schedule_order_date"                  => "main#schedule_order_date"
   post "/assign_order_date"                   => "main#assign_order_date"
