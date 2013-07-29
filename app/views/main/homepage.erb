@@ -13,7 +13,7 @@
       <% image = Image.where(employee_id: session["found_user_id"]).where(image_type: "employee").first%>
   <% if image != nil%>
   <li>
-    <div><i>My inspiration...</div>
+    <div><i>My inspiration...</i></div>
     <div class="thumbnail">    
     <a href= "/employee/<%=Employee.where(id: session["found_user_id"]).first.id%>"> <img src="<%= image_data_path(image.id, image.extension) %>" style="height: 200px" ></a>
     </div>
@@ -61,7 +61,7 @@
     <%for event in @events%>
       <td ><a href="cust_edit/<%=event.customer.id%>"> <%= event.customer.name %></a></td>
       <td><a href="event_edit/<%= event.id%>"> <%= event.name %>  </a></td>
-      <td><%=event.date_of_event%></td>
+      <td><%=event.date_of_event.strftime("%b-%d-%y")%></td>
       <td><%if event.quote != nil%>
         <a href="/generate_quote/<%=event.id%>"> <%=event.quote.quote_name%> </a> 
       <%else%>
@@ -72,8 +72,8 @@
       <%else%>
         No Quote
       <%end%></td>
-      <td><%if event.quote !=nil%>
-        <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date%>
+      <td><%if event.quote.wholesale_order_date !=nil%>
+        <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date.strftime("%b-%d-%y")%>
       <%else%>
       <%end%></td>
       <td><%=event.customer.phone1%></td>

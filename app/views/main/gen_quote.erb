@@ -30,7 +30,7 @@
       <div class="row-fluid">
         <div class="span4">
           <label><b>Event Date: </b><br>
-          <%=@event.date_of_event%> 
+          <%=@event.date_of_event.strftime("%b-%d-%y")%> 
         </div>
         <div class="span4">
           <b> Event Time: </b>   <br>

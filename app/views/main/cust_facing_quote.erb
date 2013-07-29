@@ -18,7 +18,7 @@
       <h1 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h1><br><br>
       <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>  
       <h2 align="middle"> "<%= @event.name%>" </h2>
-      <h2 align="middle"> <%= @event.date_of_event%> </h2><br><br>
+      <h2 align="middle"> <%= @event.date_of_event.to_formatted_s(:long_ordinal)%> </h2><br><br>
       
   
       
