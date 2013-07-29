@@ -743,7 +743,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### GET Handler from employee_post function above
   def employee
-    id = params["employee_id"]
+    if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
+      id = params["employee_id"]
+    else
+      id = session["found_user_id"]
+    end
     @ADMIN_RIGHTS = ADMIN_RIGHTS
     @EMPLOYEES_VIEW_MUST_HAVE = EMPLOYEES_VIEW_MUST_HAVE 
     if id == "new"
@@ -765,14 +769,20 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee = Employee.where(id: params["employee_id"]).first
     end
     @employee.name = params["name"]
-    @employee.status = params["status"]
+   
     @employee.email = params["email"]
     @employee.w_phone = params["phone_w"]
     @employee.c_phone = params["phone_c"]
     @employee.username = params["username"]
     @employee.password = params["password"]        #NOTE: STRIPPED OUT THE PASSWORD SAVE TO ALLOW FOR A BETA TESTER TO LOGIN ON THE HEROKU SITE W/OUT ALLOWING THEM TO JACK UP THE LOGIN FOR ANYONE ELSE THAT WANTED TO LOGIN 
     @employee.password_confirmation = params["password_confirmation"] #SEE NOTE ABOVE
-    @employee.admin_rights = params["admin_rights"]
+    if @employee.primary_poc == "yes"
+      @employee.admin_rights = "All Admin Rights"
+      @employee.status = "Active"
+    else
+      @employee.admin_rights = params["admin_rights"]
+       @employee.status = params["status"]
+    end
     if @employee.save
       if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
         redirect_to "/employees" and return

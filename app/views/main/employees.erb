@@ -11,6 +11,7 @@
         <th>Phone(w)</th>             
         <th>Phone(c)</th>
         <th>Admin Rights</th>
+        <th>Primary POC</th>
         <th>View Preferences</th>
         <th>id</th>
       <tr>
@@ -30,6 +31,8 @@
               <%= employee.c_phone%></td>
           <td><%= hidden_field_tag "admin_rights", employee.admin_rights%>
               <%= employee.admin_rights%></td>
+          <td><%= hidden_field_tag "Primary POC", employee.primary_poc%>
+              <%= employee.primary_poc%></td>    
           <td><%= hidden_field_tag "view_pref", employee.view_pref%>
               <%= employee.view_pref%></td>
           <td><%=hidden_field_tag "id", employee.id%>
