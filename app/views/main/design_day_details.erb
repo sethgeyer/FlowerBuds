@@ -87,10 +87,22 @@
       <td align="middle"> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
       <td><%= raw(each.item_specs.gsub("\n", "<br>"))%>
       
-      
        <br>
               <ul class="nails2">
-              <% for image in each.images %>
+               <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id")%>
+            <% for designed_product in designed_products%>
+              
+                <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                <li>
+                <div class="thumbnail">    
+                  
+                  <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                <%end%>
+              
+              
+              
+              
+              <% for image in each.images.order("id")  %>
                 <li>
                   <div class="thumbnail">    
                     <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">

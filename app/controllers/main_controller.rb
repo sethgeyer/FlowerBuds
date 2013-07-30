@@ -340,6 +340,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     elsif params["spec_id"] == "employee"
     image.image_type = "employee"
     image.employee_id = params["emp_id"]
+    elsif params["spec_id"] == "product"
+    image.image_type = "product"
+    image.product_id = params["p_id"]
+    product = Product.where(id: params["p_id"]).first
+    product.updated_at = Time.now
+    product.updated_by = Employee.where(id: session["found_user_id"]).first.name
+    product.save!
     else
     image.specification_id = params["spec_id"]
      image.florist_id = session["found_florist_id"]
@@ -367,16 +374,22 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     else
       specification = Specification.where(id: params["spec_id"]).first
       for image in specification.images
-      image.on_quote_cover = params["on_quote-#{image.id}"]
+      image.on_quote_cover = params["on_cover-#{image.id}"]
       image.save!
+      end
+      for designed_product in specification.designed_products
+      designed_product.image_on_cover = params["on_cover-#{designed_product.id}"]
+      designed_product.image_in_quote = params["in_quote-#{designed_product.id}"]
+      designed_product.save!
       end
     end
     
     if params["spec_id"] == "florist"
     redirect_to "/florists/#{params["fl_id"]}" and return
-    
-        elsif params["spec_id"] == "employee"
-    redirect_to "/employee/#{params["emp_id"]}" and return
+    elsif params["spec_id"] == "employee"
+      redirect_to "/employee/#{params["emp_id"]}" and return
+    elsif params["spec_id"] == "product"
+      redirect_to "/product/#{params["p_id"]}" and return  
         else
     redirect_to "/images/#{params["spec_id"]}" and return
     end
@@ -423,6 +436,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
             new_dp.event_id = @event.id
             new_dp.product_qty = 0
             new_dp.florist_id = session["found_florist_id"]
+            new_dp.image_in_quote = 1
             #new_dp.product_type = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.product_type
             new_dp.save!
           else
@@ -469,6 +483,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         new_dp.florist_id = session["found_florist_id"]
         new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
         new_dp.event_id = event_id
+        new_dp.image_in_quote = 1
         new_dp.save!
       end         
     elsif params["remove"]
@@ -713,7 +728,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @product.updated_by = Employee.where(id: session["found_user_id"]).first.name
     @product.florist_id = session["found_florist_id"]
     if @product.save
-      redirect_to "/products" and return
+      redirect_to "/product/#{@product.id}" and return
     else
       render(:product_updates) and return
     end    

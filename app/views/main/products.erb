@@ -10,6 +10,7 @@
     <table class="table table-striped table-hover table-condensed ">    
       <th></th>
       <th>Type</th>
+      <th>Image</th>
       <th>Name</th>
       <th>Status</th>
       <th>Cost/Bunch</th>
@@ -27,6 +28,16 @@
           <%end%>
         <td><%=hidden_field_tag "product_type", product.product_type%>
             <%=product.product_type%></td>
+        <td> <div class="nails2">
+            <% image = Image.where(product_id: product.id).where(image_type: "product").first%>
+        <% if image != nil%>
+             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extension) %>">
+          <%else%>
+          <i>none</i>
+          <%end%></td>
+        
+        
+       
         <td><%=hidden_field_tag "product_name", product.name%>
             <%=product.name%></td>
         <td><%=hidden_field_tag "status", product.status %>

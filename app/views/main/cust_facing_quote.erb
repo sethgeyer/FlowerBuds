@@ -18,33 +18,32 @@
       <h1 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h1><br><br>
       <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>  
       <h2 align="middle"> "<%= @event.name%>" </h2>
-      <h2 align="middle"> <%= @event.date_of_event.to_formatted_s(:long_ordinal)%> </h2><br><br>
-      
-  
-      
-     
-     
-   <ul class="nails">  
-       <% for each in @specifications %>
-      <% for image in each.images %>
-          <%if image.on_quote_cover != nil%>
+      <h2 align="middle"> <%= @event.date_of_event.to_formatted_s(:long_ordinal)%> </h2><br><br>  
+      <ul class="nails">  
+        <% for each in @specifications %>
+          <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where(image_on_cover: 1).where("product_qty > 0").order("id")%>
+          <% for designed_product in designed_products%>   
+            <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+            <li>
+              <div class="thumbnail">     
+                <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+              </div>
+            </li>
+          <%end%>
+          <% for image in each.images.order("id") %>
+            <%if image.on_quote_cover != nil%>
               <li>
                 <div class="thumbnail" >    
                   <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
                 </div>
               </li>
-              <%end%>
-            <%end%> 
             <%end%>
-            
-  </ul>
-<br><br><br>
-   
-   
-      
-      
-      
-      <br>
+          <%end%> 
+        <%end%>    
+    </ul>
+
+<br><br><br><br> 
+
       <p align="middle"><%=@event.employee.name%><br>
         <%=@event.employee.w_phone%><br>
         <%=@event.employee.c_phone%><br>
@@ -118,6 +117,22 @@
             <br>
             
             <ul class="nails2">
+             <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id")%>
+            <% for designed_product in designed_products%>
+              
+                <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                <li>
+                <div class="thumbnail">    
+                
+                  <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">              
+                <%end%>
+            
+            
+            
+            
+            
+            
+            
             <% for image in each.images %>
               <li>
                 <div class="thumbnail">    
@@ -130,16 +145,6 @@
             
             <td>$ <%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>            
           </tr>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         <%end%>
       </table>

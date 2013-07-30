@@ -39,7 +39,7 @@
           <%= text_field_tag "setup_time", @event.delivery_setup_time, class: "span12", :tabindex => 5%>
         </div>
       </div>
-      <b><button class="btn btn-small" name= "save" value= "save" >Save</button>                       
+      <button class="btn btn-small" name= "save" value= "save" >Save</button>                       
     </div>
     <div class="span4">        
       <%= label_tag "color_palette", "Colors:"%>
@@ -66,17 +66,18 @@
   </div>
  <hr />
  
- <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" class="img-rounded"/> vStudio</a> 
- <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" class="img-rounded" />Quote</a>  
- <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" class="img-rounded" />Design Day Details</a>  
+ <td><b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/gerber.jpeg" width="30" height="30" class="img-rounded"/> vStudio</a> </b>
+ <td><b><a href="/generate_quote/<%=@event.id%>"><img src="/images/yellow_gerber.jpeg" width="30" height="30" class="img-rounded" />Quote</a> </b> 
+ <td><b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/red_gerber.jpeg" width="30" height="30" class="img-rounded" />Design Day Details</a></b>  
  <hr />
 
- <h3> Arrangements & Quotable Items for Event </h3>        
+ <h3> Arrangements & Quotable Items for Event </h3>      
+ <p> Note: Images bordered in red will appear on the cover page of the customer quote.</p>  
   <table class="table table-hover table-striped table-condensed">
   <tr>
     <th class="span3">Item Name *</th>
     <th></th>
-    <th class="span1">Quantity *</th>
+    <th class="span1">Qty *</th>
     <th class="span8">Specifications</th> 
     
     <th></th>          
@@ -92,7 +93,23 @@
          <br>
             
             <ul class="nails2">
-            <% for image in each.images %>
+            <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id") %>
+            <% for designed_product in designed_products%>
+              
+                <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                <li>
+                <div class="thumbnail">    
+                  <%if designed_product.image_on_cover == 1 %>
+                  <img style="padding: 5px; border: 1px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                <%else%>
+                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                
+              
+                <%end%> 
+                <%end%>
+                
+            
+            <% for image in each.images.order("id")  %>
               <li>
                 <div class="thumbnail">    
                   <%if image.on_quote_cover != nil%>

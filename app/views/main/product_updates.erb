@@ -9,6 +9,12 @@
   <%else
     id = @product.id%>
   <%end %>
+  
+  
+   <div class="row-fluid">
+  <div class="span3">
+  
+  
  
   <%= form_tag("/product_updates/#{id}") do %>
     <tr>
@@ -46,3 +52,72 @@
   <% end %>
 
   <p><a href="/products">Back to Products</a></p>
+  
+  
+  </div>
+  
+  
+  
+  
+  
+  
+  
+     <div class="span6">
+  
+<div><b>Product Image:</b> Max file size = 75kb</>
+
+<% if id == "new"%>
+<p> "You must first "save" before adding an image"
+<%else%>
+
+
+<% if Image.where(product_id: @product.id).where(image_type: "product").first == nil %>
+  
+  <%= form_tag upload_path, multipart: true, class: "dropzone",
+        id: "image-upload", style: "min-height:inherit; height:200px" do %>
+    <div class="fallback">
+      <%= file_field_tag :file, multiple: true %>
+      <%= submit_tag "Upload" %>
+    </div>
+    <%= hidden_field_tag "spec_id", "product"%>
+    <%= hidden_field_tag "p_id", @product.id%>
+  <% end %>
+
+  <script>
+    Dropzone.options.imageUpload = {
+    // forceFallback: true, // uncomment to test uploading without Dropzone
+      dictFallbackMessage: "Choose an image to upload...",
+      success: function() { window.location.reload(); }
+    };
+  </script>
+<%end%>
+
+<%=form_tag "/update_image" do %>
+
+<ul class="row-fluid">
+<% image = Image.where(product_id: @product.id).where(image_type: "product").first%>
+  <% if image != nil%>
+  <li class="span4">
+    <div class="thumbnail">    
+    <img src="<%= image_data_path(image.id, image.extension) %>">
+    </div><br><br>
+ 
+ <div class = 'label-spacer'></div> 
+        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        
+</li>
+<%end%>
+</ul>
+
+ 
+
+
+
+<%= hidden_field_tag "spec_id", "product"%>
+<%= hidden_field_tag "p_id", @product.id %>
+
+<%end%>
+<%end%>
+
+</div>
+</div>

@@ -1,12 +1,97 @@
-<h1> Add Images to Include in your Proposal
 <h2> <a href="/event_edit/<%=@specification.event.id%>"> <%= @specification.event.name%></a>
-<h3> Arrangement:  <%=@specification.item_name%> </h3>
-<p> <b>Specifications:</b> <%=@specification.item_specs%></p> <br>
+<h3> Images to Include in the <%=@specification.item_name%> Arrangement </h3>
+<p> <b>Specifications:</b> <%=@specification.item_specs%></p>
 <hr />
 
+
+
+<%=form_tag "/update_image" do %>
+<div class = 'label-spacer'></div>
+  <button class="btn btn-small" name="save" value= "save">Save My Selections</button><br><br>
+
+<h4> <b>Default Images to Include (Based on the Selection of These Flowers in the Arrangement)</b></h4>
+<ul class="thumbnails">
+ <% designed_products = DesignedProduct.where(specification_id: @specification.id).where("product_qty > 0").order("id")%>
+ <% for designed_product in designed_products%>
+ <%product_id = designed_product.product_id%>
+ <% image = Image.where(product_id: product_id).where(image_type: "product").first %>
+ <% if image != nil%>
+ <li class="span2">
+    <div class="thumbnail">    
+    <img style="height: 120px" src="<%= image_data_path(image.id, image.extension) %>">
+    </div>
+    <p><b><%=Product.where(id: product_id).first.name%></b><br>
+    <u>Show:</u></p>
+    
+ <label class="checkbox">
+   <%=check_box_tag "in_quote-#{designed_product.id}", "1", designed_product.image_in_quote%>In Quote?
+ </label>
+   
+   
+ <label class="checkbox">
+   <%=check_box_tag "on_cover-#{designed_product.id}", "1", designed_product.image_on_cover%>On Cover?
+ </label>
+    
+ <%else%>
+ <%end%> 
+</li>
+<%end%>
+</ul>
+
+  
+
+
+
+
+
+
+
+<h4> <b>Additional Images I'd Like Include in the Quote for this Arrangement:</b></h4>
+<p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement.  Max file size = 75kb.<p>
+
+<ul class="thumbnails">
+
+
+
+
+<% for image in Image.where(specification_id: @specification.id).order("id") %>
+  <li class="span2">
+    <div class="thumbnail">    
+    <img style="height: 120px" src="<%= image_data_path(image.id, image.extension) %>">
+    </div>
+   
+    
+   
+   <div class='label-spacer'></div>
+ <label class="checkbox">
+   <%=check_box_tag "on_cover-#{image.id}", "1", image.on_quote_cover%>On Cover?
+ </label>
+ <div class = 'label-spacer'></div> 
+        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        <br><br>
+</li>
+<%end%>
+</ul>
+
+
+
+
+
+
+
+
+
+
+<%= hidden_field_tag "spec_id", @specification.id%>
+
+<%end%>
+
+
+
+<div class="thumbnails">
 <% total_images = Image.where(specification_id: @specification.id).size%>
 <% if total_images < 10 %>
-  <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement.  Max file size = 0.2Mb.</p>
+  
 
   <%= form_tag upload_path, multipart: true, class: "dropzone",
         id: "image-upload", style: "min-height:inherit; height:200px" do %>
@@ -20,46 +105,14 @@
 
   <script>
     Dropzone.options.imageUpload = {
-     // forceFallback: true, // uncomment to test uploading without Dropzone
-      dictFallbackMessage: "Choose an image to upload...",
+     //forceFallback: true, // uncomment to test uploading without Dropzone
+      dictFallbackMessage: "Choose an image...",
       success: function() { window.location.reload(); }
     };
   </script>
 <%end%>
-
-<%=form_tag "/update_image" do %>
-<div class = 'label-spacer'></div>
-  <button class="btn btn-small" name="save" value= "save">Save My Checks</button><br><br>
-
-<ul class="row-fluid">
-<% for image in Image.where(specification_id: @specification.id) %>
-  <li class="span2">
-    <div class="thumbnail">    
-    <img style="height: 160px" src="<%= image_data_path(image.id, image.extension) %>">
-    </div>
-   <div class='label-spacer'></div>
- <label class="checkbox">
-   <%=check_box_tag "on_quote-#{image.id}", "1", image.on_quote_cover%>On Cover of Quote?
- </label><br>
- <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
-        <br><br><br><br>
-</li>
-<%end%>
-</ul>
-<br><br><br>
+</div>
  
-
-
-
-<%= hidden_field_tag "spec_id", @specification.id%>
-
-<%end%>
-
-
-
-
-
 
 
 
