@@ -337,25 +337,41 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["spec_id"] == "florist"
     image.image_type = "florist"
     image.florist_id =  params["fl_id"]
+    image.save!
+    respond_to do |format|
+      format.html { redirect_to "/florists/#{params["fl_id"]}" and return }
+      format.json {render :json => image.id and return }
+    end
+    
     elsif params["spec_id"] == "employee"
     image.image_type = "employee"
     image.employee_id = params["emp_id"]
-    elsif params["spec_id"] == "product"
-    image.image_type = "product"
-    image.product_id = params["p_id"]
-    product = Product.where(id: params["p_id"]).first
-    product.updated_at = Time.now
-    product.updated_by = Employee.where(id: session["found_user_id"]).first.name
-    product.save!
-    else
-    image.specification_id = params["spec_id"]
-     image.florist_id = session["found_florist_id"]
-    end
     image.save!
-
     respond_to do |format|
-      format.html { redirect_to form_path and return }
+      format.html { redirect_to "/employee/#{params["emp_id"]}" and return }
       format.json {render :json => image.id and return }
+    end
+    
+    elsif params["spec_id"] == "product"
+      image.image_type = "product"
+      image.product_id = params["p_id"]
+      product = Product.where(id: params["p_id"]).first
+      product.updated_at = Time.now
+      product.updated_by = Employee.where(id: session["found_user_id"]).first.name
+      product.save!
+      image.save!
+      respond_to do |format|
+        format.html { redirect_to "/product/#{params["p_id"]}" and return }
+        format.json {render :json => image.id and return }
+      end
+    else
+      image.specification_id = params["spec_id"]
+      image.florist_id = session["found_florist_id"]
+      image.save!
+      respond_to do |format|
+        format.html { redirect_to "/images/#{params["spec_id"]}" and return}
+        format.json {render :json => image.id and return }
+      end
     end
   end
 
