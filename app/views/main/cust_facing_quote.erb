@@ -121,10 +121,12 @@
             <% for designed_product in designed_products%>
               
                 <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                <% if image != nil %>
                 <li>
                 <div class="thumbnail">    
                 
                   <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">              
+                <%end%>
                 <%end%>
             
             

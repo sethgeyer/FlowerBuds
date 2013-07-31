@@ -93,20 +93,21 @@
          <br>
             
             <ul class="nails2">
-            <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id") %>
-            <% for designed_product in designed_products%>
-              
-                <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
-                <li>
-                <div class="thumbnail">    
+            <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0.0").order("id") %>
+              <% for designed_product in designed_products%>
+                  <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                  <% if image != nil%>
+                  <li>
+                  <div class="thumbnail">    
                   <%if designed_product.image_on_cover == 1 %>
-                  <img style="padding: 5px; border: 1px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
-                <%else%>
-                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                    <img style="padding: 5px; border: 1px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                  <%else%>
+                    <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
                 
               
-                <%end%> 
-                <%end%>
+                  <%end%> 
+                  <%end%>
+                  <%end%>
                 
             
             <% for image in each.images.order("id")  %>
