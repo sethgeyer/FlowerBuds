@@ -90,8 +90,9 @@
         <th></th>
         <th></th>
         <th>Total_Cost:</th>
-        <th>Total Markup: </th>
+        <th>Multiplier: </th>
         <th>Total_Quoted:  </th>
+        <th></th>
       </tr>
       <tr>
         <th></th>
@@ -128,8 +129,9 @@
       <th>Extended Cost</th>
       <th>Per_Item List_Price</th>
       <th>Extended List_Price</th> 
-      <th>Markup @ List_Price
+      <th>Mult. @ List_Price
       <th class="span2">Quoted Price</th>
+      <th>Price Per_Item</th>
     </tr>
        <% total_hours = 0%>
         <% for each in @specifications %>
@@ -168,9 +170,12 @@
             <td> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
             <% if each.quoted_price != nil%>
               <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price / 100.0.round(2), class: "input-small", :tabindex=>3%> </td>
+              <td>$ <%=sprintf("%.2f" , ((each.quoted_price / 100.0.round(2)) /  (each.item_quantity / 100.0.round(2))).round(2)) %></td>
             <%else%>
               <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price, class: "input-small", :tabindex=>3%></td>
-            <%end%>       
+              <td></td>
+            <%end%>
+            
           </tr>
         <%end%>
       </table>   
