@@ -53,8 +53,7 @@
         <th>Email</th>
         <th>Company</th>
         <th>Designer</th>
-        <th>cust id</th>
-        <th>event id</th>
+       
       </tr>
     </thead>
     <tr>
@@ -83,8 +82,8 @@
       <td><%=event.customer.email%></td>
       <td><%=event.customer.company_name%></td>
       <td><%=event.employee.username%></td>
-      <td><%= event.customer.id %></td>
-      <td><%= event.id %></td>
+      <% event.customer.id %>
+      <% event.id %>
     </tr>
     <%end%>
   </table>
