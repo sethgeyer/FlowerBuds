@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130730191156) do
+ActiveRecord::Schema.define(:version => 20130806154424) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -27,10 +27,10 @@ ActiveRecord::Schema.define(:version => 20130730191156) do
     t.string   "state"
     t.string   "zip"
     t.string   "country"
-    t.string   "notes",        :limit => 500
+    t.string   "notes",        :limit => 1000
     t.integer  "florist_id"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.string   "updated_by"
   end
 
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(:version => 20130730191156) do
     t.date     "date_of_event"
     t.string   "time"
     t.string   "delivery_setup_time"
-    t.string   "notes"
+    t.string   "notes",               :limit => 1000
     t.string   "feel_of_day"
     t.string   "color_palette"
     t.string   "flower_types"
@@ -84,8 +84,8 @@ ActiveRecord::Schema.define(:version => 20130730191156) do
     t.string   "locations"
     t.string   "budget"
     t.string   "event_status"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "updated_by"
     t.integer  "florist_id"
     t.integer  "random_number"
@@ -149,15 +149,15 @@ ActiveRecord::Schema.define(:version => 20130730191156) do
     t.integer  "event_id"
     t.string   "item_name"
     t.integer  "item_quantity"
-    t.string   "item_specs",          :limit => 500
+    t.string   "item_specs",          :limit => 1000
     t.boolean  "in_quote"
     t.integer  "per_item_cost"
     t.integer  "per_item_list_price"
     t.integer  "extended_list_price"
     t.integer  "quoted_price"
     t.string   "image"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "updated_by"
     t.integer  "florist_id"
     t.string   "image1"
