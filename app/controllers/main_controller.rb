@@ -294,6 +294,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       each.item_name = params["spec_item-#{each.id}"]
       each.item_quantity = params["spec_qty-#{each.id}"].to_i * 100.0
       each.item_specs = params["spec_notes-#{each.id}"]
+      each.exclude_from_quote = params["exclude-#{each.id}"]
       each.save      
     end
     if params["delete"]
@@ -530,7 +531,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def quote_generation
     event_id = params["event_id"]
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
-    @specifications = @event.specifications.order("id")
+    @specifications = @event.specifications.where(exclude_from_quote: nil).order("id")
     count = 0
     for each in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
       count = count + (each.product_qty / 100.0)
@@ -555,13 +556,14 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     else # do nothing
     end
     @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first 
+    
     render(:gen_quote) and return
   end
 
 ### POST handler from gen_quote.erb
   def save_quote
     event_id = params["event_id"]
-    for each in Specification.where(event_id: event_id)
+    for each in Specification.where(event_id: event_id).where(exclude_from_quote: nil)
       if params["quoted_price-#{each.id}"] == nil
         each.quoted_price = 0
       else
@@ -575,18 +577,19 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     quote = Quote.where(event_id: event_id).first
     quote.quote_name = params["quote_name"]
     quoted_total_price = 0
-    total_cost = 0
-    for each in Specification.where(event_id: event_id)
+    quoted_total_cost = 0
+    for each in Specification.where(event_id: event_id).where(exclude_from_quote: nil)
       if each.quoted_price == nil
         each.quoted_price = 0
       else # do nothing
       end
       quoted_total_price = quoted_total_price + each.quoted_price
-      total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
+      quoted_total_cost = quoted_total_cost + (((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))) * 100.0
     end 
     quote.total_price = quoted_total_price
-    if total_cost != 0
-      quote.markup = (quote.total_price / total_cost)
+    quote.total_cost = quoted_total_cost
+    if quoted_total_cost != 0
+      quote.markup = (quoted_total_price / quoted_total_cost) * 100
     else # do nothing
     end
     quote.status = params["status"]
@@ -607,7 +610,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     
     
     @event = Event.where(id: event_id).where(florist_id: session["found_florist_id"]).first
-    @specifications = @event.specifications.order("id")
+    @specifications = @event.specifications.where(exclude_from_quote: nil).order("id")
     render(:cust_facing_quote, layout:false) and return
   end
   
@@ -660,7 +663,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def design_day_details
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: params["event_id"]).first
     @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first
-    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).order("id")
+    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).where(exclude_from_quote: nil).order("id")
     @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
     @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
     product_types = []
@@ -668,11 +671,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       product_types = product_types + [Product.where(id: id).first.product_type]
     end
     @list_of_product_types = product_types.uniq.sort!
-    count = 0
-    for each in @designed_products
-      count = count + (each.product_qty / 100.0)
-    end
-    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil || count < 1.0
+   # count = 0
+   # for each in @designed_products
+   #   if each.specification.exclude_from_quote == nil
+   #     count = count + (each.product_qty / 100.0)
+   #   end
+   # end
+    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil # || count < 0.0
       flash[:error] = "C. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     end

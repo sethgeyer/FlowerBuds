@@ -54,7 +54,9 @@
                 <%designed_products =DesignedProduct.where(product_id: product_id).where(event_id: order.event_id)%>
                 <%count = 0%>
                 <%for designed_product in designed_products%>
+                  <%if designed_product.specification.exclude_from_quote == nil %>
                   <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
+                  <%end%>
                 <%end%>
                 <td align="right"><%=sprintf("%.2f" ,count).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
                 <%total_count =  total_count + count%> 

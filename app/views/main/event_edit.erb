@@ -75,6 +75,7 @@
  <p> Note: Images bordered in red will appear on the cover page of the customer quote.</p>  
   <table class="table table-hover table-striped table-condensed">
   <tr>
+    <th class="span1">Exclude from Quote</th>
     <th class="span3">Item Name *</th>
     <th></th>
     <th class="span1">Qty *</th>
@@ -84,6 +85,7 @@
     </tr>
     <% for each in @specifications %>
       <tr>
+        <td><%=check_box_tag "exclude-#{each.id}", "1", each.exclude_from_quote%></td>
         <td><%= text_field_tag "spec_item-#{each.id}", each.item_name, class: "input-large"%></td>
          <td> <div class = 'label-space'></div>
           <button class="btn btn-success btn-mini" name="add_image" value= <%=each.id%>>Image</button></td>
@@ -142,10 +144,6 @@
 
 
 </tr>
-
-
-
-
 
 
 

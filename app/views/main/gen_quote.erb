@@ -1,4 +1,10 @@
 
+
+
+
+
+
+
 <% if flash[:update] != nil %>
   <div class="flash-error">
     <%= flash[:update]%>
@@ -68,15 +74,43 @@
 
 <hr />
 
+
+          <%total_cost = 0%>     
+          <% for each in @specifications
+            if each.per_item_cost != nil
+              each.per_item_cost
+            else  
+              each.per_item_cost = 0
+            end
+            total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
+          end%>
+
+          <%sum_price = 0%>     
+          <% for each in @specifications
+            if each.quoted_price != nil
+              each.quoted_price
+            else  
+              each.quoted_price = 0
+            end
+            sum_price = sum_price + (each.quoted_price / 100.0)
+          end%>
+
+
+
   <div class="row-fluid">
+    <%     if sum_price * 100 == @event.quote.total_price && total_cost * 100 == @event.quote.total_cost%>
     <div class="span2">
       <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-      <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Quote</a>
+      <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Customer Quote</a>
     </div>
+    <%end%>
     <div class="span10">
       <button  tabindex=1 class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
     </div> 
-  </div>  <hr/>
+  </div>  
+  
+  
+<hr/>
         
 
   <h4> Arrangements & Quotable Items for Event </h4>     
@@ -102,23 +136,34 @@
         <th></th>
         <th></th>
         <th></th>
-        <%total_cost = 0%>     
-          <% for each in @specifications
-            if each.per_item_cost != nil
-              each.per_item_cost
-            else  
-              each.per_item_cost = 0
-            end
-            total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
-            end%>
-        <th>$ <%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
-      <% if @event.quote.markup != 0%>
+    
+    
+    
+       
+      
+     
+<%     if sum_price * 100 == @event.quote.total_price  && total_cost * 100 == @event.quote.total_cost %>
+     
+       <th>$ <%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
+       <% if @event.quote.markup != 0%>
         <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
       <%else%>
         <th> - </th>  
       <%end%>    
-      <%price = @event.quote.total_price / 100.0 %>
-      <th>$ <%=sprintf("%.2f" , price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>     
+      <th>$ <%=sprintf("%.2f" , sum_price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
+      
+<%else%>
+
+<div class="alert alert-success">
+   
+  <h4>Reminder!</h4>
+  
+  <p> Press the "Save & Recalc Now" button to update the Total Costs and Price for the Quote.  Doing so, will ensure your quote reflects all adjustments you've made to the quote and arrangements.</p>
+</div>
+<%end%>
+      
+      
+        
     </tr>  
     <tr>      
       <th class="span2">Item Name</th>
@@ -179,12 +224,17 @@
           </tr>
         <%end%>
       </table>   
-      <p> Total Estimated Hours are: <%=total_hours%></p> 
+      
+      
+      <% if sum_price * 100 == @event.quote.total_price && total_cost * 100 == @event.quote.total_cost %>
+
+      <p> Total Estimated Hours are: <%=sprintf("%.2f" , total_hours).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></p> 
       Estimated Profit: 
         <% if @event.quote.markup != 0%>
-          <%profit = @event.quote.total_price / 100 - (@event.quote.total_price / @event.quote.markup) %>
-          $ <%=profit.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+          <%profit = sum_price - total_cost %>
+          $ <%=sprintf("%.2f" , profit).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
         <%else%> - 
-      <%end%>   
+      <%end%>  
+      <%end%> 
     <%end%>   
   
