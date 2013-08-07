@@ -100,11 +100,11 @@
     <h3> Arrangements for Event </h3>  
       <table class="table table-striped table-bordered">      
         <tr>      
-          <th class="span2">Item Name</th>
-          <th class="span1">Quantity</th>
-          <th class="span10">Specifications</th> 
-          <th class="span1">Per Item Price<i>+</i></th>
-          <th class="span2">Total</th>
+          <th class="span1">Item Name</th>
+          <th>Qty</th>
+          <th class="span12">Specifications</th> 
+          <th>Per Item Price<i>+</i></th>
+          <th>Total Price</th>
         </tr>
         <% for each in @specifications %>
           <tr>
@@ -155,8 +155,8 @@
             <%end%> 
             </ul>
             </td>
-            <td>$ <%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </td>
-            <td>$ <%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>            
+            <td>$<%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </td>
+            <td>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>            
           </tr>
         
         <%end%>

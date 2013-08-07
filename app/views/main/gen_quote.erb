@@ -100,7 +100,7 @@
   <div class="row-fluid">
     <%     if sum_price * 100 == @event.quote.total_price && total_cost * 100 == @event.quote.total_cost%>
     <div class="span3">
-      <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
+      <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1200,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
       <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Customer Quote</a>
     </div>
     <%end%>
@@ -123,9 +123,9 @@
         <th></th>
         <th></th>
         <th></th>
-        <th>Total_Cost:</th>
+        <th>Total Cost:</th>
         <th>Multiplier: </th>
-        <th>Total_Quoted:  </th>
+        <th>Total Quoted:  </th>
         <th></th>
       </tr>
       <tr>
@@ -144,13 +144,13 @@
      
 <%     if sum_price * 100 == @event.quote.total_price  && total_cost * 100 == @event.quote.total_cost %>
      
-       <th>$ <%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
+       <th>$<%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
        <% if @event.quote.markup != 0%>
         <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
       <%else%>
         <th> - </th>  
       <%end%>    
-      <th>$ <%=sprintf("%.2f" , sum_price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
+      <th>$<%=sprintf("%.2f" , sum_price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
       
 <%else%>
 
@@ -170,13 +170,13 @@
       <th>Quantity</th>
       <th class="span8">Specifications</th> 
       <th>Budgeted Hours</th>
-      <th>Per_Item Cost</th>
+      <th>Per Item Cost</th>
       <th>Extended Cost</th>
-      <th>Per_Item List_Price</th>
-      <th>Extended List_Price</th> 
-      <th>Mult. @ List_Price
+      <th>Per Item List Price</th>
+      <th>Extended List Price</th> 
+      <th>Mult. @ List Price
       <th class="span2">Quoted Price</th>
-      <th>Price Per_Item</th>
+      <th>Price Per Item</th>
     </tr>
        <% total_hours = 0%>
         <% for each in @specifications %>
@@ -204,18 +204,18 @@
             <td align="middle"><%= item_hours = per_arrangement_hours * each.item_quantity/ 100.0.round(2)%> hrs.</td>
             <% total_hours = total_hours + item_hours%>
             <td align="right"> <%= hidden_field_tag "per_item_cost-#{each.id}", each.per_item_cost = per_arrangement_cost.round(2)%>
-              $ <%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+              $<%=sprintf("%.2f" , per_arrangement_cost.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "extended_cost-#{each.id}", extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
               <% extended_cost = (per_arrangement_cost.round(2) * each.item_quantity) / 100.0.round(2)%>
-              $ <%=sprintf("%.2f" , extended_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+              $<%=sprintf("%.2f" , extended_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "per_item_list_price-#{each.id}", each.per_item_list_price = per_arrangement_list_price.round(2)%>
-                 $ <%=sprintf("%.2f" , per_arrangement_list_price.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+                 $<%=sprintf("%.2f" , per_arrangement_list_price.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= hidden_field_tag "extended_list_price-#{each.id}", each.extended_list_price = (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)%>
-                 $ <%=sprintf("%.2f" , (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
+                 $<%=sprintf("%.2f" , (per_arrangement_list_price.round(2) * each.item_quantity) / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
             <td> <%= markup = ((per_arrangement_list_price.round(2) * each.item_quantity / 100.0.round(2)) / (per_arrangement_cost.round(2) * each.item_quantity / 100.0.round(2))).round(2) %> x</td>
             <% if each.quoted_price != nil%>
               <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price / 100.0.round(2), class: "input-small", :tabindex=>3%> </td>
-              <td>$ <%=sprintf("%.2f" , ((each.quoted_price / 100.0.round(2)) /  (each.item_quantity / 100.0.round(2))).round(2)) %></td>
+              <td>$<%=sprintf("%.2f" , ((each.quoted_price / 100.0.round(2)) /  (each.item_quantity / 100.0.round(2))).round(2)) %></td>
             <%else%>
               <td> <%= text_field_tag "quoted_price-#{each.id}",each.quoted_price, class: "input-small", :tabindex=>3%></td>
               <td></td>
