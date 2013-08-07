@@ -24,6 +24,13 @@
     <tr><%=label_tag "product_name", "Product Name: *" %>
         <%= text_field_tag "product_name", @product.name%></tr>
     <br>
+    <tr><%=label_tag "display_name", "Display Name:+" %>
+        <%if @product.display_name == nil%>
+          <% display_name = @product.name %>
+        <%else%>
+          <% display_name = @product.display_name %>
+        <%end%>
+    <%= text_field_tag "display_name", display_name%></tr>
    <tr> <%=label_tag "cost_per_bunch", "Cost per Bunch: * $" %>         
       <%if @product.cost_per_bunch != nil%>
         <%=text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%></tr>
@@ -70,8 +77,11 @@
 
   <p><a href="/products">Back to Products</a></p>
   
+    <p> + The Display Name is the name that will appear on the customers' quotes.  If the Display Name will be the same as the Product Name, then leave "as is".</p>
+
   
   </div>
+
   
   
      <div class="span6">

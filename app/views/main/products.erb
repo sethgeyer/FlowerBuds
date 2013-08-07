@@ -11,10 +11,11 @@
       <th></th>
       <th>Type</th>
       <th>Image</th>
-      <th>Name</th>
+      <th>Product Name</th>
+      <th>Display Name+</th>
       <th>Status</th>
-      <th>Cost/Bunch</th>
-      <th>Items/Bunch</th>             
+      <th>Cost/ Bunch</th>
+      <th>Items/ Bunch</th>             
       <th>Cost for One</th>
       <th>Multiplier</th> 
       <th>List Price</th>     
@@ -41,6 +42,11 @@
        
         <td><%=hidden_field_tag "product_name", product.name%>
             <%=product.name%></td>
+        <% if product.display_name != product.name %>
+        <td><%=hidden_field_tag "display_name", product.display_name%>
+            <%=product.display_name%></td>
+        <%else%><td></td>
+        <%end%>
         <td><%=hidden_field_tag "status", product.status %>
             <%=product.status%></td>
         <td><%=hidden_field_tag "cost_per_bunch", product.cost_per_bunch / 100.round(2)%>
@@ -62,4 +68,5 @@
        <% end %>
     </table>
   <%end%>
+  <p> + The Display Name is the name that will appear on the customer's quotes.  The Display Name is only shown if it is different than the Product Name.
 

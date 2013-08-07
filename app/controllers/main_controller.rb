@@ -233,6 +233,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event = Event.new
     @event.name = params["event_name"]
 #   @event.random_number = rand(100000)
+    @event.show_display_name = 1
     @event.date_of_event = params["event_date"]
     if params["lead_designer"] != ""
       @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
@@ -282,7 +283,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
     @event.notes = params["notes"]
     @event.budget = params["budget"]
-    @event.customer_id = params["customer_id"]  
+    @event.customer_id = params["customer_id"]
+    @event.show_display_name = params["display_name"]  
     if @event.save == false
       @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
       @specifications = @event.specifications.order("id")
@@ -392,6 +394,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       specification = Specification.where(id: params["spec_id"]).first
       for image in specification.images
       image.on_quote_cover = params["on_cover-#{image.id}"]
+      image.display_name = params["display_name-#{image.id}"]
       image.save!
       end
       for designed_product in specification.designed_products
@@ -746,6 +749,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @product.markup = params["markup"].to_f * 100
     end
     @product.status = params["status"]
+    if params["display_name"] == "" || params["display_name"] == nil
+      @product.display_name = @product.name
+    else
+      @product.display_name = params["display_name"]
+    end
     @product.updated_by = Employee.where(id: session["found_user_id"]).first.name
     @product.florist_id = session["found_florist_id"]
     if @product.save
