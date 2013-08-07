@@ -125,14 +125,14 @@
                 <% if image != nil %>
                 <li>
                 <div class="thumbnail">    
-                
                   <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">              
+                 <div class="display_name"><%=designed_product.product.name%></div>
                 <%end%>
                 <%end%>
             
             
             
-            
+                           
             
             
             
@@ -140,6 +140,7 @@
               <li>
                 <div class="thumbnail">    
                   <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                 <div class="display_name"><%=""%><br></div>
                 </div>
               </li>
             <%end%> 

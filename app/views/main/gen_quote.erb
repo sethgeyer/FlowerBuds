@@ -99,12 +99,12 @@
 
   <div class="row-fluid">
     <%     if sum_price * 100 == @event.quote.total_price && total_cost * 100 == @event.quote.total_cost%>
-    <div class="span2">
+    <div class="span3">
       <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1100,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
       <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/red_gerber.jpeg" width="30" height="30" />  Create Customer Quote</a>
     </div>
     <%end%>
-    <div class="span10">
+    <div class="span9">
       <button  tabindex=1 class="pull-right btn btn-medium" name= "save" value= "save">Save & Recalc Now!</button>
     </div> 
   </div>  

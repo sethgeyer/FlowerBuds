@@ -47,3 +47,12 @@
     *display:inline; /* ie7 fix */
     float: none; /* this is the part that makes it work */
 }
+
+
+
+.display_name {
+    font-size:70%;
+    line-height: 1.4em;
+}
+
+
