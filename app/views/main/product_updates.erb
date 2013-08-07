@@ -28,7 +28,7 @@
       <%if @product.cost_per_bunch != nil%>
         <%=text_field_tag "cost_per_bunch", @product.cost_per_bunch / 100.0.round(2)%></tr>
       <%else%>
-        $ <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
+        <%= text_field_tag "cost_per_bunch", @product.cost_per_bunch%></tr>
       <%end%>
     <br>
     <tr><%=label_tag "items_per_bunch", "Items per Bunch: *" %>
@@ -38,6 +38,15 @@
         <%= text_field_tag "items_per_bunch", @product.items_per_bunch%></tr>
       <%end%>
     <br> 
+    <tr>Cost for One:</i>
+    <% if @product.cost_per_bunch != nil%>
+      <b>$ <%= sprintf("%.2f" , @product.cost_for_one / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
+    <%else%>
+      <b> n/a</b>
+    <%end%>
+    <br> <i>(Cost per Bunch / Items Per Bunch)</i>
+    <br><br>
+    
     <tr><%=label_tag "markup", "Multiplier: * " %>
       <%if @product.markup != nil%>
         <%= text_field_tag "markup", @product.markup / 100.0.round(2)%></tr>
@@ -45,9 +54,14 @@
         <%= text_field_tag "markup", @product.markup%></tr>
       <%end%>
     <br>
-    <tr>Calculated List Price<i><br> (Cost for One x Multiplier):</i><br>
-    <b>$<%= (@product.markup / 100.0.round(2)) * (@product.cost_per_bunch / 100.0.round(2))%></b>
-    <br><br>
+    <tr>Calculated List Price: 
+    <% if @product.cost_per_bunch != nil%>
+      <b>$ <%= sprintf("%.2f" , (@product.markup / 100.0.round(2)) * (@product.cost_for_one / 100.0.round(2))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
+    <%else%>
+      <b> n/a</b>
+    <%end%>
+    <br> <i>(Cost for One x Multiplier)</i><br>
+    <br>
     <tr><%=label_tag "status", "Status: *" %>
         <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 
     <br><br>
@@ -58,11 +72,6 @@
   
   
   </div>
-  
-  
-  
-  
-  
   
   
      <div class="span6">
