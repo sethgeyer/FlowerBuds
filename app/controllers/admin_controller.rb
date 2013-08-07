@@ -80,6 +80,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee.password = params["password"]
       @employee.password_confirmation = params["password_confirmation"]
       @employee.primary_poc = "yes"
+      @employee.q_and_a = params["q_and_a"]
       @employee.view_pref = "all"
       @employee.save
       if @employee.save

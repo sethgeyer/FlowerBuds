@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130806201333) do
+ActiveRecord::Schema.define(:version => 20130807151207) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20130806201333) do
     t.string   "updated_by"
     t.string   "primary_poc"
     t.string   "view_pref"
+    t.string   "q_and_a"
   end
 
   create_table "events", :force => true do |t|

@@ -13,18 +13,39 @@
        
 <%= form_tag("/florist_updates/#{id}") do %>
          
-  <div class="row-fluid">
+ 
+   
+    <div class="row-fluid">
+      <div class="span2">  
+        <%=label_tag "name", "Florist Co. Name: *" %>
+        <%= text_field_tag "name", @florist.name%>
+      </div>
+      <div class="span2">  
+        <%=label_tag "city", "City:" %>
+        <%= text_field_tag "city", @florist.city, class: "span12" %>
+      </div>
+      <div class="span2">  
+        <%=label_tag "state", "State:" %>
+        <%= text_field_tag "state", @florist.state, class: "span12" %>
+      </div>
+      <div class="span2">  
+        <%=label_tag "zip", "Zip:" %>
+        <%= text_field_tag "zip", @florist.zip, class: "span12" %>
+      </div>
+    </div>
+   
+   
+    <div class="row-fluid">
     <div class="span12">
       
-      <%=label_tag "name", "Florist Co. Name: *" %>
-      <%= text_field_tag "name", @florist.name%>
       <%=label_tag "company_id", "Company Login ID: *" %>
       <%= text_field_tag "company_id", @florist.company_id%>             
       
       <%=label_tag "status", "Company Status: *" %>
-      <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%>
-      <div class="row-fluid">
+      <%= select_tag "status", options_for_select(["Active", "Inactive"], @florist.status)%><br><br>
        <p> The POC is typically the business owner.  Their information should be input here at initial setup.  Any other modifications should be done by the florist themselves.
+
+      <div class="row-fluid">
         <div class="span2">   
           <%=label_tag "primary_poc", "POC's Name: *" %> 
           <%= text_field_tag "primary_poc", @employee.name, class: "span12"%>
@@ -41,31 +62,32 @@
           <%=label_tag "password_confirmation", "Confirm P'word: *"%>
           <%=password_field_tag "password_confirmation", @employee.password_confirmation, class: "span12"%>
         </div>
-        <div class="span2">
-          <%=label_tag "admin_rights", "Admin Rights: *"%>
-          <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights), class: "span12"%>
+        <div class="span4">
+          <%=label_tag "q_and_a", "Security Q & A: *"%>
+          <%=text_field_tag "q_and_a", @employee.q_and_a, class: "span12"%>
+
         </div>
+        </div>
+        
+        <div class="row-fluid">
+          <div class="span2">
+            <%=label_tag "admin_rights", "Admin Rights: *"%>
+            <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights), class: "span12"%>
+          </div>
+          <div class="span2">
+            <%=label_tag "poc_email", "Email:" %>
+            <%= text_field_tag "poc_email", @employee.email %>
+          </div>
+          <div class="span2">
+            <%=label_tag "poc_phone_w", "Phone (w):" %>
+            <%= text_field_tag "poc_phone_w", @employee.w_phone %>
+          </div> 
+          <div class="span2">
+            <%=label_tag "poc_phone_c", "Phone (c):" %>
+            <%= text_field_tag "poc_phone_c", @employee.c_phone %>
+          </div>
       </div>
-      <%=label_tag "poc_email", "Email:" %>
-      <%= text_field_tag "poc_email", @employee.email %>
-      <%=label_tag "poc_phone_w", "Phone (w):" %>
-      <%= text_field_tag "poc_phone_w", @employee.w_phone %>
-      <%=label_tag "poc_phone_c", "Phone (c):" %>
-      <%= text_field_tag "poc_phone_c", @employee.c_phone %>
-      <div class="row-fluid">
-        <div class="span2">  
-          <%=label_tag "city", "City:" %>
-          <%= text_field_tag "city", @florist.city, class: "span12" %>
-        </div>
-        <div class="span2">  
-          <%=label_tag "state", "State:" %>
-          <%= text_field_tag "state", @florist.state, class: "span12" %>
-        </div>
-        <div class="span2">  
-          <%=label_tag "zip", "Zip:" %>
-          <%= text_field_tag "zip", @florist.zip, class: "span12" %>
-        </div>
-      </div>
+      
     </div>
   </div>  
 
