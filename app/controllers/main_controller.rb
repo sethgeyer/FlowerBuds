@@ -343,7 +343,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     image.save!
     respond_to do |format|
       format.html { redirect_to "/florists/#{params["fl_id"]}" and return }
-      format.json {render :json => image.id and return }
+      format.json { render :json => image.id and return }
     end
     
     elsif params["spec_id"] == "employee"
@@ -352,7 +352,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     image.save!
     respond_to do |format|
       format.html { redirect_to "/employee/#{params["emp_id"]}" and return }
-      format.json {render :json => image.id and return }
+      format.json { render :json => image.id and return }
     end
     
     elsif params["spec_id"] == "product"
@@ -365,7 +365,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       image.save!
       respond_to do |format|
         format.html { redirect_to "/product/#{params["p_id"]}" and return }
-        format.json {render :json => image.id and return }
+        format.json { render :json => image.id and return }
       end
     else
       image.specification_id = params["spec_id"]
@@ -373,7 +373,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       image.save!
       respond_to do |format|
         format.html { redirect_to "/images/#{params["spec_id"]}" and return}
-        format.json {render :json => image.id and return }
+        format.json { render :json => image.id and return }
       end
     end
   end
