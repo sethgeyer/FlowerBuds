@@ -4,6 +4,6 @@ class TotalCostColumn < ActiveRecord::Migration
   end
 
   def down
-  drop_column :quotes, :total_cost
+  remove_column :quotes, :total_cost
   end
 end

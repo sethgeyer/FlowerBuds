@@ -4,6 +4,6 @@ class AddColumnToImageForProductId < ActiveRecord::Migration
   end
 
   def down
-  drop_column :images, :product_id
+  remove_column :images, :product_id
   end
 end

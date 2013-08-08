@@ -4,6 +4,6 @@ class ExcludeFromQuote < ActiveRecord::Migration
   end
 
   def down
-  drop_column :specifications, :exclude_from_quote
+  remove_column :specifications, :exclude_from_quote
   end
 end

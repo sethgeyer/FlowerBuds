@@ -4,7 +4,7 @@ class AddSecurityQuestionAnswer < ActiveRecord::Migration
   end
 
   def down
-    drop_column :employees, :q_and_a
+    remove_column :employees, :q_and_a
   end
 end
 

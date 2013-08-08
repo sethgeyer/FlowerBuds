@@ -4,6 +4,6 @@ class AddEmployeeImage < ActiveRecord::Migration
   end
 
   def down
-  drop_column :images, :employee_id
+  remove_column :images, :employee_id
   end
 end

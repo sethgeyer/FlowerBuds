@@ -5,8 +5,8 @@ class ImageInclusionDesignedproducts < ActiveRecord::Migration
   end
 
   def down
-  drop_column :designed_products, :image_in_quote
-  drop_column :designed_products, :image_on_cover
+  remove_column :designed_products, :image_in_quote
+  remove_column :designed_products, :image_on_cover
   end
 end
 

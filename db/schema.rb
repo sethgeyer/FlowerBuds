@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807200157) do
+ActiveRecord::Schema.define(:version => 20130730191156) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -27,10 +27,10 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.string   "state"
     t.string   "zip"
     t.string   "country"
-    t.string   "notes",        :limit => 1000
+    t.string   "notes",        :limit => 500
     t.integer  "florist_id"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.string   "updated_by"
   end
 
@@ -64,7 +64,6 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.string   "updated_by"
     t.string   "primary_poc"
     t.string   "view_pref"
-    t.string   "q_and_a"
   end
 
   create_table "events", :force => true do |t|
@@ -73,7 +72,7 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.date     "date_of_event"
     t.string   "time"
     t.string   "delivery_setup_time"
-    t.string   "notes",               :limit => 1000
+    t.string   "notes"
     t.string   "feel_of_day"
     t.string   "color_palette"
     t.string   "flower_types"
@@ -85,12 +84,11 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.string   "locations"
     t.string   "budget"
     t.string   "event_status"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "updated_by"
     t.integer  "florist_id"
     t.integer  "random_number"
-    t.integer  "show_display_name"
   end
 
   create_table "florists", :force => true do |t|
@@ -118,7 +116,6 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.datetime "updated_at",       :null => false
     t.integer  "employee_id"
     t.integer  "product_id"
-    t.string   "display_name"
   end
 
   create_table "products", :force => true do |t|
@@ -133,7 +130,6 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.string   "updated_by"
-    t.string   "display_name"
   end
 
   create_table "quotes", :force => true do |t|
@@ -147,26 +143,24 @@ ActiveRecord::Schema.define(:version => 20130807200157) do
     t.datetime "updated_at",           :null => false
     t.string   "updated_by"
     t.integer  "florist_id"
-    t.integer  "total_cost"
   end
 
   create_table "specifications", :force => true do |t|
     t.integer  "event_id"
     t.string   "item_name"
     t.integer  "item_quantity"
-    t.string   "item_specs",          :limit => 1000
+    t.string   "item_specs",          :limit => 500
     t.boolean  "in_quote"
     t.integer  "per_item_cost"
     t.integer  "per_item_list_price"
     t.integer  "extended_list_price"
     t.integer  "quoted_price"
     t.string   "image"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "updated_by"
     t.integer  "florist_id"
     t.string   "image1"
-    t.integer  "exclude_from_quote"
   end
 
 end

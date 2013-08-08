@@ -6,8 +6,8 @@ class DisplayingProductNameWImages < ActiveRecord::Migration
   end
 
   def down
-  drop_column :images, :display_name
-  drop_column :products, :display_name
-  drop_column :events, :show_display_name
+  remove_column :images, :display_name
+  remove_column :products, :display_name
+  remove_column :events, :show_display_name
   end
 end

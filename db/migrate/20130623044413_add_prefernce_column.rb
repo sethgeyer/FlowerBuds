@@ -4,6 +4,6 @@ class AddPrefernceColumn < ActiveRecord::Migration
   end
 
   def down
-  drop_columns :employees, :view_pref
+  remove_column :employees, :view_pref
   end
 end
