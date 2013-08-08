@@ -43,7 +43,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'debugger'
 
 
-gem 'google-analytics-rails'
+# gem 'google-analytics-rails'
 
 gem 'activerecord', '~> 3.2'
 gem 'activerecord-postgresql-adapter'
@@ -51,7 +51,7 @@ gem 'carrierwave'
 
 gem 'pry-rails', group: :development
 gem 'pry-debugger', group: :development
-# gem 'meta_request', group: :development
+gem 'meta_request', group: :development
 gem 'dynamic_form'
 
 gem 'will_paginate', '~>3.0.0'
