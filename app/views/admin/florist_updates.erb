@@ -18,7 +18,7 @@
     <div class="row-fluid">
       <div class="span2">  
         <%=label_tag "name", "Florist Co. Name: *" %>
-        <%= text_field_tag "name", @florist.name%>
+        <%= text_field_tag "name", @florist.name, class: "span12"%>
       </div>
       <div class="span2">  
         <%=label_tag "city", "City:" %>
@@ -76,15 +76,15 @@
           </div>
           <div class="span2">
             <%=label_tag "poc_email", "Email:" %>
-            <%= text_field_tag "poc_email", @employee.email %>
+            <%= text_field_tag "poc_email", @employee.email, class: "span12" %>
           </div>
           <div class="span2">
             <%=label_tag "poc_phone_w", "Phone (w):" %>
-            <%= text_field_tag "poc_phone_w", @employee.w_phone %>
+            <%= text_field_tag "poc_phone_w", @employee.w_phone, class: "span12" %>
           </div> 
           <div class="span2">
             <%=label_tag "poc_phone_c", "Phone (c):" %>
-            <%= text_field_tag "poc_phone_c", @employee.c_phone %>
+            <%= text_field_tag "poc_phone_c", @employee.c_phone, class: "span12" %>
           </div>
       </div>
       
