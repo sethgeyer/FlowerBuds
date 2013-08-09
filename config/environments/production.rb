@@ -1,6 +1,6 @@
 App::Application.configure do
   #Google Analytics
-  GA.tracker = "UA-42067449-1"
+  #GA.tracker = "UA-42067449-1"
   
   
   # Settings specified here will take precedence over those in config/application.rb
