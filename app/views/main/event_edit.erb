@@ -108,9 +108,9 @@
                   
                   <div class="thumbnail">    
                     <%if designed_product.image_on_cover == 1 %>
-                      <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extension) %>">
+                      <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
                     <%else%>
-                      <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                      <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extens) %>">
                     <%end%> 
                     
                     <% if @event.show_display_name == 1 %>
@@ -132,9 +132,9 @@
               <li>
                 <div class="thumbnail">    
                   <%if image.on_quote_cover != nil%>
-                  <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extension) %>">
+                  <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
                 <%else%>
-                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extension) %>">
+                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extens) %>">
                 <%end%>
                 
                 

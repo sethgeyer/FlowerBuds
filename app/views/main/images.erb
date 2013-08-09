@@ -18,7 +18,7 @@
  <% if image != nil%>
  <li class="span2">
     <div class="thumbnail">    
-    <img style="height: 120px" src="<%= image_data_path(image.id, image.extension) %>">
+    <img style="height: 120px" src="<%= image_data_path(image.id, image.extens) %>">
     </div>
     
     <%if Product.where(id: product_id).first.display_name == "" || Product.where(id: product_id).first.display_name == nil %>
@@ -64,7 +64,7 @@
 <% for image in Image.where(specification_id: @specification.id).order("id") %>
   <li class="span2">
     <div class="thumbnail">    
-    <img style="height: 120px" src="<%= image_data_path(image.id, image.extension) %>">
+    <img style="height: 120px" src="<%= image_data_path(image.id, image.extens) %>">
     </div>
     <%=label_tag "display_name", "Display Name:" %>
         <%= text_field_tag "display_name-#{image.id}", image.display_name, class: "span2"%>

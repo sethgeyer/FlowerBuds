@@ -335,7 +335,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     image = Image.new
     image.data = upload.read
     image.content_type = upload.content_type
-    image.extension = upload.original_filename.downcase.split(".").last
+    image.extens = upload.original_filename.downcase.split(".").last
    
     if params["spec_id"] == "florist"
     image.image_type = "florist"

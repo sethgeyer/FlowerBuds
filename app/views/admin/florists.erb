@@ -27,7 +27,7 @@
           <td>
             <% image = Image.where(florist_id: florist.id).where(image_type: "florist").first%>
             <% if image != nil%>
-             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extension) %>">
+             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extens) %>">
           <%else%>
           none
           <%end%></td>

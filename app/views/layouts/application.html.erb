@@ -17,7 +17,7 @@
             </a>
             <% image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%>
             <% if image != nil%>
-            <a tabindex=-1 href= "/home" class="brand"> <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extension) %>">
+            <a tabindex=-1 href= "/home" class="brand"> <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extens) %>">
             <%else%>
             <a tabindex=-1 href= "/home" class="brand"> No Image for
             <%end%>

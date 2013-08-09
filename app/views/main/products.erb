@@ -33,7 +33,7 @@
         <td> <div class="nails2">
             <% image = Image.where(product_id: product.id).where(image_type: "product").first%>
         <% if image != nil%>
-             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extension) %>">
+             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extens) %>">
           <%else%>
           <i>none</i>
           <%end%></td>

@@ -97,7 +97,7 @@
                 <li>
                 <div class="thumbnail">    
                   
-                  <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                  <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
                  
                  <% if @event.show_display_name == 1 %>
                  <% product = Product.where(id: designed_product.product.id).first%>
@@ -117,7 +117,7 @@
               <% for image in each.images.order("id")  %>
                 <li>
                   <div class="thumbnail">    
-                    <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extension) %>">
+                    <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
                  
                  <div class="display_name"><%=image.display_name%></div>
                   </div>
