@@ -53,6 +53,18 @@
 .display_name {
     font-size:70%;
     line-height: 1.4em;
+    width: 65px;
 }
 
 
+.display_name_dd {
+    font-size:70%;
+    line-height: 1.4em;
+    width: 100px;
+}
+
+
+
+.image_align {
+  vertical-align: top;
+}

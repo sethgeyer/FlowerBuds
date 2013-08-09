@@ -10,13 +10,14 @@
   <button class="btn btn-small" name="save" value= "save">Save My Updates</button><br><br>
 
 <h4> <b>Default Images to Include (Based on the Selection of These Flowers in the Arrangement)</b></h4>
+<div class="row-fluid">
 <ul class="thumbnails">
  <% designed_products = DesignedProduct.where(specification_id: @specification.id).where("product_qty > 0").order("id")%>
  <% for designed_product in designed_products%>
  <%product_id = designed_product.product_id%>
  <% image = Image.where(product_id: product_id).where(image_type: "product").first %>
  <% if image != nil%>
- <li class="span2">
+ <li class="image_align">
     <div class="thumbnail">    
     <img style="height: 120px" src="<%= image_data_path(image.id, image.extens) %>">
     </div>
@@ -37,12 +38,12 @@
  <label class="checkbox">
    <%=check_box_tag "on_cover-#{designed_product.id}", "1", designed_product.image_on_cover%>On Cover?
  </label>
-    
- <%else%>
- <%end%> 
 </li>
+ <%end%> 
+
 <%end%>
 </ul>
+</div>
 
 
   
@@ -56,18 +57,19 @@
 <h4> <b>Additional Images I'd Like Include in the Quote for this Arrangement:</b></h4>
 <p>Add up to a <b><u>Maximum</b></u> of 10 images per arrangement.  Max file size = 75kb.<p>
 
+<div class="row-fluid">
 <ul class="thumbnails">
 
 
 
 
 <% for image in Image.where(specification_id: @specification.id).order("id") %>
-  <li class="span2">
+  <li class="image_align">
     <div class="thumbnail">    
     <img style="height: 120px" src="<%= image_data_path(image.id, image.extens) %>">
     </div>
     <%=label_tag "display_name", "Display Name:" %>
-        <%= text_field_tag "display_name-#{image.id}", image.display_name, class: "span2"%>
+        <%= text_field_tag "display_name-#{image.id}", image.display_name, class: "span12"%>
       
     
    
@@ -81,6 +83,7 @@
 </li>
 <%end%>
 </ul>
+</div>
 
 
 

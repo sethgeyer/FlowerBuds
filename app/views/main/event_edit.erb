@@ -98,12 +98,13 @@
         <td> <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span8", :rows=>3, placeholder: "Limit: 1000 characters."%>
          <br>
             
-            <ul class="nails2">
+            <div class="row-fluid">
+            <ul class="nails2" >
             <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0.0").order("id") %>
               <% for designed_product in designed_products%>
                   <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
                   <% if image != nil%>
-                  <li>
+                  <li  class="image_align" >
                   
                   
                   <div class="thumbnail">    
@@ -112,7 +113,7 @@
                     <%else%>
                       <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extens) %>">
                     <%end%> 
-                    
+                     </div>
                     <% if @event.show_display_name == 1 %>
                     <% product = Product.where(id: designed_product.product.id).first%>
                     <%if product.display_name == "" || product.display_name == nil %>
@@ -122,14 +123,14 @@
                     <%end%>
                     <div class="display_name"><%=display_name%></div>
                     <%end%>
-                  </div>
+                 
                   </li>
                   <%end%>
                   <%end%>
                 
             
             <% for image in each.images.order("id")  %>
-              <li>
+              <li class="image_align">
                 <div class="thumbnail">    
                   <%if image.on_quote_cover != nil%>
                   <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
@@ -140,14 +141,14 @@
                 
                 
                 
-                
-                <div class="display_name"><%=image.display_name%></div>
                 </div>
+                <div class="display_name""><%=image.display_name%></div>
+                
               </li>
             <%end%> 
             </ul>
         </td>
-        
+        </div>
         
         
       

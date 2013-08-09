@@ -87,18 +87,18 @@
       <td align="middle"> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
       <td><%= raw(each.item_specs.gsub("\n", "<br>"))%>
       
-       <br>
+       <div class="row-fluid">
               <ul class="nails2">
                <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id")%>
             <% for designed_product in designed_products%>
               
                 <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
                <% if image != nil %>
-                <li>
+                <li class="image_align">
                 <div class="thumbnail">    
                   
                   <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
-                 
+                 </div>
                  <% if @event.show_display_name == 1 %>
                  <% product = Product.where(id: designed_product.product.id).first%>
                     <%if product.display_name == "" || product.display_name == nil %>
@@ -106,7 +106,7 @@
                     <%else%>
                       <%display_name = product.display_name%>
                     <%end%>
-                    <div class="display_name"><%=display_name%></div>
+                    <div class="display_name_dd"><%=display_name%></div>
                 <%end%>
                 <%end%>
                 <%end%>
@@ -115,11 +115,11 @@
               
               
               <% for image in each.images.order("id")  %>
-                <li>
+                <li  class="image_align">
                   <div class="thumbnail">    
                     <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
                  
-                 <div class="display_name"><%=image.display_name%></div>
+                 <div class="display_name_dd"><%=image.display_name%></div>
                   </div>
                 </li>
               <%end%> 
