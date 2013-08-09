@@ -261,7 +261,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     event_id = params["event_id"]
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
     @specifications = @event.specifications.order("id")
-    @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
+    @employee_list = [Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").where(primary_poc: "yes").uniq.pluck(:name)] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").where("primary_poc is null").uniq.pluck(:name)
     render(:event_edit) and return
   end
   
@@ -769,7 +769,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from link in header
   def employees
     if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
-      @employees = Employee.where(florist_id: session["found_florist_id"]).order("status",  "name")
+      @employees = Employee.where(florist_id: session["found_florist_id"]).order("primary_poc", "status",  "name")
       render(:employees) and return
     else
       redirect_to "/employee/#{session["found_user_id"]}" and return
