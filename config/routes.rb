@@ -54,6 +54,8 @@ App::Application.routes.draw do
   get "/florists/:florist_id"                 => "admin#florist"
   post "florist_updates/:florist_id"          => "admin#florist_updates"
   
+  get "/other"                                => "main#other"
+  post "/other_update"                        => "main#other_update"
   
 end
 

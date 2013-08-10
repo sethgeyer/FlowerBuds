@@ -1,0 +1,51 @@
+<h3>Other Customizable Items</h3>
+
+<h4> Customizable Quote Language for Last Page of Quote</h4>
+<p> This is a one time setup.  Use the default language provided or create your own language that will appear at the bottom of each of your customer quotes. </p>
+
+
+  <%= form_tag("/other_update") do %>
+    <% if @florist.quote_language == nil%>
+    <%quote_language = @default_quote_language %>
+    <%else%>
+    <%quote_language = @florist.quote_language%>
+    <%end%>
+    <%= text_area_tag "quote_language", quote_language, class: "span12", :rows=>20%>
+    
+    <p> Character Limit = 5,000.  Current Character Count:  <%= quote_language.length%>
+    
+    <% if @OTHER_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
+    
+     <div class = 'label-spacer'></div> 
+        <button tabindex=-1 class="btn btn-mini" name="save" value= "save">Save</button>
+         <button tabindex=-1 class="btn btn-mini" name="cancel" value= "cancel">Cancel</button>
+        <%else%>
+        <p><b> NOTE: You do not have administrative rights and therefore do not have permissions to edit the quote language.</p>
+    <%end%>
+    <%end%>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

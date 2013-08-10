@@ -24,12 +24,15 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 
-######### PAGE_VIEW_PERMISSIONS
+######### PAGE_VIEW_PERMISSIONS & OTHER CONSTANTS
   ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
   EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
   PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
-
-
+  OTHER_UPDATE_MUST_HAVE = ["All Admin Rights"]
+  DEFAULT_QUOTE_LANGUAGE = "I agree to the terms and conditions of the contract.  This quote once executed will serve as my order form. 
+    \n\n\n Customer Name: ___________________________
+    \n\n\n Signature: ______________________ 
+    \n\n\n Date:  __________________________"
 
 ######### WEBPAGE aka: the landing page for someone searching for centerpiece on the internet
 
@@ -101,7 +104,27 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     render(:homepage) and return
   end
   
-  
+######### OTHER
+
+### GET Handler for Other on navigation bar
+  def other
+      @OTHER_UPDATE_MUST_HAVE = OTHER_UPDATE_MUST_HAVE
+      @florist = Florist.where(id: session["found_florist_id"]).first
+      @default_quote_language = DEFAULT_QUOTE_LANGUAGE
+      render(:other) and return
+  end  
+
+### POST Handler from Other
+  def other_update
+    if params["save"]
+    update_florist = Florist.where(id: session["found_florist_id"]).first
+    update_florist.quote_language = params["quote_language"]
+    update_florist.save
+    
+    else # do nothing
+    end
+    redirect_to "/other" and return
+  end
 
 ######### SEARCH OR LOGOUT BUTTONS ON HOMEPAGE
 
@@ -614,6 +637,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     
     @event = Event.where(id: event_id).where(florist_id: session["found_florist_id"]).first
     @specifications = @event.specifications.where(exclude_from_quote: nil).order("id")
+    
     render(:cust_facing_quote, layout:false) and return
   end
   

@@ -11,6 +11,14 @@
     <div class="container">
     <br><br><br>
       
+       <%if Florist.where(id: session["found_florist_id"]).first.quote_language == nil%>
+        <%=quote_language = "NOTE:  FLORIST.... AS PART OF YOUR FIRST TIME SETUP, YOU MUST CREATE THE QUOTE LANGUAGE OR SAVE THE DEFAULT QUOTE LANGUAGE BEFORE GENERATING A CUSTOMER QUOTE.  PERFORM THIS TASK BY CLICKING ON THE \"OTHER\" LINK IN THE NAVIGATION BAR."%>
+      <%else%>
+        <%quote_language = Florist.where(id: session["found_florist_id"]).first.quote_language%>
+      <%end%>
+        
+      
+      
       <% image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%> 
       <% if image != nil %>
       <h1 align="middle"><img align="middle" src="<%= image_data_path(image.id, image.extens) %>" width="100" height="100" class="img-polaroid" align="left"/></b></h1>
@@ -166,16 +174,13 @@
 
     <div class="page-break"></div>
     <hr />  
-    <br><br>
-      <p> I agree to the terms and conditions of the contract.  This quote once executed will serve as my order form.</p>
     <br>
-    <p><b> Name: <%=@event.customer.name%> 
-    <br><br><br>
-   
-     Signature: _____________________________    <br><br><br>
-   
-     Date: __________________________________ <br>
-    </p>
+      
+      
+      <%= raw(quote_language.gsub("\n", "<br>"))%>
+      <br><br><br>
+      
+      
    </div>
   </body>
 </html>
