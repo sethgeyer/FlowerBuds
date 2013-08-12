@@ -562,7 +562,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     for each in DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
       count = count + (each.product_qty / 100.0)
     end
-    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count < 1.0  
+    if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count <= 0  
       flash[:error] = "B. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     else # do nothing
