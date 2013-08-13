@@ -9,7 +9,7 @@
 
 =
 florists = Florist.create([
-    {name: "CenterpieceFMT", company_logo: "logo_flowerbuds.jpeg", company_id: "centerpiece", created_at: "2013-06-18 17:26:49", updated_at: "2013-06-20 15:45:41", updated_by: "admin", status: "Active", city: "", state: "", zip: ""}
+    {name: "CenterpieceFMT", company_id: "centerpiece", created_at: "2013-06-18 17:26:49", updated_at: "2013-06-20 15:45:41", updated_by: "admin", status: "Active", city: "", state: "", zip: ""}
     
     ])
     
