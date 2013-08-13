@@ -40,7 +40,7 @@
     
     <script type="text/javascript"> function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=100,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
     <div class="span7">
-      <p class="pull-right" ><a class="span12" href="JavaScript:newPopup('/products');">Popup Products<img src="/images/orange_gerber.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
+      <p class="pull-right" ><a class="span12" href="JavaScript:newPopup('/products');">Popup Products<img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
     </div>
       
       <%=hidden_field_tag "event_id", @event.id%>
@@ -86,6 +86,6 @@
  
 <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
 
-<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">Show Me the Specifications for Each Arrangement</a></p> 
+<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Show Me the Specifications for Each Arrangement</a></p> 
     
  
