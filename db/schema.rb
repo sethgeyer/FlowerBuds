@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130810185753) do
+ActiveRecord::Schema.define(:version => 20130814162839) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(:version => 20130810185753) do
     t.string   "state"
     t.string   "zip"
     t.string   "quote_language", :limit => 5000
+    t.integer  "plan_id"
   end
 
   create_table "images", :force => true do |t|
@@ -120,6 +121,16 @@ ActiveRecord::Schema.define(:version => 20130810185753) do
     t.integer  "employee_id"
     t.integer  "product_id"
     t.string   "display_name"
+  end
+
+  create_table "plan", :force => true do |t|
+    t.string   "plan_name"
+    t.integer  "number_of_users"
+    t.string   "open_field"
+    t.integer  "florist_id"
+    t.string   "updated_by"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "products", :force => true do |t|

@@ -7,7 +7,8 @@ class Florist < ActiveRecord::Base
   has_many :events
   has_many :quotes
   has_many :specifications
-  has_many :images 
+  has_many :images
+  belongs_to :plan 
   attr_accessible :name, :company_id
   validates_presence_of :name, :company_id, :status
   validates_uniqueness_of :company_id
