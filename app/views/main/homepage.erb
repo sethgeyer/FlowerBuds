@@ -5,7 +5,7 @@
     <div class="span4">
       <h4>Customer Search:</h4>
       <p> <%=text_field_tag "search_field", nil, placeholder: "a single letter will suffice"%> <br>
-      <%=button_tag "Search/Add", name: "search", class: "btn btn-small"%></p>
+      <%=button_tag "Search/Add", name: "search", class: "btn btn-small btn-primary"%></p>
     </div>
     
     <div class="span5">
@@ -29,12 +29,12 @@
     <div class="span2">
       <h4>Active Events For:</h4>
       <p><%= select_tag "view",  options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref), class: "input-medium"%><br>
-      <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small"%> </p>
+      <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small btn-primary"%> </p>
     </div>  
   </div>
 
   <%if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"%>
-    <%=button_tag "Admin Access", name: "admin_access", class:"btn btn-small"%><br>
+    <%=button_tag "Admin Access", name: "admin_access", class:"btn btn-small btn-primary"%><br>
   <%else%>
   <%end%>
 <%end%>

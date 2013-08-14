@@ -4,7 +4,7 @@
   <%= form_tag("/product_post/") do %>  
   
     <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
-      <button class="btn btn-small" name= "new" value= "new">Add New</button>
+      <button class="btn btn-small btn-primary" name= "new" value= "new">Add New</button>
     <%else%>
     <%end%>
     <table class="table table-striped table-hover table-condensed ">    
@@ -24,7 +24,7 @@
       <tr>
       <% for product in @products%>  
         <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
-          <td>  <button class="btn btn-mini" name= "edit" value= <%=product.id%>>Edit</button> </td>
+          <td>  <button class="btn btn-mini btn-primary" name= "edit" value= <%=product.id%>>Edit</button> </td>
           <%else%>
           <td></td>
           <%end%>
