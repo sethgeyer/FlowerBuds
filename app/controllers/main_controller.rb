@@ -94,11 +94,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     end  
     if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
       Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
-      @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 100)
+      @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 25)
     else
       view_pref = Employee.where(id: session["found_user_id"]).first.view_pref
       employee_id = Employee.where(florist_id: session["found_florist_id"]).where(username: view_pref).first.id
-      @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 100)
+      @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").order("date_of_event").paginate(:page => params[:page], :per_page => 25)
     end
     @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
     render(:homepage) and return
@@ -126,7 +126,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     redirect_to "/other" and return
   end
 
-######### SEARCH OR LOGOUT BUTTONS ON HOMEPAGE
+######### BUTTONS ON HOMEPAGE
 
 ### POST handler for buttons on homepage.erb (admittedly, a poorly named function for what its actually doing)
   def homepage
@@ -137,8 +137,10 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         customer = "add_new_customer"
       end
       redirect_to "/search/#{customer}" and return
-    elsif params["admin_access"]
+    elsif params["florists_access"]
       redirect_to "/florists" and return
+    elsif params["plans_access"]
+      redirect_to "/plans" and return
     elsif params["update_view"]
       emp_update = Employee.where(id: session["found_user_id"]).first
       emp_update.view_pref = params["view"]
@@ -721,7 +723,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### GET Handler from link in header
   def products
-    @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") #.paginate(:page => params[:page], :per_page => 100) 
+    @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25) 
     @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
     render(:products) and return
   end
@@ -842,8 +844,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @employee.w_phone = params["phone_w"]
     @employee.c_phone = params["phone_c"]
     @employee.username = params["username"]
-    @employee.password = params["password"]        #NOTE: STRIPPED OUT THE PASSWORD SAVE TO ALLOW FOR A BETA TESTER TO LOGIN ON THE HEROKU SITE W/OUT ALLOWING THEM TO JACK UP THE LOGIN FOR ANYONE ELSE THAT WANTED TO LOGIN 
-    @employee.password_confirmation = params["password_confirmation"] #SEE NOTE ABOVE
+    @employee.password = params["password"]        
+    @employee.password_confirmation = params["password_confirmation"]
     if @employee.primary_poc == "yes"
       @employee.admin_rights = "All Admin Rights"
       @employee.status = "Active"

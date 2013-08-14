@@ -1,0 +1,39 @@
+  
+</h1> ADMIN VIEW </h1>
+  
+<br><th><%=link_to "Return to Home", home_path%></th> 
+
+<h3> Edit Plans </h3>
+ 
+  <%= form_tag("/plans_post") do %>
+    
+    <button class="btn btn-small btn-primary" name= "new" value= "new">Add New</button>
+    <table class="table table-striped table-hover table-condensed">
+      <th>ID:</th>
+      <th></th>
+      <th>Plan:</th>
+      <th>Number of Users:</th>
+      <th>Created_at:</th>
+      <th>Updated_by:</th>
+      <th>Updated_at:</th>  
+      <tr>
+        <% for plan in @plans%>  
+            <td><%= hidden_field_tag "plan_id", plan.id%>
+              <%=plan.id%></td>
+            <td><button class="btn btn-mini btn-primary" name= "edit" value= <%=plan.id%>>Edit</button> </td>
+            <td><%=hidden_field_tag "plan", plan.plan_name%>
+              <%=plan.plan_name%></td>
+            <td><%=hidden_field_tag "number_of_users", plan.number_of_users%>
+              <%=plan.number_of_users%></td>
+            <td><%=hidden_field_tag "created_at", plan.created_at %>
+              <%=plan.created_at %></td>
+            <td><%=hidden_field_tag "updated_by", plan.updated_by %>
+              <%=plan.updated_by %></td>
+            <td><%=hidden_field_tag "zip", plan.updated_at %>
+              <%=plan.updated_at %></td>
+     
+        </tr>
+      <% end %>
+    </table>    
+    
+  <%end%>

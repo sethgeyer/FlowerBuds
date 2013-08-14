@@ -1,6 +1,6 @@
 class CreatePlanTable < ActiveRecord::Migration
   def up
-    create_table :plan do |t|
+    create_table :plans do |t|
       t.string  :plan_name
       t.integer :number_of_users
       t.string  :open_field
@@ -11,6 +11,6 @@ class CreatePlanTable < ActiveRecord::Migration
   end
 
   def down
-  drop_table :plan
+  drop_table :plans
   end
 end

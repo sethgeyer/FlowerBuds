@@ -67,6 +67,10 @@
         </tr>
        <% end %>
     </table>
+    
+      <div class="apple_pagination">
+        <%=will_paginate @products%>
+      </div>
   <%end%>
   <p> + The Display Name is the name that will appear on the customer's quotes.  The Display Name is only shown if it is different than the Product Name.
 

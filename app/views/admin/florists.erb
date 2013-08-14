@@ -15,6 +15,7 @@
       <th>Name: *</th>
       <th>Company ID: *</th>
       <th>Status: *</th>
+      <th>Plan: *</th>
       <th>Primary POC: *</th>
       <th>Email:</th>             
       <th>Phone (w):</th>
@@ -40,6 +41,12 @@
               <%=florist.company_id%></td>
           <td><%=hidden_field_tag "status", florist.status%>
               <%=florist.status%> </td>
+          <% if florist.plan_id == nil%>
+            <%plan_name = "--"%>
+            <%else%>
+            <%plan_name = Plan.where(id: florist.plan_id).first.plan_name%>
+            <%end%>
+         <td><%=plan_name%></td>
           <% if Employee.where(florist_id: florist.id).where(primary_poc: "yes").first != nil%>
             <td><%=hidden_field_tag "primary_poc", Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.name %>
                 <%=Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.name%></td>

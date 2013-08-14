@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(:version => 20130814162839) do
     t.string   "display_name"
   end
 
-  create_table "plan", :force => true do |t|
+  create_table "plans", :force => true do |t|
     t.string   "plan_name"
     t.integer  "number_of_users"
     t.string   "open_field"

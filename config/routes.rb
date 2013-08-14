@@ -57,6 +57,10 @@ App::Application.routes.draw do
   get "/other"                                => "main#other"
   post "/other_update"                        => "main#other_update"
   
+  get "/plans"                                => "admin#plans"
+  post "/plans_post"                          => "admin#plans_post"
+  get "/plans/:plan_id"                       => "admin#plan"
+  post "plan_updates/:plan_id"                => "admin#plan_updates"
 end
 
 

@@ -34,7 +34,9 @@
   </div>
 
   <%if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"%>
-    <%=button_tag "Admin Access", name: "admin_access", class:"btn btn-small btn-primary"%><br>
+    <%=button_tag "Florists", name: "florists_access", class:"btn btn-small btn-warning"%>
+    <%=button_tag "Plans", name: "plans_access", class:"btn btn-small btn-warning"%><br>
+  
   <%else%>
   <%end%>
 <%end%>
@@ -94,7 +96,7 @@
     <%=will_paginate @events%>
   </div>
   <br>
-  <p>Defaulted to show 100 events per page view</p>
+  <p>Defaulted to show 25 events per page view</p>
   
   
   

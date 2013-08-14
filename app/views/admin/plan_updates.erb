@@ -1,0 +1,45 @@
+
+<h3><b>Create/Edit Plans</b></h3>
+<p><a href="/plans">Back to Plans</a></p><br>
+
+
+<% if @plan.id == nil 
+  id = "new"%>
+<%else
+  id = @plan.id%>
+<%end %>
+       
+<%= form_tag("/plan_updates/#{id}") do %>
+         
+ 
+   
+    <div class="row-fluid">
+      <div class="span2">  
+        <%=label_tag "plan_name", "Plan Name: *" %>
+        <%= text_field_tag "plan_name", @plan.plan_name, class: "span12"%>
+      </div>
+      <div class="span2">  
+        <%=label_tag "number_of_users", "Number of Users:" %>
+        <%= text_field_tag "number_of_users", @plan.number_of_users, class: "span12" %>
+      </div>
+      <div class="span2">  
+        <%=label_tag "updated_by", "Last Updated by:" %>
+        <%= hidden_field_tag "updated_by", @plan.updated_by, class: "span12" %>
+        <%= @plan.updated_by%>
+      </div>
+      <div class="span2">  
+        <%=label_tag "updated_at", "Updated at:" %>
+        <%= hidden_field_tag "updated_at", @plan.updated_at%>
+        <%= @plan.updated_at%>
+      </div>
+    </div>
+   
+<div class= 'label-spacer'></div> <button class="btn btn-primary btn-small" name= "action" value= "save">Save</button>
+
+<% end %>
+   
+  </div>  
+
+
+  
+

@@ -27,6 +27,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def florist
     if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
       id = params["florist_id"]
+      @plans = Plan.uniq.pluck(:plan_name)
       if id == "new"
         @florist = Florist.new
         @employee = Employee.new
@@ -46,6 +47,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### POST Handler for florist_updates.erb
   def florist_updates
+    @plans = Plan.uniq.pluck(:plan_name)
     if params["florist_id"] == "new"
       @florist = Florist.new
       @employee = Employee.new      
@@ -66,6 +68,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @florist.city = params["city"]
     @florist.state = params["state"]
     @florist.zip = params["zip"]
+    @florist.plan_id = Plan.where(plan_name: params["plan_name"]).first.id
     
     @florist.updated_by = Employee.where(id: session["found_user_id"]).first.name
     if @florist.save &&  @florist.company_id != "centerpiece"
@@ -91,6 +94,60 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     else
       render(:florist_updates) and return
     end    
+  end
+  
+
+######### PLANS
+
+### GET Handler for link on homegage.erb  
+  def plans
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
+      @plans = Plan.order("plan_name")
+      render(:plans) and return    
+    else
+      redirect_to "/login" and return
+    end
+  end
+  
+### POST Handler from plans.erb
+  def plans_post
+    if params["new"] 
+      redirect_to "/plans/new" and return
+    else
+      redirect_to "/plans/#{params["edit"]}" and return
+    end
+  end
+
+### GET Handler from plans_post function (see above)
+  def plan
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
+      id = params["plan_id"]
+      if id == "new"
+        @plan = Plan.new
+      else
+        @plan = Plan.where(id: id).first
+      end
+      render(:plan_updates) and return
+    else
+      redirect_to "/" and return
+    end
+  end
+
+### POST Handler for plan_updates.erb
+  def plan_updates
+    if params["plan_id"] == "new"
+      @plan = Plan.new      
+    else
+      @plan = Plan.where(id: params["plan_id"]).first
+    end
+    @plan.plan_name= params["plan_name"]
+    @plan.number_of_users = params["number_of_users"]
+    @plan.updated_by = Employee.where(id: session["found_user_id"]).first.name   
+    if @plan.save
+      redirect_to "/plans" and return
+    else
+      render(:plan_updates) and return
+    end
   end
   
 end
