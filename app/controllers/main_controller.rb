@@ -721,7 +721,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### GET Handler from link in header
   def products
-    @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") 
+    @products = Product.where(florist_id: session["found_florist_id"]).order("status", "product_type", "name") #.paginate(:page => params[:page], :per_page => 100) 
     @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
     render(:products) and return
   end
