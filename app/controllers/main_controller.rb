@@ -146,6 +146,22 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       emp_update.view_pref = params["view"]
       emp_update.save!
       redirect_to home_path and return
+    elsif params["date_range"]
+      if params["beg_date"] == ""
+        redirect_to home_path and return
+      else
+        if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
+          Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
+          @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").where("date_of_event" => params["beg_date"].."2099-08-23").order("date_of_event").paginate(:page => params[:page], :per_page => 25)
+        else
+          view_pref = Employee.where(id: session["found_user_id"]).first.view_pref
+          employee_id = Employee.where(florist_id: session["found_florist_id"]).where(username: view_pref).first.id
+          @events = Event.where(florist_id: session["found_florist_id"]).where(employee_id: employee_id).where("event_status not like 'Lost'").where("event_status not like 'Completed'").where("date_of_event" => params["beg_date"].."2099-08-23").order("date_of_event").paginate(:page => params[:page], :per_page => 25)
+        end
+        @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
+        @date = params["beg_date"]
+        render(:homepage) and return    
+      end
     end
   end
 
@@ -732,6 +748,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def product_post
     if params["new"] 
       redirect_to "/product/new" and return
+    elsif params["search"]
+      @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{params["search_field"]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+      @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
+      @name = params["search_field"]
+      render (:products) and return
+    elsif params["clear"]
+    redirect_to "/products" and return
     else
       redirect_to "/product/#{params["edit"]}" and return
     end

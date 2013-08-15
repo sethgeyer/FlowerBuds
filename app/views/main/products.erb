@@ -1,7 +1,12 @@
-
-<h3>Edit Products</h3>
+<h3>Products</h3>
 
   <%= form_tag("/product_post/") do %>  
+  
+  <div class="form-inline">
+    <%=text_field_tag "search_field", @name, placeholder: "Product Name"%>
+    <%=button_tag "Search", name: "search", class: "btn btn-small btn-primary"%>
+    <%=button_tag "Clear", name: "clear", class: "btn btn-small btn-primary"%>
+  </div><br>    
   
     <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
       <button class="btn btn-small btn-primary" name= "new" value= "new">Add New</button>
