@@ -146,6 +146,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       emp_update.view_pref = params["view"]
       emp_update.save!
       redirect_to home_path and return
+    elsif params["clear"]
+        redirect_to home_path and return
     elsif params["date_range"]
       if params["beg_date"] == ""
         redirect_to home_path and return

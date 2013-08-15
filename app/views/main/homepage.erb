@@ -20,7 +20,7 @@
         
     </div>
     
-    <div class="span5">
+    <div class="span4">
     <div class="nails2">
       <% image = Image.where(employee_id: session["found_user_id"]).where(image_type: "employee").first%>
   <% if image != nil%>
@@ -38,19 +38,18 @@
     
     
     
-    <div class="span3">
+    <div class="span4">
       <h4>Active Events For:</h4>
         <div class="form-inline">
           <%= select_tag "view",  options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref), class: "input-medium"%>
           <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small btn-primary"%>
         </div>
-        
-        
-  <h4>Events After:</h4>
-    <div class="form-inline">
-    <input type="date" name="beg_date" class="span6" tabindex=3 value=<%=@date%> ></i></input>
-      <%=button_tag "Show Me", name: "date_range", class:"btn  btn-small btn-primary"%>
-    </div>
+      <h4>Events After:</h4>
+        <div class="form-inline">
+        <input type="date" name="beg_date" class="span5" tabindex=3 value=<%=@date%> ></i></input>
+        <%=button_tag "Show Me", name: "date_range", class:"btn  btn-small btn-primary"%>
+        <%=button_tag "Clear", name: "clear", class: "btn btn-small"%>
+        </div>
     </div>  
   </div>
 
