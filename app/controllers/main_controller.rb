@@ -7,7 +7,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   before_filter do
     if !OPEN_PAGES.include?(request.path_info) && session["found_florist_id"] == nil && session["found_user_id"] == nil
       render(:login, layout:false) and return
-    elsif !OPEN_PAGES.include?(request.path_info) && (Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Florist.where(id: session["found_florist_id"]).first.status == "Inactive")
+    elsif !OPEN_PAGES.include?(request.path_info) && ((Employee.where(id: session["found_user_id"]).first.status == "Inactive" || Employee.where(id: session["found_user_id"]).first.admin_rights == "None") || Florist.where(id: session["found_florist_id"]).first.status == "Inactive")
       render(:login, layout:false) and return
     end 
   end
@@ -25,9 +25,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 
 ######### PAGE_VIEW_PERMISSIONS & OTHER CONSTANTS
-  ADMIN_RIGHTS = ["None", "All Admin Rights", "Product Edit Only"]
+  ADMIN_RIGHTS = ["None", "User", "Product Edit Rights", "All Admin Rights"]
   EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
-  PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Only"]
+  PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Rights"]
   OTHER_UPDATE_MUST_HAVE = ["All Admin Rights"]
   DEFAULT_QUOTE_LANGUAGE = "I agree to the terms and conditions of the contract.  This quote once executed will serve as my order form. 
     \n\n\n Customer Name: ___________________________

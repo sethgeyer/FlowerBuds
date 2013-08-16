@@ -84,7 +84,7 @@
         <div class="row-fluid">
           <div class="span2">
             <%=label_tag "admin_rights", "Admin Rights: *"%>
-            <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "None", "Product Edit Only"], @employee.admin_rights), class: "span12"%>
+            <%=select_tag "admin_rights", options_for_select(["All Admin Rights", "Product Edit Rights", "User", "None"], @employee.admin_rights), class: "span12"%>
           </div>
           <div class="span2">
             <%=label_tag "poc_email", "Email:" %>
