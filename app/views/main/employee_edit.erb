@@ -20,18 +20,21 @@
       
       <td><%=label_tag "name", "Name: *"%>
       <%=text_field_tag "name", @employee.name%></td> <br>
-      <td><%=label_tag "status", "Status: *"%>
-      <%= select_tag "status", options_for_select(["Active", "Inactive"], @employee.status)%></td><br>
       <td><%=label_tag "username", "Username: *"%>
       <%= text_field_tag "username", @employee.username%></td><br>
-      <td><%=label_tag "email", "Email:"%>
+      <td><%=label_tag "status", "Employee Status: *"%>
+      <%= select_tag "status", options_for_select(["Active", "Inactive"], @employee.status)%></td><br>
+
+      <td><%=label_tag "admin_rights", "User Privileges:"%>
+      <%= select_tag "admin_rights", options_for_select(@ADMIN_RIGHTS, @employee.admin_rights)%></td><br>
+
+      
+                 <td><%=label_tag "email", "Email:"%>
       <%= text_field_tag "email", @employee.email%></td><br>
       <td><%=label_tag "phone_w", "Phone(w):"%>
       <%= text_field_tag "phone_w", @employee.w_phone%></td><br>
       <td><%=label_tag "phone_c", "Phone(c):"%>
       <%= text_field_tag "phone_c", @employee.c_phone%></td><br>
-      <td><%=label_tag "admin_rights", "Admin Rights:"%>
-      <%= select_tag "admin_rights", options_for_select(@ADMIN_RIGHTS, @employee.admin_rights)%></td><br>
       <br>
       <b>CHANGE / SET PASSWORD:</b> <br>
       <td><%=label_tag "password", "New Password:"%>
@@ -43,21 +46,28 @@
    
         <p><b>Name: </b><%=hidden_field_tag "name", @employee.name%>
         <%=@employee.name%> </p>
-        <p><b>Status:</b> <%=hidden_field_tag "status", @employee.status%>
-        <%= @employee.status%></p>
-        <p><b>Username: *</b>
+         <p><b>Username:</b>
         <%= hidden_field_tag "username", @employee.username%>
         <%=@employee.username%></p>
+
+
+        <p><b>Employee Status:</b> <%=hidden_field_tag "status", @employee.status%>
+        <%= @employee.status%></p>
+       
+        <p><b>User Privilges: </b>
+        <%= hidden_field_tag "admin_rights", @employee.admin_rights%>
+        <%= @employee.admin_rights%></p>
+
+        
+        
+        
         <label><b>Email: </b><br>
         <%= text_field_tag "email", @employee.email%></p>
         <p><b>Phone(w): </b><br>
         <%= text_field_tag "phone_w", @employee.w_phone%></p>
         <p><b>Phone(c): </b><br>
         <%= text_field_tag "phone_c", @employee.c_phone%></p>
-        <p><b>Admin Rights: </b>
-        <%= hidden_field_tag "admin_rights", @employee.admin_rights%>
-        <%= @employee.admin_rights%></p>
-        <br> 
+                <br> 
         <br>
         <b>CHANGE / SET PASSWORD:</b> <br>
         <td><%=label_tag "password", "New Password:"%>
