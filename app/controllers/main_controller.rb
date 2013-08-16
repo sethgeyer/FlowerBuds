@@ -864,19 +864,30 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee = Employee.where(id: params["employee_id"]).first
     end
     @employee.name = params["name"]
-   
     @employee.email = params["email"]
     @employee.w_phone = params["phone_w"]
     @employee.c_phone = params["phone_c"]
     @employee.username = params["username"]
     @employee.password = params["password"]        
     @employee.password_confirmation = params["password_confirmation"]
+    # This step is done to keep the POC from inadvertantly changing their rights... the POC should always have "All Admin Rights"
     if @employee.primary_poc == "yes"
       @employee.admin_rights = "All Admin Rights"
       @employee.status = "Active"
     else
-      @employee.admin_rights = params["admin_rights"]
-       @employee.status = params["status"]
+      @employee.status = params["status"]
+      # if they are changing the "status" to Inactive, then go ahead and change the employees admin privielegs to "none".
+      if params["status"] == "Inactive"
+        @employee.admin_rights = "None"
+      else
+        # if they have room for more active users (per their plan) or they are past the number but the change is to change someone's privileges to "None, then let them set the userprivielegs.  Otherwise default to "None".  This will allow them to show up in the list but not access the system.
+        if Florist.find(session["found_florist_id"]).employees.where(status: "Active").where("admin_rights not like 'None'").size < Florist.find(session["found_florist_id"]).plan.number_of_users || (Florist.find(session["found_florist_id"]).employees.where(status: "Active").where("admin_rights not like 'None'").size >= Florist.find(session["found_florist_id"]).plan.number_of_users  && params["admin_rights"] == "None")
+          @employee.admin_rights = params["admin_rights"]
+        else
+          @employee.admin_rights = "None"
+        end
+      end
+      
     end
     if @employee.save
       if EMPLOYEES_VIEW_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)
