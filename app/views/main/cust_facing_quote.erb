@@ -106,19 +106,22 @@
     <hr />    
    
     <h3> Arrangements for Event </h3>  
-      <table class="table table-striped table-bordered">      
+      <table class="table table-striped">      
+        <thead style="vertical-align:bottom">
         <tr>      
-          <th class="span1">Item Name</th>
-          <th>Qty</th>
-          <th class="span12">Specifications</th> 
-          <th>Per Item Price<i>+</i></th>
-          <th>Total Price</th>
+          <th class="span12">Description</th>
+          
+         
+          <th >Qty</th>
+          <th>Per Item<small>+</small></th>
+          <th>Total</th>
         </tr>
+        </thead>
         <% for each in @specifications %>
           <tr>
-            <td> <%=each.item_name%></td> 
-            <td> <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
-            <td> <%=raw(each.item_specs.gsub("\n", "<br>"))%>
+            <td> <b><%=each.item_name%></b><br> 
+            
+           <%=raw(each.item_specs.gsub("\n", "<br>"))%>
             
            
            <div class="row-fluid"> 
@@ -162,8 +165,9 @@
             <%end%> 
             </ul>
             </td>
-            <td>$<%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </td>
-            <td>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>            
+            <td> <b><%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
+            <td><b>$<%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b> </td>
+            <td><b>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </b>           
           </tr>
         
         <%end%>

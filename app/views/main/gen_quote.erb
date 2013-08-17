@@ -120,18 +120,20 @@
         <th></th>
         <th></th>
         <th></th>
+        
         <th></th>
         <th></th>
+        <th style="vertical-align:bottom">Total Cost:</th>
+        <th style="vertical-align:bottom"><br>Multiplier: </th>
+        <th style="vertical-align:bottom">Total Quoted:  </th>
         <th></th>
-        <th>Total Cost:</th>
-        <th>Multiplier: </th>
-        <th>Total Quoted:  </th>
-        <th></th>
+        
       </tr>
+      
       <tr>
         <th></th>
         <th></th>
-        <th></th>
+        
         <th></th>
         <th></th>
         <th></th>
@@ -165,27 +167,27 @@
       
         
     </tr>  
-    <tr>      
-      <th class="span2">Item Name</th>
-      <th>Quantity</th>
-      <th class="span8">Specifications</th> 
-      <th>Budgeted Hours</th>
-      <th>Per Item Cost</th>
-      <th>Extended Cost</th>
-      <th>Per Item List Price</th>
-      <th>Extended List Price</th> 
-      <th>Mult. @ List Price
-      <th class="span2">Quoted Price</th>
-      <th>Price Per Item</th>
+    <tr >      
+      <th class="span8" style="vertical-align:bottom" >Description</th>
+      <th style="vertical-align:bottom">Qty</th>
+      <th style="vertical-align:bottom">Budgeted Hours</th>
+      <th style="vertical-align:bottom">Per Item Cost</th>
+      <th style="vertical-align:bottom">Extended Cost</th>
+      <th style="vertical-align:bottom">Per Item List Price</th>
+      <th style="vertical-align:bottom">Extended List Price</th> 
+      <th style="vertical-align:bottom">Mult. @ List Price
+      <th class="span2" style="vertical-align:bottom">Quoted Price</th>
+      <th style="vertical-align:bottom">Price Per Item</th>
     </tr>
        <% total_hours = 0%>
         <% for each in @specifications %>
           <tr>
             <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
-                 <%=each.item_name%></td> 
+                <b> <%=each.item_name%></b><br> 
+            <%=raw(each.item_specs.gsub("\n", "<br>"))%></td>
             <td align="middle"> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity / 100%>          
                  <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
-            <td> <%=raw(each.item_specs.gsub("\n", "<br>"))%></td>        
+                  
               <% per_arrangement_cost = 0 %>
               <% per_arrangement_list_price = 0%>
               <% per_arrangement_hours = 0%>
