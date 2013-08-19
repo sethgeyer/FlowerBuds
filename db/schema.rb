@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130814162839) do
+ActiveRecord::Schema.define(:version => 20130819180237) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20130814162839) do
     t.integer  "florist_id"
     t.integer  "random_number"
     t.integer  "show_display_name"
+    t.string   "quote_message",       :limit => 1000
   end
 
   create_table "florists", :force => true do |t|

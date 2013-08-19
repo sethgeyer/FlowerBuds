@@ -71,8 +71,12 @@
       <%=@event.employee.name%> 
     </div>
   </div>
-
-<hr />
+  <div class="row-fluid">
+  <div class="span12">
+  <label><b>Quote-specific notes:</b></label>
+      <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"Notes will be shown at bottom of quote.  Limit: 1000 characters."%> 
+</div>
+</div>
 
 
           <%total_cost = 0%>     

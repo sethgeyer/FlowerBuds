@@ -326,6 +326,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
     @event.notes = params["notes"]
     @event.budget = params["budget"]
+    @event.quote_message = params["quote_message"]
     @event.customer_id = params["customer_id"]
     @event.show_display_name = params["display_name"]  
     if @event.save == false
@@ -646,6 +647,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     quote.save!
     event = Event.where(id: event_id).first
     event.event_status = params["status"]
+    event.quote_message = params["quote_message"]
     event.save!
     redirect_to "/generate_quote/#{event_id}" and return
   end

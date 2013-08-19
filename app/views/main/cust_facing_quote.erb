@@ -101,7 +101,8 @@
               <%=@event.photographer%>    
           </div>
         </div>
-
+        
+        
     <div class="page-break"></div>
     <hr />    
    
@@ -171,10 +172,22 @@
           </tr>
         
         <%end%>
-      </table>
-      <th><b>Total Quoted Price: $       
-      <%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b> <br><br>
-      <p> Note: <br>Total quoted price does not reflect any applicable state and local taxes.<br> + Per Item Prices are rounded to the nearest dollar.
+    <tr>
+    <td><b>Total Quoted Price: </b><br> <small>Price does not reflect any applicable state and local taxes.<br> + Per Item Prices are rounded to the nearest dollar.</small>
+    <td>
+    <td>
+      
+      <th><b>      
+      
+      $<%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
+      </table><br>
+     
+
+      <div class="row-fluid">
+        <label><b>Special Notes:</b></label>
+        <%=raw(@event.quote_message.gsub("\n", "<br>"))%>
+      </div>
+
 
     <div class="page-break"></div>
     <hr />  
