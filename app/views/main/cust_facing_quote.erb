@@ -55,8 +55,8 @@
 <br><br><br>
 
       <div align="middle"><%=@event.employee.name%><br>
-        <%=@event.employee.w_phone%><br>
-        <%=@event.employee.c_phone%><br>
+        work: <%=@event.employee.w_phone%><br>
+        cell: <%=@event.employee.c_phone%><br>
         <%=@event.employee.email%><br>
       </div>
     
@@ -114,16 +114,13 @@
         <thead style="vertical-align:bottom">
         <tr>      
           <th class="span12">Description Details</div></th>
-          
          
-          <th >Qty</th>
-          <th>Per Item<small>+</small></th>
           <th>Total</th>
         </tr>
         </thead>
         <% for each in @specifications %>
           <tr>
-            <td> <b><%=each.item_name%></b><br> 
+            <td> <b><%=each.item_name%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>  <i> ( <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> @ $<%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> per item<small>+</small> )</i><br>
             
            <%=raw(each.item_specs.gsub("\n", "<br>"))%>
             
@@ -164,16 +161,15 @@
             <%end%> 
             </ul>
             </td>
-            <td> <b><%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
-            <td><b>$<%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b> </td>
+             
+            
             <td><b>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </b>           
           </tr>
         
         <%end%>
     <tr>
     <td><b>Total Quoted Price: </b><br> <small>Price does not reflect any applicable state and local taxes.<br> + Per Item Prices are rounded to the nearest dollar.</small>
-    <td>
-    <td>
+  
       
       <th><b>      
       
