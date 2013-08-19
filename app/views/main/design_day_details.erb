@@ -69,10 +69,17 @@
   <br> 
    
 <b>Florist's Event Notes:</b>  <br>  
-<%= raw(@event.notes.gsub("\n", "<br>"))%>
-<br><br>
+<%if @event.notes == nil%>
+  <p>n/a</p>
+<%else%>
+<p><%= raw(@event.notes.gsub("\n", "<br>"))%></p>
+<%end%>
 <b>Quote Notes:</b>  <br>  
-<%= raw(@event.quote_message.gsub("\n", "<br>"))%>
+<%if @event.quote_message == nil%>
+  <p>n/a</p>
+<%else%>
+<p><%= raw(@event.quote_message.gsub("\n", "<br>"))%></p>
+<%end%>
  </tr>
 
 

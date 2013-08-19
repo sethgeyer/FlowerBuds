@@ -179,7 +179,11 @@
 
       <div class="row-fluid">
         <label><b>Special Notes:</b></label>
-        <%=raw(@event.quote_message.gsub("\n", "<br>"))%>
+        <%if @event.quote_message == nil%>
+          <p>n/a</p>
+        <%else%>
+          <%=raw(@event.quote_message.gsub("\n", "<br>"))%>
+        <%end%>
       </div>
 
 
