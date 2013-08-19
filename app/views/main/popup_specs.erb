@@ -13,7 +13,7 @@
       
   
       <table class="table table-striped table-hover, table-condensed, table-bordered ">
-        <th class="span12">Description</th>
+        <th class="span12">Description & Details</th>
        
         <%for specification in @specifications%>
           <tr>
@@ -28,7 +28,7 @@
               <% for image in specification.images %>
                 <li class="image_align">
                   <div class="thumbnail">    
-                    <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
+                    <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
                   </div>
                     <div class="display_name"><%=image.display_name%><br></div>
                 </li>

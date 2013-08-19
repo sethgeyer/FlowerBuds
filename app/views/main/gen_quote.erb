@@ -102,7 +102,7 @@
 
 
   <div class="row-fluid">
-    <%     if sum_price * 100 == @event.quote.total_price && total_cost * 100 == @event.quote.total_cost%>
+    <%     if (sum_price * 100).round(0) == @event.quote.total_price && (total_cost * 100).round(0) == @event.quote.total_cost%>
     <div class="span3">
       <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1200,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
       <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" />  Create Customer Quote</a>
@@ -124,10 +124,10 @@
         <th></th>
         <th></th>
         <th></th>
+        <th style="vertical-align:bottom">Total Cost:</th>
         
         <th></th>
         <th></th>
-        <th style="vertical-align:bottom">Total Cost:</th>
         <th style="vertical-align:bottom"><br>Multiplier: </th>
         <th style="vertical-align:bottom">Total Quoted:  </th>
         <th></th>
@@ -140,33 +140,28 @@
         
         <th></th>
         <th></th>
-        <th></th>
-        <th></th>
+        
     
-    
-    
-       
-      
-     
-<%     if sum_price * 100 == @event.quote.total_price  && total_cost * 100 == @event.quote.total_cost %>
-     
-       <th>$<%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
-       <% if @event.quote.markup != 0%>
-        <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
-      <%else%>
-        <th> - </th>  
-      <%end%>    
-      <th>$<%=sprintf("%.2f" , sum_price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
-      
-<%else%>
-
-<div class="alert alert-success">
-   
-  <h4>Reminder!</h4>
-  
-  <p> Press the "Save & Recalc Now" button to update the Total Costs and Price for the Quote.  Doing so, will ensure your quote reflects all adjustments you've made to the quote and arrangements.</p>
-</div>
-<%end%>
+        <% if (sum_price * 100).round(0) == @event.quote.total_price  && (total_cost * 100).round(0) == @event.quote.total_cost %>
+          <th>$<%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
+          <th></th>
+          <th></th>
+          <% if @event.quote.markup != 0%>
+            <th><%=@event.quote.markup / 100.0.round(2) %> x </th>
+          <%else%>
+            <th> - </th>  
+          <%end%>    
+          <th>$<%=sprintf("%.2f" , sum_price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>      
+        <%else%>
+          <%="SumPrice = #{(sum_price * 100).round(0)}"%>
+          <%="TotalPrice = #{(@event.quote.total_price).round(0)}"%>
+          <%="SumCost = #{(total_cost * 100).round(0)}"%>
+          <%="TotalCost = #{(@event.quote.total_cost).round(0)}"%>
+          <div class="alert alert-success">
+            <h4>Reminder!</h4> 
+            <p> Press the "Save & Recalc Now" button to update the Total Costs and Price for the Quote.  Doing so, will ensure your quote reflects all adjustments you've made to the quote and arrangements.</p>
+          </div>
+      <%end%>
       
       
         

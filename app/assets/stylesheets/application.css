@@ -68,3 +68,13 @@
 .image_align {
   vertical-align: top;
 }
+
+
+.user_choice {
+  font-size:75%;  
+}
+
+.image_size {
+  width: 65px; 
+  height: 65px;
+}  

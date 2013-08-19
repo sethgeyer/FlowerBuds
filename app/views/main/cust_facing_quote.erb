@@ -7,9 +7,11 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
   </head>
-  <body>
-    <div class="container">
-    <br><br><br>
+  
+  <body class="user_choice" >
+    <div class="container" >
+    <br><br><br><br><br>
+
       
        <%if Florist.where(id: session["found_florist_id"]).first.quote_language == nil%>
         <%=quote_language = "NOTE:  FLORIST.... AS PART OF YOUR FIRST TIME SETUP, YOU MUST CREATE THE QUOTE LANGUAGE OR SAVE THE DEFAULT QUOTE LANGUAGE BEFORE GENERATING A CUSTOMER QUOTE.  PERFORM THIS TASK BY CLICKING ON THE \"OTHER\" LINK IN THE NAVIGATION BAR."%>
@@ -21,12 +23,12 @@
       
       <% image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%> 
       <% if image != nil %>
-      <h1 align="middle"><img align="middle" src="<%= image_data_path(image.id, image.extens) %>" width="100" height="100" class="img-polaroid" align="left"/></b></h1>
+      <h2 align="middle"><img align="middle" src="<%= image_data_path(image.id, image.extens) %>" width="100" height="100" class="img-polaroid" align="left"/></b></h2>
       <%end%>
-      <h1 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h1><br><br>
-      <h2 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h2>  
-      <h2 align="middle"> "<%= @event.name%>" </h2>
-      <h2 align="middle"> <%= @event.date_of_event.to_formatted_s(:long_ordinal)%> </h2><br><br>  
+      <h2 align="middle"><%= Florist.where(id: @event.florist_id).first.name%></h2><br><br>
+      <h3 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h3>  
+      <h3 align="middle"> "<%= @event.name%>" </h3>
+      <h3 align="middle"> <%= @event.date_of_event.to_formatted_s(:long_ordinal)%> </h3><br><br>  
       <ul class="nails">  
         <% for each in @specifications %>
           <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where(image_on_cover: 1).where("product_qty > 0").order("id")%>
@@ -34,7 +36,7 @@
             <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
             <li>
               <div class="thumbnail">     
-                <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extens) %>">
+                <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
               </div>
             </li>
           <%end%>
@@ -42,7 +44,7 @@
             <%if image.on_quote_cover != nil%>
               <li>
                 <div class="thumbnail" >    
-                  <img style="width: 65px; height: 65px" src="<%= image_data_path(image.id, image.extens) %>">
+                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
                 </div>
               </li>
             <%end%>
@@ -50,17 +52,18 @@
         <%end%>    
     </ul>
 
-<br><br><br><br> 
+<br><br><br>
 
-      <p align="middle"><%=@event.employee.name%><br>
+      <div align="middle"><%=@event.employee.name%><br>
         <%=@event.employee.w_phone%><br>
         <%=@event.employee.c_phone%><br>
         <%=@event.employee.email%><br>
+      </div>
     
     <div class="page-break"></div>
     <hr/>
       
-      <h3> Event Details</h3>   
+      <h4> Event Details</h4>   
         <div class="row-fluid">
           <div class="span3">  
             <label><b>Quote Name: </b>
@@ -106,11 +109,11 @@
     <div class="page-break"></div>
     <hr />    
    
-    <h3> Arrangements for Event </h3>  
+    <h4> Arrangements for Event </h4>  
       <table class="table table-striped">      
         <thead style="vertical-align:bottom">
         <tr>      
-          <th class="span12">Description & Details</th>
+          <th class="span12">Description Details</div></th>
           
          
           <th >Qty</th>
@@ -134,7 +137,7 @@
                 <% if image != nil %>
                 <li class="image_align">
                 <div class="thumbnail">    
-                  <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">              
+                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">              
                 </div> 
                   <% if @event.show_display_name == 1 %>
                   <% product = Product.where(id: designed_product.product.id).first%>
@@ -150,15 +153,10 @@
                 <%end%>
             
             
-            
-                           
-            
-            
-            
             <% for image in each.images %>
               <li class="image_align">
                 <div class="thumbnail">    
-                  <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
+                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
                 </div>
                 <div class="display_name"><%=image.display_name%></div>
                 
