@@ -460,8 +460,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
   end
 
-  
-########## VIRTUAL STUDIO
+######### VIRTUAL STUDIO
 
 ###GET Handler from link on event_edit.erb
   def virtual_studio
@@ -569,7 +568,131 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).order("id")
     render(:popup_specs, layout:false) and return
   end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=begin MASS UPDATE FOR VIRTUAL STUDIO
+######### VIRTUAL STUDIO
+
+###GET Handler from link on event_edit.erb
+  def virtual_studio
+    event_id = params["event_id"]    
+    @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
+    @specifications = @event.specifications.order("id")
+    if @specifications == []
+      flash[:error] = "A. You need to create arrangements below before designing them in Virtual Studio."
+      redirect_to "/event_edit/#{params["event_id"]}" and return     
+    else
+    end  
+    
+  #Creates a list of used products for the arrangement 
+    designedproducts = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
+    used_products = []
+    for each in designedproducts
+      used_products << each.product.name
+    end
+    @list_of_products = used_products.uniq.sort
+    list_of_product_types = []
+    for each in @list_of_products
+    product = Product.where(florist_id: session["found_florist_id"]).where(name: each).first
+    list_of_product_types << product.product_type
+    end
+    @list_of_product_types = list_of_product_types.uniq.sort
+  #Creates a new designed_product for each arrangement for each product identified in the virtual studio
+  #This addresses the issue associated with arrangements added at the end of the design process.
+   for each in @list_of_products
+      id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id
+      for specification in @specifications
+          x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first
+          if x == nil
+            new_dp = DesignedProduct.new
+            new_dp.specification_id = specification.id
+            new_dp.product_id = id
+            new_dp.event_id = @event.id
+            new_dp.product_qty = 0
+            new_dp.florist_id = session["found_florist_id"]
+            new_dp.image_in_quote = 1
+            #new_dp.product_type = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.product_type
+            new_dp.save!
+          else
+          end
+      end
+    end
   
+  #Generate dropdown list for adding new products to the Virtual Studio Page
+    products = Product.where(status: "Active").where(florist_id: session["found_florist_id"]).order("name")
+    dropdown = []
+    for product in products
+      dropdown << product.name
+    end
+    for item in @list_of_products
+      dropdown = dropdown - [item]
+    end
+    @dropdown = dropdown
+    render(:virtual_studio) and return
+  end
+
+  
+### POST Handler from virtual_studio.erb
+  # Updates Virtual Studio Page based on updates made by user. 
+  def virtual_studio_update
+    event_id = params["event_id"]
+    specifications = Specification.where(event_id: event_id).order("id")
+    designedproducts = DesignedProduct.where(event_id: event_id)
+    for each in designedproducts
+      for specification in specifications
+        if params["stemcount_#{each.id}"].to_f*100 != each.product_qty
+          each.product_qty = params["stemcount_#{each.id}"].to_f * 100.round(2)
+          each.save!
+        end
+      end
+    end  
+    
+    if params["add"]
+      new_item = params["new_item"]
+      specifications = Specification.where(event_id: event_id)
+      for specification in specifications
+        new_dp = DesignedProduct.new
+        new_dp.specification_id = specification.id
+        new_dp.product_qty = 0
+        new_dp.florist_id = session["found_florist_id"]
+        new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
+        new_dp.event_id = event_id
+        new_dp.image_in_quote = 1
+        new_dp.save!
+      end         
+    elsif params["remove"]
+      removed_product_id = params["remove"]
+      removed_items = DesignedProduct.where(event_id: event_id).where(product_id: removed_product_id)
+      for each_item in removed_items
+        each_item.destroy
+      end
+    else # do nothing
+    end
+      redirect_to "/virtual_studio/#{event_id}" and return
+  end
+  
+  
+### GET Handler from link on virtual_studio.erb 
+  def popup_specs
+    event_id = params["event_id"]
+    @event_id = event_id
+    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).order("id")
+    render(:popup_specs, layout:false) and return
+  end 
+=end  
   
   
 ######### QUOTE GENERATION
