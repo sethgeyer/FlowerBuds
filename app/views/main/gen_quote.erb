@@ -181,7 +181,7 @@
        <% total_hours = 0%>
         <% for each in @specifications %>
           <tr>
-            <td> <%=each.id%><%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
+            <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
                 <b> <%=each.item_name%></b><br> 
                 <%if each.item_specs != nil%>
                   <%=raw(each.item_specs.gsub("\n", "<br>"))%>
