@@ -18,8 +18,9 @@
         <%for specification in @specifications%>
           <tr>
             <td><b><%=specification.item_name%></b><br>
-            <%= raw(specification.item_specs.gsub("\n", "<br>"))%>
-          
+              <% if specification.item_specs != nil%>
+                <%= raw(specification.item_specs.gsub("\n", "<br>"))%>
+              <%end%>
               <div class="row-fluid">
               <ul class="nails2">
               

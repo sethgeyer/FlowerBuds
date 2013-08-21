@@ -181,9 +181,11 @@
        <% total_hours = 0%>
         <% for each in @specifications %>
           <tr>
-            <td> <%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
+            <td> <%=each.id%><%= hidden_field_tag "spec_item-#{each.id}", each.item_name%>
                 <b> <%=each.item_name%></b><br> 
-            <%=raw(each.item_specs.gsub("\n", "<br>"))%></td>
+                <%if each.item_specs != nil%>
+                  <%=raw(each.item_specs.gsub("\n", "<br>"))%>
+                <%end%></td>
             <td align="middle"> <%= hidden_field_tag "spec_qty-#{each.id}", each.item_quantity / 100%>          
                  <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
                   

@@ -303,7 +303,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def event_edit
     event_id = params["event_id"]
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
-    @specifications = @event.specifications.order("id")
+    @specifications = @event.specifications.where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
     @employee_list = [Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").where(primary_poc: "yes").uniq.pluck(:name)] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").where("primary_poc is null").uniq.pluck(:name)
     render(:event_edit) and return
   end
@@ -331,12 +331,12 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event.show_display_name = params["display_name"]  
     if @event.save == false
       @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
-      @specifications = @event.specifications.order("id")
+      @specifications = @event.specifications.where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
       render(:event_edit) and return
     else # do nothing
     end
   #Updates to Event Specifications Section
-    for each in Specification.where(event_id: params["event_id"])  
+    for each in Specification.where(event_id: params["event_id"]).where("item_name not like 'X1Z2-PlaCeHoldEr'")  
       each.item_name = params["spec_item-#{each.id}"]
       each.item_quantity = params["spec_qty-#{each.id}"].to_i * 100.0
       each.item_specs = params["spec_notes-#{each.id}"]
@@ -355,6 +355,16 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         image.destroy
       end    
     elsif params["add"]
+      # Create a "spec" placeholder for the list of products if one hasn't already been created.
+      if Specification.where(event_id: params["event_id"]).where(item_name: "X1Z2-PlaCeHoldEr").first == nil
+        new_spec = Specification.new
+        new_spec.event_id = params["event_id"]
+        new_spec.item_quantity = 100000
+        new_spec.item_name = "X1Z2-PlaCeHoldEr"
+        new_spec.florist_id = session["found_florist_id"]
+        new_spec.exclude_from_quote = 1 
+        new_spec.save!
+      end
       new_spec = Specification.new
       new_spec.event_id = params["ev_id"]
       new_spec.item_quantity = 1 * 100.0
@@ -466,7 +476,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def virtual_studio
     event_id = params["event_id"]    
     @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
-    @specifications = @event.specifications.order("id")
+    @specifications = @event.specifications.where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
     if @specifications == []
       flash[:error] = "A. You need to create arrangements below before designing them in Virtual Studio."
       redirect_to "/event_edit/#{params["event_id"]}" and return     
@@ -474,24 +484,32 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     end  
     
   #Creates a list of used products for the arrangement 
-    designedproducts = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id)
+    @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => event_id).uniq
+    @used_products = @products.order("name")
+    @list_of_product_types = @products.uniq.pluck(:product_type).sort
+    @list_of_product_ids = @products.uniq.pluck(:id)
+    
+=begin    
     used_products = []
-    for each in designedproducts
-      used_products << each.product.name
-    end
-    @list_of_products = used_products.uniq.sort
     list_of_product_types = []
-    for each in @list_of_products
-    product = Product.where(florist_id: session["found_florist_id"]).where(name: each).first
-    list_of_product_types << product.product_type
+    list_of_product_ids = []
+    
+    for each in @products
+      used_products << each.name
+      list_of_product_types << each.product_type
+      list_of_product_ids << each.id
     end
-    @list_of_product_types = list_of_product_types.uniq.sort
+    
+      @used_products = used_products.uniq.sort
+      @list_of_product_types = list_of_product_types.uniq.sort
+      @list_of_product_ids = list_of_product_ids.uniq.sort
+=end
+=begin
   #Creates a new designed_product for each arrangement for each product identified in the virtual studio
   #This addresses the issue associated with arrangements added at the end of the design process.
-   for each in @list_of_products
-      id = Product.where(name: each).where(florist_id: session["found_florist_id"]).first.id
+   for each in @products
       for specification in @specifications
-          x = DesignedProduct.where(product_id: id).where(specification_id: specification.id).first
+          x = DesignedProduct.where(product_id: each.id).where(specification_id: specification.id).first
           if x == nil
             new_dp = DesignedProduct.new
             new_dp.specification_id = specification.id
@@ -506,15 +524,16 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
           end
       end
     end
-  
+=end
+
   #Generate dropdown list for adding new products to the Virtual Studio Page
     products = Product.where(status: "Active").where(florist_id: session["found_florist_id"]).order("name")
     dropdown = []
     for product in products
       dropdown << product.name
     end
-    for item in @list_of_products
-      dropdown = dropdown - [item]
+    for item in @products
+      dropdown = dropdown - [item.name]
     end
     @dropdown = dropdown
     render(:virtual_studio) and return
@@ -524,48 +543,124 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### POST Handler from virtual_studio.erb
   # Updates Virtual Studio Page based on updates made by user. 
   def virtual_studio_update
-    event_id = params["event_id"]
-    specifications = Specification.where(event_id: event_id).order("id")
-    designedproducts = DesignedProduct.where(event_id: event_id)
-    for each in designedproducts
-      for specification in specifications
-        if params["stemcount_#{each.id}"].to_f*100 != each.product_qty
-          each.product_qty = params["stemcount_#{each.id}"].to_f * 100.round(2)
-          each.save!
-        end
-      end
-    end  
-    
+    event_id = params["event_id"] 
+    # Create a DP for the product assigned to the placeholder specification.
     if params["add"]
       new_item = params["new_item"]
-      specifications = Specification.where(event_id: event_id)
-      for specification in specifications
-        new_dp = DesignedProduct.new
-        new_dp.specification_id = specification.id
-        new_dp.product_qty = 0
-        new_dp.florist_id = session["found_florist_id"]
-        new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
-        new_dp.event_id = event_id
-        new_dp.image_in_quote = 1
-        new_dp.save!
-      end         
+      specification = Specification.where(event_id: event_id).where(item_name: "X1Z2-PlaCeHoldEr").first
+      new_dp = DesignedProduct.new
+      new_dp.specification_id = specification.id
+      new_dp.product_qty = 0
+      new_dp.florist_id = session["found_florist_id"]
+      new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
+      new_dp.event_id = event_id
+      new_dp.image_in_quote = 1
+      new_dp.save!         
+      redirect_to "/virtual_studio/#{event_id}" and return
+    
     elsif params["remove"]
       removed_product_id = params["remove"]
       removed_items = DesignedProduct.where(event_id: event_id).where(product_id: removed_product_id)
       for each_item in removed_items
         each_item.destroy
       end
-    else # do nothing
-    end
       redirect_to "/virtual_studio/#{event_id}" and return
+
+    elsif params["update"]
+      spec_id = params["update"]
+      redirect_to "/vs_spec_update/#{spec_id}"
+    end
   end
+  
+  
+### GET Handler from virtual studio.erb
+  # Pulls counts for the specification identified.
+  def vs_spec_update
+    
+    @spec = Specification.where(florist_id: session["found_florist_id"]).where(id: params["spec_id"]).first
+    @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => @spec.event.id).uniq
+    @used_products = @products.order("name")
+    @list_of_product_types = @products.uniq.pluck(:product_type).sort
+    @list_of_product_ids = @products.uniq.pluck(:id) 
+    render (:vs_spec_update) and return
+  end
+  
+### POST Handler from the vs_spec_update.erb
+  # Processes the product.quantity counts for each individual arrangement.
+  def vs_spec_save
+    event_id = params["event_id"]
+    products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => event_id).uniq.order("name")
+    for product in products 
+      designed_product = DesignedProduct.where(product_id: product.id).where(specification_id: params["spec_id"]).first
+      if designed_product != nil && params["stemcount_#{product.id}"].to_f > 0
+        if params["stemcount_#{product.id}"].to_f * 100 != designed_product.product_qty
+          designed_product.product_qty = params["stemcount_#{product.id}"].to_f * 100.round(2)
+          designed_product.save!
+        else # don't save
+        end
+      elsif designed_product != nil && params["stemcount_#{product.id}"].to_f <= 0
+        designed_product.destroy
+      elsif designed_product == nil && params["stemcount_#{product.id}"].to_f > 0
+        new_dp = DesignedProduct.new
+        new_dp.specification_id = params["spec_id"]
+        new_dp.product_id = product.id
+        new_dp.event_id = event_id
+        new_dp.product_qty = params["stemcount_#{product.id}"].to_f * 100.round(2)
+        new_dp.florist_id = session["found_florist_id"]
+        new_dp.image_in_quote = 1
+        new_dp.save!
+      end
+    end
+    if params["save"]
+      redirect_to "/virtual_studio/#{event_id}" and return
+    end
+    specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
+    spec_list = []
+    for specification in specifications
+      spec_list << specification.id
+    end
+    last_items_index = spec_list.index(Specification.where(id: params["spec_id"]).first.id)
+    if params["save_previous"]
+      if last_items_index - 1 >= 0 
+        @spec =  Specification.where(id: spec_list[last_items_index - 1]).first
+        @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => @spec.event.id).uniq
+        @used_products = @products.order("name")
+        @list_of_product_types = @products.uniq.pluck(:product_type).sort
+        @list_of_product_ids = @products.uniq.pluck(:id) 
+        render (:vs_spec_update) and return
+      else
+        redirect_to "/virtual_studio/#{event_id}" and return
+      end
+    elsif params["save_next"]
+      if last_items_index + 1 < spec_list.size
+        @spec =  Specification.where(id: spec_list[last_items_index + 1]).first
+        @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => @spec.event.id).uniq
+        @used_products = @products.order("name")
+        @list_of_product_types = @products.uniq.pluck(:product_type).sort
+        @list_of_product_ids = @products.uniq.pluck(:id) 
+        render (:vs_spec_update) and return
+      else
+        redirect_to "/virtual_studio/#{event_id}" and return
+      end  
+    end
+  end
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
 ### GET Handler from link on virtual_studio.erb 
   def popup_specs
     event_id = params["event_id"]
     @event_id = event_id
-    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).order("id")
+    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: event_id).where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
     render(:popup_specs, layout:false) and return
   end 
 
@@ -718,6 +813,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_quote.status = "Open Proposal"
       new_quote.florist_id = session["found_florist_id"] 
       new_quote.total_price = 0
+      new_quote.total_cost = 0
       new_quote.markup = 0
       new_quote.save!
       event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first

@@ -29,6 +29,8 @@ App::Application.routes.draw do
   get "/virtual_studio/:event_id"             => "main#virtual_studio"
   post "/virtual_studio_update"               => "main#virtual_studio_update"
   get "/popup_specs/:event_id"                => "main#popup_specs"
+  get "/vs_spec_update/:spec_id"             => "main#vs_spec_update"
+  post "/vs_spec_save"                        => "main#vs_spec_save"
   
   get "/generate_quote/:event_id"             => "main#quote_generation"
   post "/save_quote"                          => "main#save_quote"

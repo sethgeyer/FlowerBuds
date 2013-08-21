@@ -1,0 +1,68 @@
+
+ 
+<h3>Virtual Studio - Step 2: Design an Individual Arrangement</h3>
+
+<h4>You're Designing for the: <%=@spec.item_name%></h4>
+
+  <p>For the specified arrangement, determine how many of each item will be included in a <b><u>single</b></u> arrangement. (For fresh goods, this means number of stems; for labor, this means number of hours.)
+     <br>CenterpieceFMT will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
+
+<%= form_tag("/vs_spec_save") do %>
+
+         
+    <div class="row-fluid">
+ <div class=span6>
+    <%=hidden_field_tag "event_id", @spec.event.id%>
+    <%=hidden_field_tag "spec_id", @spec.id%>
+      
+    <%for product_type in @list_of_product_types%>
+      <p><b><%=product_type%></b>
+    <table class="table table-striped table-hover table-condensed">  
+      
+      <thead>
+        <tr>
+          <th>Items to Include:</th>
+          <th style="text-align:center">
+           <%=@spec.item_name%><br>
+          </th> 
+        </tr>
+      </thead>
+     
+    
+      <tr>       
+      <%for product in @products.where(product_type: product_type).order("name")%>     
+        <%if product.product_type != nil%>
+          <td class="span3"><%=product.name%></td> 
+          <td class="span3" style="text-align:center">
+          <%designed_product = DesignedProduct.where(product_id: product.id).where(specification_id: @spec.id).first%>
+          <%numbs = [0, 0.10, 0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00, 11.00, 12.00, 13.00, 14.00, 15.00, 16.00, 17.00, 18.00, 19.00, 20.00, 21.00, 22.00, 23.00, 24.00, 25.00, 26.00, 27.00, 28.00, 29.00, 30.00, 31.00, 32.00, 33.00, 34.00, 35.00, 36.00, 37.00, 38.00, 39.00, 40.00, 41.00, 42.00, 43.00, 44.00, 45.00, 46.00, 47.00, 48.00, 49.00, 50.00, 75.00, 100.00, 125.00, 150.00, 175.00, 200.00, 250.00, 300.00, 350.00, 400.00, 450.00, 500.00 ]%>
+            <% if designed_product != nil%>
+              <%if designed_product.product_qty != nil%>
+                <%stem_count= designed_product.product_qty / 100.0.round(2) %>
+              <%else%>
+                <%stem_count = 0 %>
+              <%end%>
+            <%else%>
+              <%stem_count = 0 %>
+            <%end%>
+         <%= select_tag "stemcount_#{product.id}", options_for_select(numbs, stem_count), class:  "input-mini"%></td>       
+               
+        <%end%> 
+      </tr>
+      <%end%> 
+    </table>
+  <%end%>
+  <br>
+      <p> <b>Save and Go To:</b> </p>
+          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
+         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Return to Summary</button> 
+          <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
+        
+ 
+ 
+  <%end%>    
+  
+  
+</div>
+
+</div>
