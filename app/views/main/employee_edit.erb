@@ -77,7 +77,7 @@
         <a href="/home">Return to Homepage</a><br><br>
       
   <%end%>
-  <td>  <button class="btn btn-small btn-primary" name= "action" value= "save">Save</button> </td>
+  <td>  <button class="btn btn-small btn-primary" data-disable-with="..." name= "action" value= "save">Save</button> </td>
 
 </div>
     
@@ -129,7 +129,7 @@
     </div><br><br>
  
  <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." name="delete" value= <%=image.id%>>Remove</button>
         
 </li>
 <%end%>

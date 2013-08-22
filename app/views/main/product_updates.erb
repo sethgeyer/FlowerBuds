@@ -72,7 +72,7 @@
     <tr><%=label_tag "status", "Status: *" %>
         <%= select_tag "status", options_for_select(["Active", "Inactive"], @product.status) %>   </tr> 
     <br><br>
-    <button class="btn btn-small" name= "action" value= "new">Save</button>
+    <button class="btn btn-small btn-primary" data-disable-with="..." name= "action" value= "new">Save</button>
   <% end %>
 
   <p><a href="/products">Back to Products</a></p>
@@ -125,7 +125,7 @@
     </div><br><br>
  
  <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." name="delete" value= <%=image.id%>>Remove</button>
         
 </li>
 <%end%>

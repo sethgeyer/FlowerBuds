@@ -7,7 +7,7 @@
 
 <%=form_tag "/update_image" do %>
 <div class = 'label-spacer'></div>
-  <button class="btn btn-small" name="save" value= "save">Save My Updates</button><br><br>
+  <button class="btn btn-primary btn-small" data-disable-with="..." name="save" value= "save">Save My Updates</button><br><br>
 
 <h4> <b>Default Images to Include (Based on the Selection of These Flowers in the Arrangement)</b></h4>
 <div class="row-fluid">
@@ -78,7 +78,7 @@
    <%=check_box_tag "on_cover-#{image.id}", "1", image.on_quote_cover%>On Cover?
  </label>
  <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-danger btn-mini" name="delete" value= <%=image.id%>>Remove</button>
+        <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." name="delete" value= <%=image.id%>>Remove</button>
         <br><br>
 </li>
 <%end%>

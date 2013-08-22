@@ -88,10 +88,11 @@
 <h3> Arrangements & Details </h3>  
   
 <table class="table table-striped table-hover table-bordered ">      
+  <thead style="vertical-align:bottom">
   <tr>      
-    <th class="span12">Details
-    </th> 
+    <th class="span12">Details</th> 
   </tr>     
+  </thead>
   <% for each in @specifications %>
     <tr>
       <td> <b><%=each.item_name%></b> -  Qty: <b><%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b><br>
@@ -116,7 +117,7 @@
                     <%else%>
                       <%display_name = product.display_name%>
                     <%end%>
-                    <div class="display_name_dd"><%=display_name%></div>
+                    <div class="display_name"><%=display_name%></div>
                 <%end%>
                 <%end%>
                 <%end%>
@@ -129,7 +130,7 @@
                   <div class="thumbnail">    
                     <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
                  
-                 <div class="display_name_dd"><%=image.display_name%></div>
+                 <div class="display_name"><%=image.display_name%></div>
                   </div>
                 </li>
               <%end%> 
@@ -158,13 +159,14 @@
 
 <h3> Total Items for the Event </h3>      
   <% for product_type in @list_of_product_types%>
-    <p><b><%=product_type%></b>
-    <table class="table table-striped table-hover table-condensed table-bordered ">  
+    <p><b><%=product_type%></b></p>
+    <table class="table table-hover table-condensed table-bordered ">  
+      <thead style="vertical-align:bottom">
       <tr>
         <th class="span6">Products</th>
         <th>Quantity</th>
       </tr>
-     
+     </thead>
       <tr>
       <%for id in @list_of_product_ids%>
         <% product = Product.where(id: id).where(product_type: product_type).first%>
@@ -195,7 +197,7 @@
 <h3> Total Items per Arrangement </h3>     
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%></b></p>
-    <table class="table table-striped table-hover table-condensed table-bordered">
+    <table class="table table-hover table-condensed table-bordered">
      <thead style="vertical-align:bottom">
       <tr>
         <th class="span3">Products</th>
@@ -212,7 +214,7 @@
             <%for specification in @specifications%>
               <%if DesignedProduct.where(product_id: id).where(specification_id: specification.id).first != nil%>
                 <%product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty / 100.0%>
-                <td style="text-align:center"><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+                <td style="text-align:center"><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>
               <%else%>
                 <td style="text-align:center">-</td>
               <%end%>

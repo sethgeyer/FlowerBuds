@@ -28,7 +28,7 @@
       <%=select_tag "lead_designer", options_for_select(@employee_list, name)%>
       </div> 
     </div>
-    <button class= "btn btn-small btn-primary" name= "action" value= "save">Save</button>
+    <button class= "btn btn-small btn-primary" data-disable-with="..." name= "action" value= "save">Save</button>
     
     <%=hidden_field_tag "florist_id",@customer.florist_id%>
     <%=hidden_field_tag "customer_id", @customer.id%>

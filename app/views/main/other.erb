@@ -17,8 +17,8 @@
     <% if @OTHER_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
     
      <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-mini btn-primary" name="save" value= "save">Save</button>
-         <button tabindex=-1 class="btn btn-mini " name="cancel" value= "cancel">Cancel</button>
+        <button tabindex=-1 class="btn btn-mini btn-primary" data-disable-with="..." name="save" value= "save">Save</button>
+         <button tabindex=-1 class="btn btn-mini " data-disable-with="..." name="cancel" value= "cancel">Cancel</button>
         <%else%>
         <p><b> NOTE: You do not have administrative rights and therefore do not have permissions to edit the quote language.</p>
     <%end%>
