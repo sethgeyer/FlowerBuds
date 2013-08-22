@@ -122,7 +122,7 @@
         <tr>      
           <th class="span12">Description Details</div></th>
          
-          <th>Total</th>
+          <th style="text-align:center">Total</th>
         </tr>
         </thead>
         <% for each in @specifications %>
@@ -170,7 +170,7 @@
             </td>
              
             
-            <td><b>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </b>           
+            <td style="text-align:center"><b>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </b>           
           </tr>
         
         <%end%>
@@ -178,7 +178,7 @@
     <td><b>Total Quoted Price: </b><br> <small>Price does not reflect any applicable state and local taxes.<br> + Per Item Prices are rounded to the nearest dollar.</small>
   
       
-      <th><b>      
+      <td style="text-align:center"><b>      
       
       $<%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
       </table><br>
