@@ -177,7 +177,13 @@
                 <%count = count + ((designed_product.product_qty / 100.0) * (designed_product.specification.item_quantity / 100.0))%>
               <%end%>
             <%end%>
-          <td align="right"><%=count.round(2).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></td>  
+          <td>
+            <% if count > 0%>
+              <%=count.round(2).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+            <%else%>
+            -
+            <%end%>
+          </td>  
         <%end%>
         </tr>  
       <%end%>
@@ -190,12 +196,14 @@
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%></b></p>
     <table class="table table-striped table-hover table-condensed table-bordered">
+     <thead style="vertical-align:bottom">
       <tr>
         <th class="span3">Products</th>
         <%for specification in @specifications%>
-          <th><%=specification.item_name%> (Tot:<%=specification.item_quantity / 100%>)</th>
+          <th style="text-align:center"><%=specification.item_name%> (Tot:<%=specification.item_quantity / 100%>)</th>
         <%end%>
       </tr>
+      </thead>
       <%for id in @list_of_product_ids%>
         <tr> 
           <% product = Product.where(id: id).where(product_type: product_type).first%>
@@ -204,9 +212,9 @@
             <%for specification in @specifications%>
               <%if DesignedProduct.where(product_id: id).where(specification_id: specification.id).first != nil%>
                 <%product_quantity =DesignedProduct.where(product_id: id).where(specification_id: specification.id).first.product_qty / 100.0%>
-                <td align="right"><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
+                <td style="text-align:center"><%=product_quantity.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
               <%else%>
-                <td align="right"><%= product_quantity = 0%></td>
+                <td style="text-align:center">-</td>
               <%end%>
             <%end%>
           <%end%>

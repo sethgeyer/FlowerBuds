@@ -1,4 +1,10 @@
 <h3>Products</h3>
+<p> Add the Products that you will resell here.  This includes any items that will be included in the arrangements, delivery services, design labor, etc.
+<b>"Fresh Goods"</b> include any perishable items. <i>(ie: flowers)</i>  <b>"Hard Goods"</b> include items like candles that will be used one time and you 
+do not expect to be returned after the event. <b>"Rentals"</b> include things like vases that will be used for the event and then returned. <b>"Labor"</b> includes
+your employee wages for design, assistance, and delivery. <b>"Other"</b> is a "catch-all" category and includes miscellaneous items plus things like "delivery mileage
+expense"  and "delivery van" expenses.
+
 
   <%= form_tag("/product_post/") do %>  
   
@@ -13,6 +19,7 @@
     <%else%>
     <%end%>
     <table class="table table-striped table-hover table-condensed ">    
+      <thead style="vertical-align:bottom">
       <th></th>
       <th>Type</th>
       <th>Image</th>
@@ -26,6 +33,7 @@
       <th>List Price</th>     
       <th>Last Updated</th>
       <th>Updated by</th>      
+      </thead>
       <tr>
       <% for product in @products%>  
         <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
