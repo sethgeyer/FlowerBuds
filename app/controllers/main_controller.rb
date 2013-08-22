@@ -930,21 +930,12 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   #Creates an order details summary for the individual event (to be used on the day of the design work).
   def design_day_details
     @event = Event.where(florist_id: session["found_florist_id"]).where(id: params["event_id"]).first
-    @quote = Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first
-    @specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).where(exclude_from_quote: nil).order("id")
-    @designed_products = DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"])
-    @list_of_product_ids = @designed_products.uniq.pluck(:product_id)
-    product_types = []
-    for id in @list_of_product_ids
-      product_types = product_types + [Product.where(id: id).first.product_type]
-    end
-    @list_of_product_types = product_types.uniq.sort!
-   # count = 0
-   # for each in @designed_products
-   #   if each.specification.exclude_from_quote == nil
-   #     count = count + (each.product_qty / 100.0)
-   #   end
-   # end
+    @specifications = @event.specifications.where(exclude_from_quote: nil).order("id")
+    
+    @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => params["event_id"]).uniq
+    @used_products = @products.order("name")
+    @list_of_product_types = @products.uniq.pluck(:product_type).sort
+    @list_of_product_ids = @products.uniq.pluck(:id)     
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil # || count < 0.0
       flash[:error] = "C. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
