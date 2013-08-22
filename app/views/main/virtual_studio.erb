@@ -78,6 +78,8 @@
           <td style="text-align:center"><%designed_product = DesignedProduct.where(product_id: product.id).where(specification_id: specification.id).first%>
           <%if designed_product != nil %>
                 <%=designed_product.product_qty / 100.0.round(2)%>
+          <%else%>
+          -
           <%end%> 
         <%end%>
       <%end%> 
