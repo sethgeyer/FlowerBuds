@@ -40,14 +40,12 @@
               </div>
             </li>
           <%end%>
-          <% for image in each.images.order("id") %>
-            <%if image.on_quote_cover != nil%>
+          <% for image in each.images.where("on_quote_cover is not null").order("id") %>
               <li>
                 <div class="thumbnail" >    
                   <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
                 </div>
               </li>
-            <%end%>
           <%end%> 
         <%end%>    
     </ul>
