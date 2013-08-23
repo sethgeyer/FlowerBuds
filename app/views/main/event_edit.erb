@@ -42,14 +42,11 @@
                             
     </div>
     <div class="span4">        
-      <%= label_tag "color_palette", "Colors:"%>
+      <%= label_tag "color_palette", "Color Preferences:"%>
       <%= text_field_tag "color_palette", @event.color_palette, class: "span12", :tabindex => 6%>
-      <%= label_tag "flower_types", "Flower Type:"%>
+      <%= label_tag "flower_types", "Flower Preferences:"%>
       <%= text_field_tag "flower_types", @event.flower_types, class: "span12", :tabindex => 7%>
-      <%= label_tag "feel_of_day", "Feel/Theme:"%>
-      <%= text_field_tag "feel_of_day", @event.feel_of_day, class: "span12", :tabindex => 8%>
-      <%= label_tag "attire", "Attire:"%>
-      <%= text_field_tag "attire", @event.attire, class: "span12", :tabindex =>9 %> 
+       
     </div>
     <div class="span2 ">
       <%= label_tag "coordinator", "Coordinator:"%>
@@ -173,7 +170,7 @@
        <%= hidden_field_tag "spec_id", each.id%>
        
         <td> <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>Delete</button></td>
+        <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>Delete Item</button></td>
 
 
 

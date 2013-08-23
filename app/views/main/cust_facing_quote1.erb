@@ -69,7 +69,7 @@
             <label><b>Quote Name: </b>
             <%= @event.quote.quote_name%><p></p>
             <label><b>Location(s):</b>
-            <p><%= @event.locations%>
+            <%= @event.locations%>
             <div class="row-fluid">
               <div class="span4">
                 <label><b>Event Date: </b>
@@ -86,17 +86,12 @@
             </div>
           </div>                       
           <div class="span3">
-            <p><label> <b>Colors:</b>
+            <p><label> <b>Color Preferences:</b>
               <%= @event.color_palette%></p>
-            <p><label><b> Flower Types:</b>
+            <p><label><b> Flower Preferences:</b>
               <%=@event.flower_types%>
           </div>
-          <div class="span3">
-            <p><label><b>Feel/Theme:</b>
-              <%= @event.feel_of_day%></p>
-            <p><label><b>Attire:</b> 
-              <%= @event.attire%>
-          </div>
+         
           <div class="span2 ">
             <p><label><b>Coordinator:</b>
               <%= @event.coordinator%></p>
