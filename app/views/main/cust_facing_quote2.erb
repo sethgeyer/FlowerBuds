@@ -37,34 +37,43 @@
     
       <hr/> 
     
-      <h4> Quote : <%= @event.quote.quote_name%></h4>
+      <h4> Quote for <%= @event.quote.quote_name%></h4>
        
-    <div class="row-fluid">
-   
-      <div class= "span6">
-        <div class="span12">
+       
+       <table class="table" style="background-color: #F7F7F7">
+    
+       <tr>
+          <td style="vertical-align:top" class="span4">
           <b>Contact: </b> <%= @event.customer.name%> <br>
           <b>Location(s): </b><%= @event.locations%> <br>
           <b>Event Date: </b><%=@event.date_of_event.to_formatted_s(:long_ordinal)%><br> 
-          <b> Event Time: </b> <%=@event.time%> <br>
+          <b> Event Time: </b> <%=@event.time%>&nbsp&nbsp&nbsp&nbsp
           <b>Setup Time:</b> <%=@event.delivery_setup_time%>
-        </div>
-      </div>
-      <div class="span6">
-        <div class="span12">
+          </td>
+          <td style="vertical-align:top" class="span4">
           <b>Colors:</b> <%=@event.color_palette%><br>
           <b>Flower Types:</b> <%=@event.flower_types%><br>
           <b>Feel/Theme:</b> <%=@event.feel_of_day%><br>
           <b>Attire:</b> <%=@event.attire%>
-        </div>
-      </div>
-    
-     </div>     
+          </td>
+          <td style="vertical-align:top" class="span3">    
+            <b>Coordinator:   </b><%=@event.coordinator%><br>
+            <b>Photographer: </b><%=@event.photographer%>    
+          </td>
+       </tr>
+       </table>
+       
+       
+      <table style="background-color: #F7F7F7">
+        <tr>
+        <td style="font-size:12px" class="span12">
         <%if @event.quote_message != nil%>
-        <p style="font-size:12px"><b>Special Notes:</b><br>
-          <%=raw(@event.quote_message.gsub("\n", "<br>"))%></p>
-        <%end%>
-      
+        <b>Special Notes:</b><br>
+          <%=raw(@event.quote_message.gsub("\n", "<br>"))%>
+        <%end%>      
+        </tr>
+      </table>
+        <br><br>
 
     
     <h4> Arrangements for Event </h4>  
@@ -148,7 +157,7 @@
               </li>
             <%end%> 
             </ul>
-            </td> <hr / >
+            </td>
           <%end%>  
             <%end%>
            
