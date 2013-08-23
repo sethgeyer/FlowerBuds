@@ -28,7 +28,8 @@
       <h3 align="middle"> A Floral Design Proposal for <%= @event.customer.name%> </h3>  
       <h3 align="middle"> "<%= @event.name%>" </h3>
       <h3 align="middle"> <%= @event.date_of_event.to_formatted_s(:long_ordinal)%> </h3><br><br>  
-      <ul class="nails">  
+      <h3 align="middle">
+      <ul class="nails" >  
         <% for each in @specifications %>
           <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where(image_on_cover: 1).where("product_qty > 0").order("id")%>
           <% for designed_product in designed_products%>   
@@ -47,14 +48,16 @@
               </li>
           <%end%> 
         <%end%>    
-    </ul>
+    &nbsp&nbsp&nbsp</ul>
+    </h3>
 
 <br><br><br>
 
-      <div align="middle"><%=@event.employee.name%><br>
-        work: <%=@event.employee.w_phone%><br>
-        cell: <%=@event.employee.c_phone%><br>
-        <%=@event.employee.email%><br>
+      <div align="middle">
+        <%=@event.employee.name%>&nbsp<br>
+        work: <%=@event.employee.w_phone%>&nbsp<br>
+        cell: <%=@event.employee.c_phone%>&nbsp<br>
+        <%=@event.employee.email%>&nbsp<br>
       </div>
     
     <div class="page-break"></div>
