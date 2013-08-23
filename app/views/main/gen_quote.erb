@@ -67,8 +67,10 @@
       <%= @event.coordinator%></p>
       <p><label><b>Photographer:</b>
       <%=@event.photographer%></p>   
-      <label><b>Lead Designer: </b>
-      <%=@event.employee.name%> 
+      <p><label><b>Lead Designer: </b>
+      <%=@event.employee.name%></p>
+      <label><b>Quote Style:</b>
+      <%= select_tag "quote_style", options_for_select([1, 2], @event.quote.quote_style), class: "input-mini"%>
     </div>
   </div>
   <div class="row-fluid">

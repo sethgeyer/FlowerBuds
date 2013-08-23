@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Customer Quote</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  
+  <body class="user_choice" >
+    <div class="container" >
+  
+       <%if Florist.where(id: session["found_florist_id"]).first.quote_language == nil%>
+        <%=quote_language = "NOTE:  FLORIST.... AS PART OF YOUR FIRST TIME SETUP, YOU MUST CREATE THE QUOTE LANGUAGE OR SAVE THE DEFAULT QUOTE LANGUAGE BEFORE GENERATING A CUSTOMER QUOTE.  PERFORM THIS TASK BY CLICKING ON THE \"OTHER\" LINK IN THE NAVIGATION BAR."%>
+      <%else%>
+        <%quote_language = Florist.where(id: session["found_florist_id"]).first.quote_language%>
+      <%end%>
+        
+      
+      
+      <% image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%> 
+      <% if image != nil %>
+      <h3><img align="middle" src="<%= image_data_path(image.id, image.extens) %>" width="50" height="50" class="img-polaroid" align="left"/>
+      <%end%>
+      <%= Florist.where(id: @event.florist_id).first.name%></h3><hr/> 
+      <div><%=@event.employee.name%>&nbsp&nbsp&nbsp&nbsp
+        work: <%=@event.employee.w_phone%>&nbsp&nbsp&nbsp&nbsp
+        cell: <%=@event.employee.c_phone%>&nbsp&nbsp&nbsp&nbsp
+        <%=@event.employee.email%>
+      </div>
+    
+      
+      <h4> <%= @event.customer.name%></h4>   
+        <div class="row-fluid">
+          <div class="span3">  
+            <label><b>Quote Name: </b>
+            <%= @event.quote.quote_name%><p></p>
+            <label><b>Price: </b>
+            $<%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%><p></p>
+            
+            <label><b>Locations(s):</b>
+            <p><%= @event.locations%>
+            <div class="row-fluid">
+              <div class="span4">
+                <label><b>Event Date: </b>
+                <%=@event.date_of_event%> 
+              </div>
+              <div class="span4">
+                <b> Event Time: </b>   
+                <%=@event.time%>
+              </div>
+              <div class="span4">
+                <b>Setup Time:</b> 
+                <%=@event.delivery_setup_time%>
+              </div>
+            </div>
+          </div>                       
+          <div class="span3">
+            <p><label> <b>Colors:</b>
+              <%= @event.color_palette%></p>
+            <p><label><b> Flower Types:</b>
+              <%=@event.flower_types%>
+          </div>
+          <div class="span3">
+            <p><label><b>Feel/Theme:</b>
+              <%= @event.feel_of_day%></p>
+            <p><label><b>Attire:</b> 
+              <%= @event.attire%>
+          </div>
+         
+        </div>
+        
+        <div class="row-fluid">
+        <%if @event.quote_message != nil%>
+        <p><label><b>Special Notes:</b><br>
+          <%=raw(@event.quote_message.gsub("\n", "<br>"))%></p>
+        <%end%>
+      </div>
+
+    
+    <h4> Arrangements for Event </h4>  
+      <table class="table table-striped">      
+        <thead style="vertical-align:bottom">
+        <tr>      
+          <th class="span12">Description Details</div></th>
+         
+          <th style="text-align:center">Total</th>
+        </tr>
+        </thead>
+        <% for each in @specifications %>
+          <tr>
+            <td> <b><%=each.item_name%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>  <i> ( <%=(each.item_quantity / 100).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> @ $<%= ((each.quoted_price / 100.round(0)) / (each.item_quantity / 100 .round(0))).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> per item<small>+</small> )</i><br>
+            
+           <%=raw(each.item_specs.gsub("\n", "<br>"))%>
+            
+         
+            </td>
+             
+            
+            <td style="text-align:center"><b>$<%=(each.quoted_price / 100.round(0)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%> </b>           
+          </tr>
+        
+        <%end%>
+    <tr>
+    <td><b>Total Quoted Price: </b><br> <small>Price does not reflect any applicable state and local taxes.<br> + Per Item Prices are rounded to the nearest dollar.</small>
+  
+      
+      <td style="text-align:center"><b>      
+      
+      $<%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
+      </table>
+     
+
+      
+
+    <div class="page-break"></div>
+    <hr />  
+    
+    <h4>Flowers Included in Arrangements</h4>
+
+       <% for each in @specifications %>
+          <tr>
+            <td> <b><%=each.item_name%></b>
+            
+           
+           <div class="row-fluid"> 
+            <ul class="nails2">
+             <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id")%>
+            <% for designed_product in designed_products%>
+              
+                <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                <% if image != nil %>
+                <li class="image_align">
+                <div class="thumbnail">    
+                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">              
+                </div> 
+                  <% if @event.show_display_name == 1 %>
+                  <% product = Product.where(id: designed_product.product.id).first%>
+                    <%if product.display_name == "" || product.display_name == nil %>
+                      <%display_name = product.name%>
+                    <%else%>
+                      <%display_name = product.display_name%>
+                    <%end%>
+                
+                    <div class="display_name"><%=display_name%></div>
+                 <%end%>
+                <%end%>
+                <%end%>
+            
+            
+            <% for image in each.images %>
+              <li class="image_align">
+                <div class="thumbnail">    
+                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
+                </div>
+                <div class="display_name"><%=image.display_name%></div>
+                
+              </li>
+            <%end%> 
+            </ul>
+            </td> <hr / >
+          <%end%>  
+            
+           
+
+
+
+
+<div class="page-break"></div>
+    <hr />  
+    <br>
+    
+      
+      <%= raw(quote_language.gsub("\n", "<br>"))%>
+      <br><br><br>
+      
+      
+   </div>
+  </body>
+</html>
+ 

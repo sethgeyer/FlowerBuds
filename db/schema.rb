@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130819180237) do
+ActiveRecord::Schema.define(:version => 20130823033200) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20130819180237) do
     t.string   "updated_by"
     t.integer  "florist_id"
     t.integer  "total_cost"
+    t.integer  "quote_style"
   end
 
   create_table "specifications", :force => true do |t|

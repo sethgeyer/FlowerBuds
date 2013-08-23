@@ -814,6 +814,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_quote.florist_id = session["found_florist_id"] 
       new_quote.total_price = 0
       new_quote.total_cost = 0
+      new_quote.quote_style = 1
       new_quote.markup = 0
       new_quote.save!
       event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first
@@ -842,6 +843,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     end
     quote = Quote.where(event_id: event_id).first
     quote.quote_name = params["quote_name"]
+    quote.quote_style = params["quote_style"]
     quoted_total_price = 0
     quoted_total_cost = 0
     for each in Specification.where(event_id: event_id).where(exclude_from_quote: nil)
@@ -874,12 +876,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from link on gen_quote.erb
   def generate_cust_facing_quote
     event_id = params["event_id"]
-    
-    
     @event = Event.where(id: event_id).where(florist_id: session["found_florist_id"]).first
     @specifications = @event.specifications.where(exclude_from_quote: nil).order("id")
-    
-    render(:cust_facing_quote, layout:false) and return
+    render("cust_facing_quote#{@event.quote.quote_style}", layout:false) and return
   end
   
   
