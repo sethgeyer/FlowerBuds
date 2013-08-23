@@ -1,4 +1,4 @@
-
+  
 
 
 
@@ -15,7 +15,7 @@
   
   <div class="row-fluid">
     <div class="span6">  
-      <h4> Quote for <a tabindex=4 href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
+      <h4> Quote for <a href= "/event_edit/<%=@event.id%>"> <%= @event.name%></a></h4>
         Customer Name:<%=hidden_field_tag "customer_id", @event.customer.id%> 
         <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
     </div>
@@ -76,7 +76,7 @@
   <div class="row-fluid">
   <div class="span12">
   <label><b>Quote-specific notes:</b></label>
-      <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"Notes will be shown on the second page of the quote.  Limit: 1000 characters."%> 
+      <%= text_area_tag "quote_message", @event.quote_message, :tabindex=>3, class: "span12", :rows=>3, :placeholder=>"Notes will be shown on the second page of the quote.  Limit: 1000 characters."%> 
 </div>
 </div>
 
@@ -107,11 +107,11 @@
     <%     if (sum_price * 100).round(0) == @event.quote.total_price && (total_cost * 100).round(0) == @event.quote.total_cost%>
     <div class="span3">
       <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1200,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-      <a tabindex=5 href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" />  Create Customer Quote</a>
-    </div>
+      <a tabindex=4  href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" />  Create Customer Quote</a>
+    </div>  
     <%end%>
     <div class="span9">
-      <button  tabindex=1 class="pull-right btn btn-medium btn-primary" data-disable-with="..." name= "save" value= "save">Save & Recalc Now!</button>
+      <button  tabindex=1 class="pull-right btn btn-medium btn-primary" data-disable-with="..." name= "save" value= "save">Save / Recalc Now!</button>
     </div> 
   </div>  
   
@@ -161,7 +161,7 @@
           <%="TotalCost = #{(@event.quote.total_cost).round(0)}"%>
           <div class="alert alert-success">
             <h4>Reminder!</h4> 
-            <p> Press the "Save & Recalc Now" button to update the Total Costs and Price for the Quote.  Doing so, will ensure your quote reflects all adjustments you've made to the quote and arrangements.</p>
+            <p> Press the "Save / Recalc Now" button to update the Total Costs and Price for the Quote as well as to save any changes you've made to this page.  Doing so, will ensure your quote reflects all adjustments you've made to the quote and arrangements.</p>
           </div>
       <%end%>
       

@@ -62,6 +62,8 @@
 <%end%>
 
 <h3>Active Events</h3>
+<p>These are Active Events only and are organized by "Date of Event". This does not show already "delivered/fulfilled" events or "lost" proposals.</p>
+ 
   <table class="table table-striped table-hover ">
     <thead>
       <tr>
@@ -110,15 +112,21 @@
     <%end%>
   </table>
 
-  <p>Note: These are Active Events only (aka: event has not yet been delivered). This does not show already "delivered/fulfilled" events or "lost" proposals.</p>
- 
+  
   <div class="apple_pagination">
     <%=will_paginate @events%>
   </div>
   <br>
-  <p>Defaulted to show 25 events per page view</p>
   
   
+
+  <p>Defaulted to show 25 events per page view</p><br>
+  
+    <div class="alert alert-info">
+      <h4>Heads Up!</h4> 
+      <p> Use your "Tab" key to quickly navigate through the pages and input forms.  Buttons or links that have been "tabbed" to can be activated by clicking or hitting the "Enter" key.
+      On the pages with "Save" buttons, when your cursor is in a white input field (other than a "notes" field), hitting the "Return" key will "Save" your changes.</p>
+    </div>
   
   
  
