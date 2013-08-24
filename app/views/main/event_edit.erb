@@ -104,7 +104,7 @@
         
         
         
-        <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span12", :rows=>2, placeholder: "Description & Details.  Limit: 1000 characters."%>
+        <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span11", :rows=>2, placeholder: "Description & Details.  Limit: 1000 characters."%>
          <br>
             
             <div class="row-fluid">
@@ -159,7 +159,7 @@
             <%end%> 
             </ul>
         </td>
-<td >        
+<td class="span1" >        
        <br> <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>Delete</button><br>
 </td>
         </div>
