@@ -65,6 +65,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @florist.status = params["status"]
     else
     end
+    @florist.custom_quote = params["custom_quote"]
     @florist.city = params["city"]
     @florist.state = params["state"]
     @florist.zip = params["zip"]

@@ -16,6 +16,7 @@
       <th>Company ID: *</th>
       <th>Status: *</th>
       <th>Plan: *</th>
+      <th>Custom Template</th>
       <th>Primary POC: *</th>
       <th>Email:</th>             
       <th>Phone (w):</th>
@@ -47,6 +48,12 @@
             <%plan_name = Plan.where(id: florist.plan_id).first.plan_name%>
             <%end%>
          <td><%=plan_name%></td>
+         <% if florist.custom_quote != 1%>
+            <%custom = "--"%>
+         <%else%>
+            <%custom = "Yes"%>
+          <%end%>
+         <td style="text-align:center"><%=custom%></td>
           <% if Employee.where(florist_id: florist.id).where(primary_poc: "yes").first != nil%>
             <td><%=hidden_field_tag "primary_poc", Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.name %>
                 <%=Employee.where(florist_id: florist.id).where(primary_poc: "yes").first.name%></td>

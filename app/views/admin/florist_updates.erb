@@ -50,7 +50,11 @@
       <%end%>
       
       <%=label_tag "plan_name", "Plan: *"%>
-      <%= select_tag "plan_name", options_for_select(@plans, plan_name)%><br><br>
+      <%= select_tag "plan_name", options_for_select(@plans, plan_name)%>
+      
+      <label class="checkbox"><%=check_box_tag "custom_quote", "1", @florist.custom_quote%>Create Custom Proposal Template for Florist</label>
+      
+      <br><br>
  
        <p> The POC is typically the business owner.  Their information should be input here at initial setup.  Any other modifications should be done by the florist themselves.
 

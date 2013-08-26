@@ -53,8 +53,12 @@
       <%= @event.color_palette%></p>
       <p><label><b> Flower Preferences:</b>
       <%=@event.flower_types%>
+      <p><label><b> Attire:</b>
+      <%=@event.attire%></p>
+      
+      
       <p><label><b> Budget:</b> 
-      <%=@event.budget%>
+      <%=@event.budget%></p>
     </div>
   
     <div class="span4">
@@ -65,16 +69,31 @@
       <p><label><b>Lead Designer: </b>
       <%=@event.employee.name%></p>
       <label><b>Quote Style:</b>
-      <%= select_tag "quote_style", options_for_select([1, 2], @event.quote.quote_style), class: "input-mini"%>
+      <% if @event.florist.custom_quote == 1 %>
+        <%choices = [1, 2, session["found_florist_id"]]%>
+      <%else%>
+        <%choices = [1, 2]%>
+      <%end%>
+      <%= select_tag "quote_style", options_for_select(choices, @event.quote.quote_style), class: "input-mini"%>
     </div>
   </div>
-  <div class="row-fluid">
-  <div class="span12">
-  <label><b>Quote-specific notes:</b></label>
-      <%= text_area_tag "quote_message", @event.quote_message, :tabindex=>3, class: "span12", :rows=>3, :placeholder=>"Notes will be shown on the second page of the quote.  Limit: 1000 characters."%> 
-</div>
-</div>
+  
+   
+  <%if @event.other_notes != nil%> 
+    <p>
+      <b>Other Details:</b>  <br>
+      <%= raw(@event.other_notes.gsub("\n", "<br>"))%>
+    </p>
+  <%end%>
+        
+  <label><b>Special Notes for Quote:</b> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <%if @event.quote_message != nil%>
+      <i><small>(<%=@event.quote_message.length%> chars.)</i></small>
+    <%end%>
+  </label>
+  <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"These notes will appear at the end of the quote.  Limit: 1000 characters."%> 
 
+  
 
           <%total_cost = 0%>     
           <% for each in @specifications

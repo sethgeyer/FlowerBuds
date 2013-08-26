@@ -46,6 +46,9 @@
       <%= text_field_tag "color_palette", @event.color_palette, class: "span12", :tabindex => 6%>
       <%= label_tag "flower_types", "Flower Preferences:"%>
       <%= text_field_tag "flower_types", @event.flower_types, class: "span12", :tabindex => 7%>
+      <%= label_tag "attire", "Attire:"%>
+      <%= text_field_tag "attire", @event.attire, class: "span12", :tabindex => 7%>
+
        
     </div>
     <div class="span2 ">
@@ -57,7 +60,11 @@
       <%= text_field_tag "budget", @event.budget, class: "span12 input-small", :tabindex => 12%> 
     </div>
     <div class="span3">
-      <%= label_tag "notes", "Florist's Event Notes:"%>
+      <label>Florist's Personal Notes:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <%if @event.notes != nil%>
+            <i><small>(<%=@event.notes.length%> chars.)</i></small>
+          <%end%>  
+      </label>
       <%= text_area_tag "notes", @event.notes, class: "span12", placeholder: "These notes will not be reflected on customer quotes.  Limit: 1000 characters." , :rows=>9, :tabindex => 13 %>
       <label class="checkbox"><%=check_box_tag "display_name", "1", @event.show_display_name%>Show Product's "Display Name"</label>
      
@@ -65,11 +72,28 @@
     </div>
     
     <div class="row-fluid">
-  <div class="span12">
-  <label>Quote-specific notes:</label>
-      <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"These notes WILL appear on the second page of the quote..  Limit: 1000 characters."%> 
-</div>
-</div>
+      <div class="span12">
+        <label>Other Event Details: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <%if @event.other_notes != nil%>
+            <i><small>(<%=@event.other_notes.length%> chars.)</i></small>
+          <%end%>  
+        </label>
+        <%= text_area_tag "other_notes", @event.other_notes,  class: "span12", :rows=>2, :placeholder=>"Limit: 1000 characters."%> 
+     <br>
+      
+        <label>Special Notes for Quote: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <%if @event.quote_message != nil%>
+            <i><small>(<%=@event.quote_message.length%> chars.)</i></small>
+          <%end%>
+        </label>
+        <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"These notes will appear at the end of the quote.  Limit: 1000 characters."%> 
+      </div>
+      
+      
+      
+      
+      
+    </div>
  
  <button class="btn btn-small btn-primary" data-disable-with="..." name= "save" value= "save" >Save</button>
  <br><br>

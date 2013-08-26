@@ -37,10 +37,12 @@
     
       <hr/> 
     
-      <h4> Quote for <%= @event.quote.quote_name%></h4>
+      
+      <h3><%= @event.quote.quote_name%></h3>   
+      <h4>Event Details</h4>
        
        
-       <table class="table" style="background-color: #F7F7F7">
+       <table class="table" style="background-color: #F2F2EB">
     
        <tr>
           <td style="vertical-align:top" class="span4">
@@ -52,7 +54,8 @@
           </td>
           <td style="vertical-align:top" class="span4">
           <b>Color Preferences:</b> <%=@event.color_palette%><br>
-          <b>Flower Preferences:</b> <%=@event.flower_types%>
+          <b>Flower Preferences:</b> <%=@event.flower_types%><br>
+          <b>Attire:</b> <%=@event.attire%>
           </td>
           <td style="vertical-align:top" class="span3">    
             <b>Coordinator:   </b><%=@event.coordinator%><br>
@@ -61,17 +64,19 @@
        </tr>
        </table>
        
+       <%if @event.other_notes != nil%> 
+        <table class="table" style="background-color: #F2F2EB">
+          <tr>
+            <td>
+              <b>Other Details:</b>  <br>
+              <%= raw(@event.other_notes.gsub("\n", "<br>"))%>
+            </td>
+          </tr>
+        </table>
+      <%end%>
+
        
-      <table style="background-color: #F7F7F7">
-        <tr>
-        <td style="font-size:12px" class="span12">
-        <%if @event.quote_message != nil%>
-        <b>Special Notes:</b><br>
-          <%=raw(@event.quote_message.gsub("\n", "<br>"))%>
-        <%end%>      
-        </tr>
-      </table>
-        <br><br>
+     
 
     
     <h4> Arrangements for Event </h4>  
@@ -106,13 +111,17 @@
       $<%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
       </table>
      
-
-      
-
+     
+    
+        <%if @event.quote_message != nil%>
+        <p><b>Special Notes:</b><br>
+          <%=raw(@event.quote_message.gsub("\n", "<br>"))%></p>
+        <%end%>      
+        
     <div class="page-break"></div>
     <hr />  
     
-    <h4>Flowers Included in Arrangements</h4>
+    <h4>Image Gallery</h4>
 
        <% for each in @specifications %>
           <% if each.images != nil && each.designed_products != [] %>
@@ -160,12 +169,12 @@
             <%end%>
            
 
+ 
 
 
 
 <div class="page-break"></div>
     <hr />  
-    <br>
     
       
       <%= raw(quote_language.gsub("\n", "<br>"))%>

@@ -1,10 +1,33 @@
 <h3>Other Customizable Items</h3>
 
+  <%= form_tag("/other_update") do %>
+<h4> Default Proposal Style </h4>
+<p> CenterpieceFMT provides you w/ 2 Generic Proposal Templates with an option to have a 3rd customized and personalized for you. Choose a default style.
+Although this will be your default, you have the ability to choose an alternative on a quote by quote basis.</p>
+<label> <b>Proposal Style:</b> </label>
+<% if @florist.quote_style_pref == nil %>
+  <%choice = 1%>
+<%else%>
+  <%choice = @florist.quote_style_pref%>  
+<%end%>
+<% if @florist.custom_quote == 1 %>
+  <%choices = [1, 2, session["found_florist_id"]]%>
+<%else%>
+  <%choices = [1, 2]%>
+<%end%>
+<%= select_tag "quote_style", options_for_select(choices, choice), class: "input-mini"%>
+<p>Style 1 = Includes Cover Page w/ Images(if chosen) embedded directly in Proposal's itemized list of arrangements.<br>
+   Style 2 = No Cover Page.  Images (if chosen) summarized at end of quote in the Image Gallery. <br>
+   Style X = Your Personal Customized Proposal Template (if you've purchased it from CenterpieceFMT) </p>
+   <br>
+
+
+
 <h4> Customizable Quote Language for Last Page of Quote</h4>
 <p> This is a one time setup.  Use the default language provided or create your own language that will appear at the bottom of each of your customer quotes. </p>
 
 
-  <%= form_tag("/other_update") do %>
+
     <% if @florist.quote_language == nil%>
     <%quote_language = @default_quote_language %>
     <%else%>

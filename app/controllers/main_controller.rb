@@ -119,6 +119,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["save"]
     update_florist = Florist.where(id: session["found_florist_id"]).first
     update_florist.quote_language = params["quote_language"]
+    update_florist.quote_style_pref = params["quote_style"]
     update_florist.save
     
     else # do nothing
@@ -325,6 +326,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event.locations = params["locations"]
     @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
     @event.notes = params["notes"]
+    @event.other_notes = params["other_notes"]
     @event.budget = params["budget"]
     @event.quote_message = params["quote_message"]
     @event.customer_id = params["customer_id"]
@@ -814,7 +816,12 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_quote.florist_id = session["found_florist_id"] 
       new_quote.total_price = 0
       new_quote.total_cost = 0
-      new_quote.quote_style = 1
+      if Florist.find(session["found_florist_id"]).quote_style_pref  == nil
+        default_choice = 1
+      else 
+        default_choice = Florist.find(session["found_florist_id"]).quote_style_pref
+      end
+      new_quote.quote_style = default_choice
       new_quote.markup = 0
       new_quote.save!
       event = Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first

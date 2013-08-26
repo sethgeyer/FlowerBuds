@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130823033200) do
+ActiveRecord::Schema.define(:version => 20130826190059) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -92,21 +92,24 @@ ActiveRecord::Schema.define(:version => 20130823033200) do
     t.integer  "random_number"
     t.integer  "show_display_name"
     t.string   "quote_message",       :limit => 1000
+    t.string   "other_notes",         :limit => 1000
   end
 
   create_table "florists", :force => true do |t|
     t.string   "name"
     t.string   "company_logo"
     t.string   "company_id"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.string   "updated_by"
     t.string   "status"
     t.string   "city"
     t.string   "state"
     t.string   "zip"
-    t.string   "quote_language", :limit => 5000
+    t.string   "quote_language",   :limit => 5000
     t.integer  "plan_id"
+    t.integer  "quote_style_pref"
+    t.integer  "custom_quote"
   end
 
   create_table "images", :force => true do |t|
