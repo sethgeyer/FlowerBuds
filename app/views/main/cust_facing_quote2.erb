@@ -19,11 +19,11 @@
         
       
       
-      <br><br>
+      <br>
     <div class="row-fluid">
       <div><%image = Image.where(florist_id: session["found_florist_id"]).where(image_type: "florist").first%> 
         <%if image != nil %>
-          <img src="<%= image_data_path(image.id, image.extens) %>" width="160" align="left"/>
+          <img src="<%= image_data_path(image.id, image.extens) %> "height="40" width="140"  align="left"/>
         <%end%>
       </div>  
     </div> 
