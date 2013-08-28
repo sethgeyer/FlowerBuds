@@ -982,7 +982,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from link in vstudio for "popup gallery"
   def image_gallery
     @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25) 
-    render(:image_gallery) and return
+    render(:image_gallery, layout:false) and return
   end 
   
 ### POST Handler from image.gallery.erb
@@ -1000,7 +1000,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def image_gallery_search_results
       @name = params["search_field"]
       @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
-      render(:image_gallery_search_results) and return
+      render(:image_gallery_search_results, layout:false) and return
   end 
 
 #_____________________

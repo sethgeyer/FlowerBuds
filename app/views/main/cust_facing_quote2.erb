@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Customer Quote</title>
+    <title>Quote<%=@event.quote.quote_style%>-<%=@event.name.gsub("Wedding", "...")%></title>
     <%= stylesheet_link_tag    "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
