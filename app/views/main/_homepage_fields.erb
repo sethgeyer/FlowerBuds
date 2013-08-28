@@ -1,0 +1,128 @@
+
+<%= form_tag homepage_path do %>
+
+  <div class= "row-fluid">
+    <div class="span4">
+      <h4>Customer Search:</h4>
+        <div class="form-inline">
+          <%=text_field_tag "search_field", nil, placeholder: "a single letter will suffice"%>
+          <%=button_tag "Search/Add", name: "search", class: "btn btn-small btn-primary"%>
+        </div>
+        
+  
+        
+        
+        
+        
+        
+        
+        
+        
+    </div>
+    
+    <div class="span4">
+    <div class="nails2">
+      <% image = Image.where(employee_id: session["found_user_id"]).where(image_type: "employee").first%>
+  <% if image != nil%>
+  <li>
+    <div><i>My inspiration...</i></div>
+    <div class="thumbnail">    
+    <a href= "/employee/<%=Employee.where(id: session["found_user_id"]).first.id%>"> <img src="<%= image_data_path(image.id, image.extens) %>" style="height: 140px width: 140px" ></a>
+    </div>
+    </li>
+    <%end%>
+    
+    </div>
+    </div>
+    
+    
+    
+    
+    <div class="span4">
+      <h4>Active Events For:</h4>
+        <div class="form-inline">
+          <%= select_tag "view",  options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref), class: "input-medium"%>
+          <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small btn-primary"%>
+        </div>
+      <h4>Events After:</h4>
+        <div class="form-inline">
+        <input type="date" name="beg_date" class="span5" value=<%=@date%> ></i></input>
+        <%=button_tag "Show Me", name: "date_range", class:"btn  btn-small btn-primary"%>
+        <%=button_tag "Clear", name: "clear", class: "btn btn-small"%>
+        </div>
+    </div>  
+  </div>
+
+  <%if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"%>
+    <%=button_tag "Florists", name: "florists_access", class:"btn btn-small btn-warning"%>
+    <%=button_tag "Plans", name: "plans_access", class:"btn btn-small btn-warning"%><br>
+  
+  <%else%>
+  <%end%>
+<%end%>
+
+<h3>Active Events</h3>
+<p>These are Active Events only and are organized by "Date of Event". This does not show already "delivered/fulfilled" events or "lost" proposals.</p>
+ 
+  <table class="table table-striped table-hover ">
+    <thead>
+      <tr>
+        <th>Customer Name</th>
+        <th>Events</th>
+        <th>Date of Event</th>
+        <th>Quote</th>
+        <th>Quote Status</th>
+        <th>W'sale Order Date</th> 
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Company</th>
+        <th>Designer</th>
+       
+      </tr>
+    </thead>
+    <tr>
+    <%for event in @events%>
+      <td ><a href="cust_edit/<%=event.customer.id%>"> <%= event.customer.name %></a></td>
+      <td><a href="event_edit/<%= event.id%>"> <%= event.name %>  </a></td>
+      <td><%=event.date_of_event.strftime("%b-%d-%y")%></td>
+      <td><%if event.quote != nil%>
+        <a href="/generate_quote/<%=event.id%>"> <%=event.quote.quote_name%> </a> 
+      <%else%>
+        No Quote
+      <%end%></td>
+      <td><%if event.quote !=nil%>
+        <%=event.quote.status%>
+      <%else%>
+        No Quote
+      <%end%></td>
+      <td><%if event.quote !=nil%>
+        <%if event.quote.wholesale_order_date !=nil%>
+          <a href="/wholesale_order_list/<%=event.quote.wholesale_order_date%>"><%=event.quote.wholesale_order_date.strftime("%b-%d-%y")%>
+        <%else%>
+        <%end%>
+      <%else%>
+      <%end%></td>
+      <td><%=event.customer.phone1%></td>
+      <td><%=event.customer.email%></td>
+      <td><%=event.customer.company_name%></td>
+      <td><%=event.employee.username%></td>
+      <% event.customer.id %>
+      <% event.id %>
+    </tr>
+    <%end%>
+  </table>
+
+  
+  <div class="apple_pagination">
+    <%=will_paginate @events%>
+  </div>
+  <br>
+  
+  
+
+  <p>Defaulted to show 25 events per page view</p><br>
+  
+   
+  
+  
+ 

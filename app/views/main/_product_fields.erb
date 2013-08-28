@@ -1,0 +1,89 @@
+<h3>Products</h3>
+<p> Add the Products that you will resell here.  This includes any items that will be included in the arrangements, delivery services, design labor, etc.
+<b>"Fresh Goods"</b> include any perishable items. <i>(ie: flowers)</i>  <b>"Hard Goods"</b> include items like candles that will be used one time and you 
+do not expect to be returned after the event. <b>"Rentals"</b> include things like vases that will be used for the event and then returned. <b>"Labor"</b> includes
+your employee wages for design, assistance, and delivery. <b>"Other"</b> is a "catch-all" category and includes miscellaneous items plus things like "delivery mileage
+expense"  and "delivery van" expenses.
+
+
+  <%= form_tag("/product_post/") do %>  
+  
+  <div class="form-inline">
+    <%=text_field_tag "search_field", @name, placeholder: "Product Name"%>
+    <%=button_tag "Search", name: "search", class: "btn btn-small btn-primary"%>
+    <%=button_tag "Clear", name: "clear", class: "btn btn-small"%>
+  </div><br>    
+  
+    <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
+      <button class="btn btn-small btn-primary" data-disable-with="..." name= "new" value= "new">Add New</button>
+    <%else%>
+    <%end%>
+    <table class="table table-striped table-hover table-condensed ">    
+      <thead style="vertical-align:bottom">
+      <th></th>
+      <th>Type</th>
+      <th>Image</th>
+      <th>Product Name</th>
+      <th>Display Name+</th>
+      <th>Status</th>
+      <th>Cost/ Bunch</th>
+      <th>Items/ Bunch</th>             
+      <th>Cost for One</th>
+      <th>Multiplier</th> 
+      <th>List Price</th>     
+      <th>Last Updated</th>
+      <th>Updated by</th>      
+      </thead>
+      <tr>
+      <% for product in @products%>  
+        <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
+          <td>  <button class="btn btn-mini btn-primary" data-disable-with="..." name= "edit" value= <%=product.id%>>Edit</button> </td>
+          <%else%>
+          <td></td>
+          <%end%>
+        <td><%=hidden_field_tag "product_type", product.product_type%>
+            <%=product.product_type%></td>
+        <td> <div class="nails2">
+            <% image = Image.where(product_id: product.id).where(image_type: "product").first%>
+        <% if image != nil%>
+             <img style="width: 30px; height: 30px" src="<%= image_data_path(image.id, image.extens) %>">
+          <%else%>
+          <i>none</i>
+          <%end%></td>
+        
+        
+       
+        <td><%=hidden_field_tag "product_name", product.name%>
+            <%=product.name%></td>
+        <% if product.display_name != product.name %>
+        <td><%=hidden_field_tag "display_name", product.display_name%>
+            <%=product.display_name%></td>
+        <%else%><td></td>
+        <%end%>
+        <td><%=hidden_field_tag "status", product.status %>
+            <%=product.status%></td>
+        <td><%=hidden_field_tag "cost_per_bunch", product.cost_per_bunch / 100.round(2)%>
+            $<%= sprintf("%.2f" , product.cost_per_bunch / 100.round(2))%> </td>
+        <td><%=hidden_field_tag "items_per_bunch", product.items_per_bunch / 100 %>
+            <%=(product.items_per_bunch / 100).round(0)  %></td>
+        <td><%=hidden_field_tag "cost_for_one", product.cost_for_one / 100.round(2)%>
+            $<%=sprintf("%.2f" , product.cost_for_one / 100.round(2)) %></td>
+        <td><%=hidden_field_tag "markup", product.markup / 100.round(2) %>
+            <%=sprintf("%.2f" , product.markup / 100.round(2))%> x</td>
+        <%=hidden_field_tag "product_id", product.id%>
+        <td>$<%=sprintf("%.2f" , product.cost_for_one / 100.round(2) * product.markup / 100.round(2)) %></td>
+              
+        <td><%=hidden_field_tag "updated_at", product.updated_at%>
+            <%=product.updated_at%></td>
+        <td><%= hidden_field_tag "updated_by", product.updated_by%>
+            <%=product.updated_by%></td>   
+        </tr>
+       <% end %>
+    </table>
+    
+      <div class="apple_pagination">
+        <%=will_paginate @products%>
+      </div>
+  <%end%>
+  <p> + The Display Name is the name that will appear on the customer's quotes.  The Display Name is only shown if it is different than the Product Name.
+

@@ -131,7 +131,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
 ### POST handler for buttons on homepage.erb (admittedly, a poorly named function for what its actually doing)
   def homepage
-    if params["search"] #if they push the search button
+    if params["search"] #if they push the customer search button
       if params["search_field"] != ""
         customer = params["search_field"].gsub(" ", "_")
       else
@@ -153,7 +153,19 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       if params["beg_date"] == ""
         redirect_to home_path and return
       else
-        if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
+        @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
+        @date = params["beg_date"]
+        redirect_to "/home/#{@date}" and return
+      end
+    end
+  end
+  
+  
+  
+
+### GET Handler from post above on the "beg_date search".  (Necessary because pagination doesn't work right w/ search criteria)
+  def homepage_search_results
+      if Employee.where(id: session["found_user_id"]).first.view_pref == "all" ||
           Employee.where(florist_id: session["found_florist_id"]).where(username: Employee.where(id: session["found_user_id"]).first.view_pref).first  == nil
           @events = Event.where(florist_id: session["found_florist_id"]).where("event_status not like 'Lost'").where("event_status not like 'Completed'").where("date_of_event" => params["beg_date"].."2099-08-23").order("date_of_event").paginate(:page => params[:page], :per_page => 25)
         else
@@ -163,10 +175,10 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         end
         @view_prefs = ["all"] + Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:username)
         @date = params["beg_date"]
-        render(:homepage) and return    
-      end
-    end
-  end
+      render(:homepage_search_results) and return
+  end 
+
+  
 
 ### GET handler for logging out (in the header section)
   def logout
@@ -963,22 +975,65 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
     render(:products) and return
   end
+   
+ 
+ #______________________  
+  
+### GET Handler from link in vstudio for "popup gallery"
+  def image_gallery
+    @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25) 
+    render(:image_gallery) and return
+  end 
+  
+### POST Handler from image.gallery.erb
+  def image_gallery_post
+    if params["clear"]
+      redirect_to "/image_gallery" and return
+    else
+      @name = params["search_field"]
+      redirect_to "/image_gallery/#{@name}" and return
+    end
+  end
+
+
+### GET Handler from post above on the "search".  (Necessary because pagination doesn't work right w/ search criteria)
+  def image_gallery_search_results
+      @name = params["search_field"]
+      @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+      render(:image_gallery_search_results) and return
+  end 
+
+#_____________________
+   
 
 ### POST Handler from products.erb
   def product_post
     if params["new"] 
       redirect_to "/product/new" and return
     elsif params["search"]
-      @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{params["search_field"]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
-      @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
+     # @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{params["search_field"]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+     # @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
       @name = params["search_field"]
-      render (:products) and return
+      #render (:products) and return
+      redirect_to "/products/#{@name}" and return
     elsif params["clear"]
     redirect_to "/products" and return
     else
       redirect_to "/product/#{params["edit"]}" and return
     end
   end
+  
+  
+### GET Handler from post above on the "search".  (Necessary because pagination doesn't work right w/ search criteria)
+  def products_search_results
+    @name = params["search_field"]
+    @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+    @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
+    render(:products_search_results) and return
+     # @name = params["search_field"]
+     # @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+     # render(:image_gallery_search) and return
+  end 
 
 ### GET Handler from product_post function (above)
   def product

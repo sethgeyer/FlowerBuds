@@ -1,0 +1,46 @@
+<h3>Image Gallery</h3>
+
+  <%= form_tag("/image_gallery_post") do %>  
+  
+  <div class="form-inline">
+    <%=text_field_tag "search_field", @name, placeholder: "Product Name"%>
+    <%=button_tag "Search", name: "search", class: "btn btn-small btn-primary"%>
+    <%=button_tag "Clear", name: "clear", class: "btn btn-small"%>
+  </div><br>    
+  
+    
+    <table class="table table-striped table-hover table-condensed ">    
+      <thead style="vertical-align:bottom">
+      
+    
+      <th>Image</th>
+      <th>Product Name</th>
+     
+      
+      </thead>
+      <tr>
+      <% for product in @products%>  
+        
+       
+        <td> <div class="nails2">
+            <% image = Image.where(product_id: product.id).where(image_type: "product").first%>
+        <% if image != nil%>
+             <img style="width: 100px; height: 100px" src="<%= image_data_path(image.id, image.extens) %>">
+          <%else%>
+          <i>none</i>
+          <%end%></td>
+        
+        
+       
+        <td><%=hidden_field_tag "product_name", product.name%>
+            <%=product.name%></td>
+              
+        </tr>
+       <% end %>
+    </table>
+    
+      <div class="apple_pagination">
+        <%=will_paginate @products%>
+      </div>
+  <%end%>
+ 

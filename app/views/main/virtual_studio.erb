@@ -40,8 +40,16 @@
     
     <script type="text/javascript"> function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=100,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
     <div class="span3">
+      <p><a class="span12" href="JavaScript:newPopup('/image_gallery');">Popup Gallery<img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
+    
+    
+    
+    <script type="text/javascript"> function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=100,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
+    <div class="span3">
       <p><a class="span12" href="JavaScript:newPopup('/products');">Popup Products<img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
     </div>
+      
+      
       
       <%=hidden_field_tag "event_id", @event.id%>
       
