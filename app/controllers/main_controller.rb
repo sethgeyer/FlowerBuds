@@ -28,7 +28,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   ADMIN_RIGHTS = ["None", "User", "Product Edit Rights", "All Admin Rights"]
   EMPLOYEES_VIEW_MUST_HAVE = ["All Admin Rights"]
   PRODUCT_UPDATE_MUST_HAVE = ["All Admin Rights", "Product Edit Rights"]
-  OTHER_UPDATE_MUST_HAVE = ["All Admin Rights"]
+  SETUP_UPDATE_MUST_HAVE = ["All Admin Rights"]
   DEFAULT_QUOTE_LANGUAGE = "I agree to the terms and conditions of the contract.  This quote once executed will serve as my order form. 
     \n\n\n Customer Name: ___________________________
     \n\n\n Signature: ______________________ 
@@ -104,27 +104,28 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     render(:homepage) and return
   end
   
-######### OTHER
+######### SETUP
 
-### GET Handler for Other on navigation bar
-  def other
-      @OTHER_UPDATE_MUST_HAVE = OTHER_UPDATE_MUST_HAVE
+### GET Handler for SETUP on navigation bar
+  def setup
+      @SETUP_UPDATE_MUST_HAVE = SETUP_UPDATE_MUST_HAVE
       @florist = Florist.where(id: session["found_florist_id"]).first
       @default_quote_language = DEFAULT_QUOTE_LANGUAGE
-      render(:other) and return
+      render(:setup) and return
   end  
 
-### POST Handler from Other
-  def other_update
+### POST Handler from SETUP
+  def setup_update
     if params["save"]
     update_florist = Florist.where(id: session["found_florist_id"]).first
     update_florist.quote_language = params["quote_language"]
     update_florist.quote_style_pref = params["quote_style"]
+    update_florist.show_product_image_pref = params["show_product_image_pref"]
     update_florist.save
     
     else # do nothing
     end
-    redirect_to "/other" and return
+    redirect_to "/setup" and return
   end
 
 ######### BUTTONS ON HOMEPAGE
@@ -289,8 +290,9 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event = Event.new
     @event.name = params["event_name"]
 #   @event.random_number = rand(100000)
-    @event.show_display_name = 1
     @event.date_of_event = params["event_date"]
+    @event.show_product_image =  Florist.find(session["found_florist_id"]).show_product_image_pref
+    @event.show_display_name = 1
     if params["lead_designer"] != ""
       @event.employee_id = Employee.where(name: params["lead_designer"]).where(florist_id: session["found_florist_id"]).first.id                                                   
     else
@@ -342,7 +344,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event.budget = params["budget"]
     @event.quote_message = params["quote_message"]
     @event.customer_id = params["customer_id"]
-    @event.show_display_name = params["display_name"]  
+    @event.show_display_name = params["display_name"]
+    @event.show_product_image = params["show_product_image"]  
     if @event.save == false
       @employee_list = Employee.where(florist_id: session["found_florist_id"]).where(status: "Active").uniq.pluck(:name)
       @specifications = @event.specifications.where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")

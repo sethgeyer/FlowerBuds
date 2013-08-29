@@ -1,6 +1,6 @@
 <h3>Other Customizable Items</h3>
 
-  <%= form_tag("/other_update") do %>
+  <%= form_tag("/setup_update") do %>
 <h4> Default Proposal Style </h4>
 <p> CenterpieceFMT provides you w/ 2 Generic Proposal Templates with an option to have a 3rd customized and personalized for you. Choose a default style.
 Although this will be your default, you have the ability to choose an alternative on a quote by quote basis.</p>
@@ -19,7 +19,29 @@ Although this will be your default, you have the ability to choose an alternativ
 <p>Style 1 = Includes Cover Page w/ Images(if chosen) embedded directly in Proposal's itemized list of arrangements.<br>
    Style 2 = No Cover Page.  Images (if chosen) summarized at end of quote in the Image Gallery. <br>
    Style X = Your Personal Customized Proposal Template (if you've purchased it from CenterpieceFMT) </p>
-   <br>
+   <hr />
+
+
+<h4> Default "Show Product Image" Preference </h4>
+<p> CenterpieceFMT provides you w/ the ability to include the image you've associated w/ individual flower types (from your Product Catalog) within your quote. Choose a default style.
+Although this will be your default, you have the ability to choose an alternative on a event-by-event basis.</p>
+
+
+<div class="checkbox">
+<%= check_box_tag "show_product_image_pref",  "1", @florist.show_product_image_pref%>
+<%=label_tag "show_product_image_pref", "Include Product Images in Quotes"%>
+</div>
+   <hr />
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -37,11 +59,11 @@ Although this will be your default, you have the ability to choose an alternativ
     
     <p> Character Limit = 5,000.  Current Character Count:  <%= quote_language.length%>
     
-    <% if @OTHER_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
+    <% if @SETUP_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
     
      <div class = 'label-spacer'></div> 
-        <button tabindex=-1 class="btn btn-mini btn-primary" data-disable-with="..." name="save" value= "save">Save</button>
-         <button tabindex=-1 class="btn btn-mini " data-disable-with="..." name="cancel" value= "cancel">Cancel</button>
+        <button class="btn btn-mini btn-primary" data-disable-with="..." name="save" value= "save">Save</button>
+         <button class="btn btn-mini " data-disable-with="..." name="cancel" value= "cancel">Cancel</button>
         <%else%>
         <p><b> NOTE: You do not have administrative rights and therefore do not have permissions to edit the quote language.</p>
     <%end%>

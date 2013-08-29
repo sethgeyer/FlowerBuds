@@ -66,9 +66,13 @@
           <%end%>  
       </label>
       <%= text_area_tag "notes", @event.notes, class: "span12", placeholder: "These notes will not be reflected on customer quotes.  Limit: 1000 characters." , :rows=>9, :tabindex => 13 %>
-      <label class="checkbox"><%=check_box_tag "display_name", "1", @event.show_display_name%>Show Product's "Display Name"</label>
-     
-      </div>
+     <% show_product = @event.show_product_image%>
+     <label class="checkbox"><%=check_box_tag "show_product_image", "1", show_product%>Show Product Images</label>
+     <%if show_product == 1%>
+      <label class="checkbox"><%=check_box_tag "display_name", "1", @event.show_display_name%>Show Product "Display Names"</label>
+     <%else%>
+     <%end%>
+          </div>
     </div>
     
     <div class="row-fluid">
@@ -135,34 +139,35 @@
             
             <ul class="nails2" >
             
-            <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0.0").order("id") %>
-              <% for designed_product in designed_products%>
-                  <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
-                  <% if image != nil%>
-                  <li  class="image_align" >
-                  
-                  
-                  <div class="thumbnail">    
-                    <%if designed_product.image_on_cover == 1 %>
-                      <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
-                    <%else%>
-                      <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
-                    <%end%> 
-                     </div>
-                    <% if @event.show_display_name == 1 %>
-                    <% product = Product.where(id: designed_product.product.id).first%>
-                    <%if product.display_name == "" || product.display_name == nil %>
-                      <%display_name = product.name%>
-                    <%else%>
-                      <%display_name = product.display_name%>
+                          
+              <%if @event.show_product_image == 1%>
+                <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0.0").order("id") %>
+                <%for designed_product in designed_products%>
+                    <%image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                    <%if image != nil%>
+                      <li class="image_align" >
+                        <div class="thumbnail">    
+                          <%if designed_product.image_on_cover == 1 %>
+                            <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
+                          <%else%>
+                            <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
+                          <%end%> 
+                        </div>
+                        <%if @event.show_display_name == 1 %>
+                          <%product = Product.where(id: designed_product.product.id).first%>
+                          <%if product.display_name == "" || product.display_name == nil %>
+                            <%display_name = product.name%>
+                          <%else%>
+                            <%display_name = product.display_name%>
+                          <%end%>
+                          <div class="display_name">
+                            <%=display_name%>
+                          </div>
+                        <%end%>
+                      </li>
                     <%end%>
-                    <div class="display_name"><%=display_name%></div>
-                    <%end%>
-                 
-                  </li>
                   <%end%>
-                  <%end%>
-                
+                <%end%>                
             
             <% for image in each.images.order("id")  %>
               <li class="image_align">

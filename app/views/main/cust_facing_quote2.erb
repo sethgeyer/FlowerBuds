@@ -64,7 +64,7 @@
        </tr>
        </table>
        
-       <%if @event.other_notes != nil%> 
+       <%if @event.other_notes != nil && @event.other_notes != ""%> 
         <table class="table" style="background-color: #F2F2EB">
           <tr>
             <td>
@@ -113,7 +113,7 @@
      
      
     
-        <%if @event.quote_message != nil%>
+        <%if @event.quote_message != nil && @event.quote_message != ""%>
         <p><b>Special Notes:</b><br>
           <%=raw(@event.quote_message.gsub("\n", "<br>"))%></p>
         <%end%>      
@@ -121,52 +121,53 @@
     <div class="page-break"></div>
     <hr />  
     
+    
     <h4>Image Gallery</h4>
 
-       <% for each in @specifications %>
-          <% if each.images != nil && each.designed_products != [] %>
-          <tr>
-            <td> <b><%=each.item_name%></b>
-            
-           
-           <div class="row-fluid"> 
-            <ul class="nails2">
-             <% designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id")%>
-            <% for designed_product in designed_products%>
-              
-                <% image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
-                <% if image != nil %>
-                <li class="image_align">
-                <div class="thumbnail">    
-                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">              
-                </div> 
-                  <% if @event.show_display_name == 1 %>
-                  <% product = Product.where(id: designed_product.product.id).first%>
-                    <%if product.display_name == "" || product.display_name == nil %>
-                      <%display_name = product.name%>
-                    <%else%>
-                      <%display_name = product.display_name%>
+       <%for each in @specifications %>
+          
+            <tr>
+              <td> <b><%=each.item_name%></b>
+                <div class="row-fluid"> 
+                  <ul class="nails2">
+                    <%if @event.show_product_image == 1 %>
+                      <%designed_products = DesignedProduct.where(specification_id: each.id).where(image_in_quote: 1).where("product_qty > 0").order("id")%>
+                      <%for designed_product in designed_products%>
+                        <%image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                        <%if image != nil %>
+                          <li class="image_align">
+                            <div class="thumbnail">    
+                              <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">              
+                            </div> 
+                            <%if @event.show_display_name == 1 %>
+                              <%product = Product.where(id: designed_product.product.id).first%>
+                              <%if product.display_name == "" || product.display_name == nil %>
+                                <%display_name = product.name%>
+                              <%else%>
+                                <%display_name = product.display_name%>
+                              <%end%> 
+                              <div class="display_name">
+                                <%=display_name%>
+                              </div>
+                            <%end%>
+                          </li>
+                        <%end%>
+                      <%end%>
                     <%end%>
-                
-                    <div class="display_name"><%=display_name%></div>
-                 <%end%>
-                <%end%>
-                <%end%>
-            
-            
-            <% for image in each.images %>
-              <li class="image_align">
-                <div class="thumbnail">    
-                  <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
-                </div>
-                <div class="display_name"><%=image.display_name%></div>
-                
-              </li>
-            <%end%> 
-            </ul>
+                    <%for image in each.images %>
+                      <li class="image_align">
+                        <div class="thumbnail">    
+                          <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
+                        </div>
+                        <div class="display_name">
+                          <%=image.display_name%>
+                        </div>
+                      </li>
+                  <%end%> 
+                </ul>
             </td>
-          <%end%>  
-            <%end%>
+          
+        <%end%>
            
 
  

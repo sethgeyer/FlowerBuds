@@ -8,10 +8,11 @@
   <div class="span3">
     <b>Color Preferences:</b> <%=@event.color_palette%><br>
     <b>Flower Preferences:</b> <%=@event.flower_types%><br>
+    <b>Attire:</b> <%=@event.attire%>
   </div>
   <div class="span6">
-    <b>Quote-specific Notes:</b><br>
-    <%= raw(@event.quote_message.gsub("\n", "<br>"))%>
+    <b>Other Event Details:</b><br>
+    <%= raw(@event.other_notes.gsub("\n", "<br>"))%>
   </div>
 </div>
 

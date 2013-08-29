@@ -1,57 +1,45 @@
 <h2> <a href="/event_edit/<%=@specification.event.id%>"> <%= @specification.event.name%></a>
-<h3> Images to Include in the <%=@specification.item_name%> Arrangement </h3>
-<p> <b>Specifications:</b> <%=@specification.item_specs%></p>
-<hr />
-
-
+  <h3> Images to Include in the <%=@specification.item_name%> Arrangement </h3>
+    <p> <b>Specifications:</b> <%=@specification.item_specs%></p>
+  <hr />
 
 <%=form_tag "/update_image" do %>
-<div class = 'label-spacer'></div>
-  <button class="btn btn-primary btn-small" data-disable-with="..." name="save" value= "save">Save My Updates</button><br><br>
-
-<h4> <b>Default Images to Include (Based on the Selection of These Flowers in the Arrangement)</b></h4>
-<div class="row-fluid">
-<ul class="thumbnails">
- <% designed_products = DesignedProduct.where(specification_id: @specification.id).where("product_qty > 0").order("id")%>
- <% for designed_product in designed_products%>
- <%product_id = designed_product.product_id%>
- <% image = Image.where(product_id: product_id).where(image_type: "product").first %>
- <% if image != nil%>
- <li class="image_align">
-    <div class="thumbnail">    
-    <img style="height: 120px" src="<%= image_data_path(image.id, image.extens) %>">
-    </div>
-    
-    <%if Product.where(id: product_id).first.display_name == "" || Product.where(id: product_id).first.display_name == nil %>
-      <%display_name = Product.where(id: product_id).first.name%>
-    <%else%>
-      <%display_name = Product.where(id: product_id).first.display_name%>
-    <%end%>
-    <p><b><%=display_name%></b><br>
-    <u>Show:</u></p>
-    
- <label class="checkbox">
-   <%=check_box_tag "in_quote-#{designed_product.id}", "1", designed_product.image_in_quote%>In Quote?
- </label>
-   
-   
- <label class="checkbox">
-   <%=check_box_tag "on_cover-#{designed_product.id}", "1", designed_product.image_on_cover%>On Cover?
- </label>
-</li>
- <%end%> 
-
-<%end%>
-</ul>
-</div>
-
-
+  <div class = 'label-spacer'></div>
+    <button class="btn btn-primary btn-small" data-disable-with="..." name="save" value= "save">Save My Updates</button><br><br>
   
-
-
-
-
-
+  <%if @specification.event.show_product_image == 1%>
+    <h4> <b>Default Images to Include (Based on the Selection of These Flowers in the Arrangement)</b></h4>
+      <div class="row-fluid">
+        <ul class="thumbnails">
+          <%designed_products = DesignedProduct.where(specification_id: @specification.id).where("product_qty > 0").order("id")%>
+          <%for designed_product in designed_products%>
+            <%product_id = designed_product.product_id%>
+            <%image = Image.where(product_id: product_id).where(image_type: "product").first %>
+            <%if image != nil%>
+              <li class="image_align">
+                <div class="thumbnail">    
+                  <img style="height: 120px" src="<%= image_data_path(image.id, image.extens) %>">
+                </div>
+                <%if Product.where(id: product_id).first.display_name == "" || Product.where(id: product_id).first.display_name == nil %>
+                  <%display_name = Product.where(id: product_id).first.name%>
+                <%else%>
+                  <%display_name = Product.where(id: product_id).first.display_name%>
+                <%end%>
+                <p><b><%=display_name%></b><br>
+                <u>Show:</u></p>
+  
+                <label class="checkbox">
+                  <%=check_box_tag "in_quote-#{designed_product.id}", "1", designed_product.image_in_quote%>In Quote?
+                </label>
+                <label class="checkbox">
+                  <%=check_box_tag "on_cover-#{designed_product.id}", "1", designed_product.image_on_cover%>On Cover?
+                </label>
+              </li>
+            <%end%> 
+          <%end%>
+        </ul>
+      </div>
+  <%end%>
 
 
 <h4> <b>Additional Images I'd Like Include in the Quote for this Arrangement:</b></h4>
