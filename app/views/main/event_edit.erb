@@ -82,7 +82,7 @@
             <i><small>(<%=@event.other_notes.length%> chars.)</i></small>
           <%end%>  
         </label>
-        <%= text_area_tag "other_notes", @event.other_notes,  class: "span12", :rows=>2, :placeholder=>"Limit: 1000 characters."%> 
+        <%= text_area_tag "other_notes", @event.other_notes,  class: "span12", :rows=>2, placeholder: "Limit: 1000 characters."%> 
      <br>
       
         <label>Special Notes for Quote: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
