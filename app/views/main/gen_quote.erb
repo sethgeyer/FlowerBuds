@@ -94,31 +94,30 @@
   <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"These notes will appear at the end of the quote.  Limit: 1000 characters."%> 
 
   
-
           <%total_cost = 0%>     
-          <% for each in @specifications
-            if each.per_item_cost != nil
-              each.per_item_cost
-            else  
-              each.per_item_cost = 0
-            end
-            total_cost = total_cost + ((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))
-          end%>
-
-          <%sum_price = 0%>     
-          <% for each in @specifications
-            if each.quoted_price != nil
-              each.quoted_price
-            else  
-              each.quoted_price = 0
-            end
-            sum_price = sum_price + (each.quoted_price / 100.0)
-          end%>
+          <% for specification in @specifications %>
+            <% per_arrange_cost = 0 %>
+            <% per_arrange_list_price = 0%>
+            <% per_arrange_hours = 0%>
+            <% designed_products = DesignedProduct.where(specification_id: specification.id)%>
+            <%for designed_product in designed_products %>
+              <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
+              <% product_list_price = product_cost * (designed_product.product.markup / 100.0)%>
+              <% per_arrange_cost = per_arrange_cost + product_cost %>
+              <% per_arrange_list_price = per_arrange_list_price + product_list_price%>
+              <% if Product.where(id: designed_product.product_id).first.product_type == "4. Labor"%>
+                <%hrs = designed_product.product_qty / 100.0 %>
+                <%per_arrange_hrs = per_arrange_hrs + hrs %>
+              <%else%>
+              <%end%>
+            <%end%>
+            <% total_cost = total_cost + (per_arrange_cost * (specification.item_quantity / 100.0))%>
+          <%end%>
 
 
 
   <div class="row-fluid">
-    <%     if (sum_price * 100).round(0) == @event.quote.total_price && (total_cost * 100).round(0) == @event.quote.total_cost%>
+    <%     if (total_cost * 100).round(0) == @event.quote.total_cost%>
     <div class="span3">
       <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1200,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
       <a tabindex=4  href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" />  Create Customer Quote</a>
@@ -157,8 +156,7 @@
         <th></th>
         <th></th>
         
-    
-        <% if (sum_price * 100).round(0) == @event.quote.total_price  && (total_cost * 100).round(0) == @event.quote.total_cost %>
+        <% if (total_cost * 100).round(0) == @event.quote.total_cost %>
           <th style="text-align:center">$<%=sprintf("%.2f" , total_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>
           <th></th>
           <th></th>
@@ -167,7 +165,7 @@
           <%else%>
             <th> - </th>  
           <%end%>    
-          <th style="text-align:center">$<%=sprintf("%.2f" , sum_price).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>      
+          <th style="text-align:center">$<%=sprintf("%.2f" , @event.quote.total_price / 100.0.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></th>      
         <%else%>
           
           <div class="alert alert-success">
@@ -242,12 +240,13 @@
       </table>   
       
       
-      <% if sum_price * 100 == @event.quote.total_price && total_cost * 100 == @event.quote.total_cost %>
+      <% if (total_cost * 100).round(0) == @event.quote.total_cost %>
+
 
       <p> Total Estimated Hours are: <%=sprintf("%.2f" , total_hours).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></p> 
       Estimated Profit: 
         <% if @event.quote.markup != 0%>
-          <%profit = sum_price - total_cost %>
+          <%profit = @event.quote.total_price / 100.0.round(2) - total_cost %>
           $ <%=sprintf("%.2f" , profit).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%>
         <%else%> - 
       <%end%>  
