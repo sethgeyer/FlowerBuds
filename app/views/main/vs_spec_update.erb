@@ -1,11 +1,10 @@
 
- 
 <h3>Virtual Studio - Step 2: Design an Individual Arrangement</h3>
 
-<h4>You're Designing for the: <%=@spec.item_name%></h4>
+<h4>You're Designing for a <b><u>single</b></u>: <%=@spec.item_name%></h4>
 
-  <p>For the specified arrangement, determine how many of each item will be included in a <b><u>single</b></u> arrangement. (For <br> fresh goods, 
-  this means number of stems; for labor, this means number of hours.)  CenterpieceFMT will tally the <br>
+  <p>For the specified arrangement, determine how many of each item will be included in a <b><u>single</b></u> arrangement. (For fresh goods, 
+  this means number of stems; for labor, this means number of hours.)  CenterpieceFMT will tally the 
   costs, counts, quantities, etc. for each arrangement later in the quoting process. </p>
 
 <%= form_tag("/vs_spec_save") do %>
@@ -15,8 +14,9 @@
          <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Summary</button> 
           <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
          
-    <div class="row-fluid">
- <div class=span6>
+<div class="row-fluid">
+<div class=span6>
+     
     <%=hidden_field_tag "event_id", @spec.event.id%>
     <%=hidden_field_tag "spec_id", @spec.id%>
       
@@ -62,12 +62,60 @@
           <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
          <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Summary</button> 
           <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
-        
- 
- 
   <%end%>    
-  
-  
 </div>
+
+  <div class="span6">
+      
+         
+            <td><b><%=@spec.item_name%> Description & Details</b><br>
+              <% if @spec.item_specs != nil%>
+                <%= raw(@spec.item_specs.gsub("\n", "<br>"))%>
+              <%end%>
+              
+              <div class="row-fluid">
+                <ul class="nails2">
+               <%if @spec.event.show_product_image == 1%>
+                <% designed_products = DesignedProduct.where(specification_id: @spec.id).where(image_in_quote: 1).where("product_qty > 0.0").order("id") %>
+                <%for designed_product in designed_products%>
+                    <%image = Image.where(product_id: designed_product.product_id).where(image_type: "product").first%>
+                    <%if image != nil%>
+                      <li class="image_align" >
+                        <div class="thumbnail">    
+                          <%if designed_product.image_on_cover == 1 %>
+                            <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
+                          <%else%>
+                            <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
+                          <%end%> 
+                        </div>
+                      </li>
+                    <%end%>
+                  <%end%>
+                <%end%>                
+              
+              
+              
+              
+              
+              
+              
+              
+              
+                  <% for image in @spec.images %>
+                    <li class="image_align">
+                      <div class="thumbnail">    
+                        <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
+                      </div>
+                      <div class="display_name">
+                        <%=image.display_name%>
+                      <br></div>
+                    </li>
+                  <%end%> 
+              </div>
+            </td> 
+         
+  </div>
+
+
 
 </div>
