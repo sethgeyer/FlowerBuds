@@ -98,7 +98,7 @@
           <% for specification in @specifications %>
             <% per_arrange_cost = 0 %>
             <% per_arrange_list_price = 0%>
-            <% per_arrange_hours = 0%>
+            <% per_arrange_hrs = 0%>
             <% designed_products = DesignedProduct.where(specification_id: specification.id)%>
             <%for designed_product in designed_products %>
               <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
