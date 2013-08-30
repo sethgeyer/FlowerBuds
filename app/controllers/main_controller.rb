@@ -358,6 +358,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       each.item_quantity = params["spec_qty-#{each.id}"].to_i * 100.0
       each.item_specs = params["spec_notes-#{each.id}"]
       each.exclude_from_quote = params["exclude-#{each.id}"]
+      each.updated_by = Employee.where(florist_id: session["found_florist_id"]).where(id: session["found_user_id"]).first.username
       each.save      
     end
     if params["delete"]
@@ -386,6 +387,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_spec.event_id = params["ev_id"]
       new_spec.item_quantity = 1 * 100.0
       new_spec.item_name = ""
+      new_spec.updated_by = Employee.where(florist_id: session["found_florist_id"]).where(id: session["found_user_id"]).first.username
       new_spec.florist_id = session["found_florist_id"] 
       new_spec.save!
     elsif params["add_image"]

@@ -178,23 +178,22 @@
       $<%= sprintf("%.2f" , @event.quote.total_price / 100.round(2)).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse%></b>
       </table>
      
-     <div class="row-fluid">
-    <div class="span12"> 
-      
+    <div class="row-fluid">
+      <div class="span12"> 
         <%if @event.quote_message != nil && @event.quote_message != ""%>
-        <p><b><u>Special Notes:</u></b><br>
-          <%=raw(@event.quote_message.gsub("\n", "<br>"))%></p>
+          <p><b><u>Special Notes:</u></b><br>
+            <%=raw(@event.quote_message.gsub("\n", "<br>"))%></p>
         <%else%> <br><br>
         <%end%>
- </div>
       </div>
+    </div>
     <hr />  
       
       <div class="row-fluid">
-    <div class="span12"> 
-      <p><%= raw(quote_language.gsub("\n", "<br>"))%></p>
-      <br><br><br>
-      </div>
+        <div class="span12"> 
+          <p><%= raw(quote_language.gsub("\n", "<br>"))%></p>
+            <br><br><br>
+        </div>
       </div>
       
    </div>

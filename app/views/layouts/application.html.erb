@@ -33,10 +33,34 @@
               <ul class="nav pull-right">
 
                 <li><a tabindex=-1 href="/home">Home</a></li>
+                
+                <%spec = Specification.where(florist_id: session["found_florist_id"]).where("item_name not like 'X1Z2-PlaCeHoldEr'").where(updated_by: Employee.find(session["found_user_id"]).username).order("updated_at").last%>
+                <%if spec != nil%>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Back To
+                      <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><b><%=spec.event.name%></b></li>
+                    <li><a href="/event_edit/<%=spec.event.id%>">Event</a></li>
+                    <li><a href="/virtual_studio/<%=spec.event.id%>">vStudio</a></li>
+                    <li><a href="/generate_quote/<%=spec.event.id%>">Quote</a></li>
+                    <li><a href="/design_day_details/<%=spec.event.id%>">DD Details</a></li>
+                  </ul>
+                <%end%>
+                  
                 <li><a tabindex=-1 href="/schedule_order_date">Schedule Order Date</a></li>
-                <li><a tabindex=-1 href="/employees">Employees</a></li>
-                <li><a tabindex=-1 href="/products">Products</a></li>
-                <li><a tabindex=-1 href="/setup">Setup</a></li>
+                <li><a tabindex=-1 href="/products">Products</a></li>                              
+                <li tabindex=-1 class="dropdown">
+                  <a tabindex=-1 href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Admin
+                      <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a tabindex=-1 href="/employees">Employees</a></li>
+                    <li><a tabindex=-1 href="/setup">Setup</a></li>
+                   </ul>             
                 <li><a tabindex=-1 href="/logout">Logout <%=Employee.where(id: session["found_user_id"]).first.username%></a></li>
               </ul>
             </div>

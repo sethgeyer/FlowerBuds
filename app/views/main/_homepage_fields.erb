@@ -27,7 +27,7 @@
   <li>
     <div><i>My inspiration...</i></div>
     <div class="thumbnail">    
-    <a href= "/employee/<%=Employee.where(id: session["found_user_id"]).first.id%>"> <img src="<%= image_data_path(image.id, image.extens) %>" style="height: 140px width: 140px" ></a>
+    <a tabindex=-1 href= "/employee/<%=Employee.where(id: session["found_user_id"]).first.id%>"> <img src="<%= image_data_path(image.id, image.extens) %>" style="height: 140px width: 140px" ></a>
     </div>
     </li>
     <%end%>
