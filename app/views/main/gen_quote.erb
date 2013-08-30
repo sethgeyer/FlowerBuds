@@ -85,12 +85,13 @@
         </p>
       <%end%>
         
-      <label><b>Special Notes for Quote:</b> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <%if @event.quote_message != nil%>
-          <i><small>(<%=@event.quote_message.length%> chars.)</i></small>
-        <%end%>
-      </label>
-        <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"These notes will appear at the end of the quote.  Limit: 1000 characters."%> 
+        <p>
+          <b>Special Notes for Quote:</b> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <%if @event.quote_message != nil%>
+            <i><small>(<%=@event.quote_message.length%> chars.)</i></small>
+          <%end%> <br>
+          <%= text_area_tag "quote_message", @event.quote_message,  class: "span12", :rows=>3, :placeholder=>"These notes will appear at the end of the quote.  Limit: 1000 characters."%> 
+        </p>
       </div>
     </div>
   
