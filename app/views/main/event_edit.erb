@@ -127,9 +127,7 @@
         <%x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,50]%>
         <%= select_tag "spec_qty-#{each.id}", options_for_select(x, each.item_quantity / 100), class: "input-mini"%>  &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp    
         <button class="btn btn-success btn-mini" data-disable-with="..." name="add_image" value= <%=each.id%>>+ Image</button>&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp
-        <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span11", placeholder: "Description & Details.  Limit: 1000 characters.", :rows=>2                 %>
-        <%= text_area_tag "notes"                , @event.notes,    class: "span12", placeholder: "These notes will not be reflected on customer quotes.  Limit: 1000 characters." , :rows=>9, :tabindex => 13 %>
-
+        <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span11", placeholder: "Description & Details.  Limit: 1000 characters.", :rows=>2%>
         
         
          <br>
