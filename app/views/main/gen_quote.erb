@@ -115,7 +115,7 @@
             <% total_cost = total_cost + (per_arrange_cost * (specification.item_quantity / 100.0))%>
           <%end%>
 
-
+<%=total_cost%>
 
   <div class="row-fluid">
     <%     if (total_cost * 100).round(0) == @event.quote.total_cost%>
