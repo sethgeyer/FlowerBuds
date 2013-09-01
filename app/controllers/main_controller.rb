@@ -858,7 +858,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       if params["quoted_price-#{each.id}"] == nil
         each.quoted_price = 0
       else
-        each.quoted_price = (params["quoted_price-#{each.id}"].to_f * 100).round(2)
+        each.quoted_price = (params["quoted_price-#{each.id}"].gsub("," , "").to_f * 100).round(2)
       end
       items_cost = params["per_item_cost-#{each.id}"].to_f * 100.0
       each.per_item_cost = items_cost.round(2)
