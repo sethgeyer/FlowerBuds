@@ -1071,7 +1071,10 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @product.items_per_bunch = params["items_per_bunch"].to_f * 100
       if params["cost_per_bunch"] && params["cost_per_bunch"].to_f > 0
         @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100.round(2)
-        @product.cost_for_one =((params["cost_per_bunch"]).to_f.round(2) / (params["items_per_bunch"]).to_f.round(2)).round(2) * 100.round(2)
+        numerator = params["cost_per_bunch"].to_f * 100.0.round(2)
+        denominator = params["items_per_bunch"].to_f * 100.0.round(2)
+        
+        @product.cost_for_one = (numerator / denominator).round(2)*100
       end
     end
     if params["markup"] && params["markup"].to_f >= 0   
