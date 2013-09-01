@@ -19,10 +19,9 @@
 <%=hidden_field_tag "event_id", @event.id%>
 <hr />
 
-<h3>Virtual Studio - Step 1: Selecting Items for the Event</h3>
+<h3>Virtual Studio - Step 1: Select Items for the Event</h3>
   <p>From the dropdown list, select the various flowers, vases, candles, type of labor, etc. that will be used 
-     in the arrangements for this event. If you need items that are not included in the drop down list, press the 
-     "PopUp Products" link (to the right) and add them to your products list.  Once you have added the items, press 
+     in the arrangements for this event. If you need items that are not included in the drop down list, create it on the "Products" Tab.  Once you have added the items, press 
      a blue button to design the individual arrangement using the items you've added from the drop down list. Your edits
      will be summarized on this page once completed. </p>
 
@@ -39,17 +38,31 @@
       </div>
     </div>
     
-    <script type="text/javascript"> function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
     <div class="span3">
-      <p><a class="span12" href="JavaScript:newPopup('/image_gallery');">Popup Gallery<img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
-    
-   
-    
-    <script type="text/javascript"> function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=100,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
-    <div class="span3">
-      <p><a class="span12" href="JavaScript:newPopup('/products');">Popup Products<img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/></a> </div>
+      <script type="text/javascript"> 
+        function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
+      </script>
+      <p>
+        <a class="span12" href="JavaScript:newPopup('/image_gallery');">
+          <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Popup Gallery
+        </a>
+      </p> 
     </div>
-      
+    
+    <div class="span3">
+      <script type="text/javascript">
+        function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
+      </script>
+      <p>
+        <a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">
+          <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Popup Details
+        </a>
+      </p> 
+    </div>
+    
+    <br><br><br>
+   
+   
       
       
       <%=hidden_field_tag "event_id", @event.id%>
@@ -63,8 +76,8 @@
     
     <thead>
       <tr>
-        <th class="span1"> </th>
-        <th class="span3">Items to Include:</th>
+        
+        <th class="span3">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Items to Include:</th>
         <%for specification in @specifications%>
           <th class= "span1" style="text-align:center">
            <%=specification.item_name%><br>
@@ -79,8 +92,8 @@
       <%for product in @products.where(product_type: product_type).order(:name)%>
          
         <%if product.product_type != nil%>
-         <td><button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed... OK?" name= "remove" value= <%=product.id%>>Remove</button></div> </td> 
-        <td><%=product.name%></td> 
+          
+        <td><button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed from the design for this event... OK?" name= "remove" value= <%=product.id%>>x</button> &nbsp&nbsp&nbsp&nbsp <%=product.name%></td> 
         <% for specification in @specifications%>
           <td style="text-align:center"><%designed_product = DesignedProduct.where(product_id: product.id).where(specification_id: specification.id).first%>
           <%if designed_product != nil %>
@@ -97,11 +110,7 @@
   <br>
   <%end%>    
  
-<script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}</script>
-
-<p><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Show Me the Specifications for Each Arrangement</a></p> 
-    
-    
+ 
     
     
     

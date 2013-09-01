@@ -68,8 +68,9 @@
   <div class="span6">
       
          
-            <td><b><%=@spec.item_name%> Description & Details</b><br>
-              <% if @spec.item_specs != nil%>
+            
+              <% if @spec.item_specs != nil && @spec.item_specs != ""%>
+               <td><u><b><%=@spec.item_name%> Description & Details</u></b><br>
                 <%= raw(@spec.item_specs.gsub("\n", "<br>"))%>
               <%end%>
               

@@ -996,7 +996,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["clear"]
       redirect_to "/image_gallery" and return
     else
-      @name = params["search_field"]
+      @name = params["search_field"].gsub(" ", "_")
       redirect_to "/image_gallery/#{@name}" and return
     end
   end
@@ -1019,7 +1019,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     elsif params["search"]
      # @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{params["search_field"]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
      # @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
-      @name = params["search_field"]
+      @name = params["search_field"].gsub(" ", "_")
       #render (:products) and return
       redirect_to "/products/#{@name}" and return
     elsif params["clear"]
