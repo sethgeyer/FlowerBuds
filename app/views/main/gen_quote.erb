@@ -102,8 +102,8 @@
             <% per_arrange_hrs = 0%>
             <% designed_products = DesignedProduct.where(specification_id: specification.id)%>
             <%for designed_product in designed_products %>
-              <% product_cost = designed_product.product_qty / 100.0 * designed_product.product.cost_for_one / 100.0 %>
-              <% product_list_price = product_cost * (designed_product.product.markup / 100.0)%>
+              <% product_cost = ((designed_product.product_qty / 100.0).round(2) * (designed_product.product.cost_for_one / 100.0.round(2))).round(2) %>
+              <% product_list_price = product_cost * (designed_product.product.markup / 100.0.round(2))%>
               <% per_arrange_cost = per_arrange_cost + product_cost %>
               <% per_arrange_list_price = per_arrange_list_price + product_list_price%>
               <% if Product.where(id: designed_product.product_id).first.product_type == "4. Labor"%>
@@ -112,10 +112,10 @@
               <%else%>
               <%end%>
             <%end%>
-            <% total_cost = total_cost + (per_arrange_cost * (specification.item_quantity / 100.0))%>
+            <% total_cost = total_cost + ((per_arrange_cost * (specification.item_quantity / 100.0.round(2)))).round(2)%>
           <%end%>
 
-<%=total_cost%>
+
 
   <div class="row-fluid">
     <%     if (total_cost * 100).round(0) == @event.quote.total_cost%>

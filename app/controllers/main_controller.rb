@@ -876,7 +876,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       else # do nothing
       end
       quoted_total_price = quoted_total_price + each.quoted_price
-      quoted_total_cost = quoted_total_cost + (((each.per_item_cost / 100.0) * (each.item_quantity / 100.0))) * 100.0
+      quoted_total_cost = quoted_total_cost + (((each.per_item_cost / 100.0) * (each.item_quantity / 100.0)) * 100.0).round(2)
     end 
     quote.total_price = quoted_total_price
     quote.total_cost = quoted_total_cost
@@ -1070,8 +1070,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["items_per_bunch"] && params["items_per_bunch"].to_f > 0
       @product.items_per_bunch = params["items_per_bunch"].to_f * 100
       if params["cost_per_bunch"] && params["cost_per_bunch"].to_f > 0
-        @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100
-        @product.cost_for_one =((params["cost_per_bunch"]).to_f / (params["items_per_bunch"]).to_f).round(2) * 100
+        @product.cost_per_bunch = params["cost_per_bunch"].to_f * 100.round(2)
+        @product.cost_for_one =((params["cost_per_bunch"]).to_f.round(2) / (params["items_per_bunch"]).to_f.round(2)).round(2) * 100.round(2)
       end
     end
     if params["markup"] && params["markup"].to_f >= 0   
