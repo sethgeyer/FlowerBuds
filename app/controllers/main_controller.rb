@@ -858,11 +858,12 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       if params["quoted_price-#{each.id}"] == nil
         each.quoted_price = 0
       else
-        each.quoted_price = params["quoted_price-#{each.id}"].to_f * 100
+        each.quoted_price = (params["quoted_price-#{each.id}"].to_f * 100).round(2)
       end
-      each.per_item_cost = params["per_item_cost-#{each.id}"].to_f * 100
-      each.per_item_list_price = params["per_item_list_price-#{each.id}"].to_f * 100
-      each.extended_list_price = params["extended_list_price-#{each.id}"].to_f * 100
+      items_cost = params["per_item_cost-#{each.id}"].to_f * 100.0
+      each.per_item_cost = items_cost.round(2)
+      each.per_item_list_price = (params["per_item_list_price-#{each.id}"].to_f * 100).round(2)
+      each.extended_list_price = (params["extended_list_price-#{each.id}"].to_f * 100).round(2)
       each.save!
     end
     quote = Quote.where(event_id: event_id).first
@@ -876,7 +877,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       else # do nothing
       end
       quoted_total_price = quoted_total_price + each.quoted_price
-      quoted_total_cost = quoted_total_cost + (((each.per_item_cost / 100.0) * (each.item_quantity / 100.0)) * 100.0).round(2)
+      quoted_total_cost = quoted_total_cost + (((each.per_item_cost / 100.0) * (each.item_quantity / 100.0)).round(2) * 100.0).round(2)
     end 
     quote.total_price = quoted_total_price
     quote.total_cost = quoted_total_cost
