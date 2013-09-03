@@ -5,7 +5,7 @@
     <div class="span9">
       <h3>Edit Event for <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a> </h3>
     </div>
-    <div class="span3 ">
+    <div class="span3">
       Designer:<%= select_tag "lead_designer", options_for_select(@employee_list, @event.employee.name), class: "pull-right"%>
     </div>
   </div>
@@ -28,7 +28,7 @@
       <%= label_tag "locations", "Locations(s):"%>
       <%= text_field_tag "locations", @event.locations, class: "span11", :tabindex => 2%>
       <%= label_tag "event_date", "Event Date: *"%>
-      <input type="date" name="event_date" class="span8" tabindex=3 value=<%=@event.date_of_event%> ></input>
+      <input type="date" name="event_date" class="span8" tabindex=3 placeholder="yyyy-mm-dd" value=<%=@event.date_of_event%> ></input>
         <div class="row-fluid">    
         <div class="span4">
           <%= label_tag "event_time", "Event Time:"%>   

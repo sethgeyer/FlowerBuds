@@ -17,11 +17,36 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### POST Handler from florists.erb
   def florists_post
     if params["new"] 
-      redirect_to "/florists/new" and return
+      redirect_to "/florist/new" and return
+    elsif params["search"]
+      @name = params["search_field"].gsub(" ", "_")
+      redirect_to "/florists/#{@name}" and return
+    elsif params["clear"]
+      redirect_to "/florists" and return
+    
     else
-      redirect_to "/florists/#{params["edit"]}" and return
+      redirect_to "/florist/#{params["edit"]}" and return
     end
   end
+
+### GET Handler from post above on the "search".  (Necessary because pagination doesn't work right w/ search criteria)
+  def florists_search_results
+    @name = params["search_field"]
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
+      @florists = Florist.where("name ilike ?","%#{@name}%").order("status", "name")
+      render(:florists_search_results) and return    
+    else
+      redirect_to "/login" and return
+    end
+  end 
+
+
+
+
+
+
+
+
 
 ### GET Handler from florists_post function (see above)
   def florist
@@ -150,5 +175,59 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       render(:plan_updates) and return
     end
   end
+  
+
+######### DEMO_PRODUCTS
+
+### GET Handler for link on homegage.erb  
+  def demo_products
+    if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"
+      render(:demo_products) and return    
+    else
+      redirect_to "/login" and return
+    end
+  end
+  
+### POST Handler for importing demo products
+  def import_demo_products
+    if params["import_products"]
+      importee = Florist.where(company_id: params["import"]).first
+      import_products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%demo%")
+      for each in import_products
+        x = Product.new
+        x.product_type= each.product_type
+        x.name = each.name
+        x.items_per_bunch = each.items_per_bunch
+        x.cost_per_bunch = each.cost_per_bunch
+        x.cost_for_one = each.cost_for_one
+        x.markup = each.markup
+        x.status = each.status
+        if each.display_name != nil
+          x.display_name = each.display_name
+        end
+        x.updated_by = Employee.where(id: session["found_user_id"]).first.name
+        x.florist_id = importee.id
+        x.save!
+      
+      
+      #image = Image.new
+      #image.data = upload.read
+      #image.content_type = upload.content_type
+      #image.extens = upload.original_filename.downcase.split(".").last
+      #image.image_type = "product"
+      #image.product_id = params["p_id"]
+      #product = Product.where(id: params["p_id"]).first
+      #product.updated_at = Time.now
+      #product.updated_by = Employee.where(id: session["found_user_id"]).first.name
+      #product.save!
+      #image.save!
+      
+      end
+      redirect_to "/florists" and return
+    else
+      redirect_to "/login" and return
+    end    
+  end
+  
   
 end

@@ -1,7 +1,7 @@
-<h3>Other Customizable Items</h3>
+<h3>Setup & Customize</h3>
 
   <%= form_tag("/setup_update") do %>
-<h4> Default Proposal Style </h4>
+<h4> Proposal Style Default </h4>
 <p> CenterpieceFMT provides you w/ 2 Generic Proposal Templates with an option to have a 3rd customized and personalized for you. Choose a default style.
 Although this will be your default, you have the ability to choose an alternative on a quote by quote basis.</p>
 <label> <b>Proposal Style:</b> </label>
@@ -22,7 +22,7 @@ Although this will be your default, you have the ability to choose an alternativ
    <hr />
 
 
-<h4> Default "Show Product Image" Preference </h4>
+<h4> "Show Product Image" Preference </h4>
 <p> CenterpieceFMT provides you w/ the ability to include the image you've associated w/ individual flower types (from your Product Catalog) within your quote. Choose a default style.
 Although this will be your default, you have the ability to choose an alternative on a event-by-event basis.</p>
 
@@ -35,13 +35,23 @@ Although this will be your default, you have the ability to choose an alternativ
 
 
 
+<h4> Special Notes for Quotes Default</h4>
+  <p> Create the "Special Notes" that you would like to appear just after the "Total Price" for every quote.  This could include a generic "thank you", deposit terms, rental return policy,  tax percentages (if any), etc...
+      things that typically will not change over time.  Although this will be the default shown in the "special notes" section, you have the ability to remove, add to, or 
+      overwrite the notes for each quote. 
+  </p>
 
-
-
-
-
-
-
+  <% if @florist.quote_message_default == nil%>
+    <%quote_message_default = @quote_message_default %>
+    <%length = 0%>
+  <%else%>
+    <%quote_message_default = @florist.quote_message_default%>
+    <%length = quote_message_default.length%>
+  <%end%>
+    <%= text_area_tag "quote_message_default", quote_message_default, class: "span12", :rows=>10%>  
+    <p> Character Limit = 1,000.  Current Character Count:  <%=length%> </p>
+    
+<hr />
 
 
 
@@ -59,15 +69,16 @@ Although this will be your default, you have the ability to choose an alternativ
     
     <p> Character Limit = 5,000.  Current Character Count:  <%= quote_language.length%>
     
-    <% if @SETUP_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
-    
-     <div class = 'label-spacer'></div> 
-        <button class="btn btn-mini btn-primary" data-disable-with="..." name="save" value= "save">Save</button>
-         <button class="btn btn-mini " data-disable-with="..." name="cancel" value= "cancel">Cancel</button>
-        <%else%>
-        <p><b> NOTE: You do not have administrative rights and therefore do not have permissions to edit the quote language.</p>
-    <%end%>
-    <%end%>
+<%if @SETUP_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%> 
+  <div class = 'label-spacer'></div> 
+  <button class="btn btn-mini btn-primary" data-disable-with="..." name="save" value= "save">Save</button>
+  <button class="btn btn-mini " data-disable-with="..." name="cancel" value= "cancel">Cancel</button>
+<%else%>
+  <p><b> NOTE: You do not have administrative rights and therefore do not have permissions to edit the quote language.</p>
+<%end%>
+
+
+<%end%>
     
     
     

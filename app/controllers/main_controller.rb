@@ -33,7 +33,6 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     \n\n\n Customer Name: ___________________________
     \n\n\n Signature: ______________________ 
     \n\n\n Date:  __________________________"
-
 ######### WEBPAGE aka: the landing page for someone searching for centerpiece on the internet
 
 ### GET handler from "/"
@@ -118,6 +117,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   def setup_update
     if params["save"]
     update_florist = Florist.where(id: session["found_florist_id"]).first
+    update_florist.quote_message_default = params["quote_message_default"]
     update_florist.quote_language = params["quote_language"]
     update_florist.quote_style_pref = params["quote_style"]
     update_florist.show_product_image_pref = params["show_product_image_pref"]
@@ -143,6 +143,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       redirect_to "/florists" and return
     elsif params["plans_access"]
       redirect_to "/plans" and return
+    elsif params["demo_products_access"]
+      redirect_to "/demo_products" and return
     elsif params["update_view"]
       emp_update = Employee.where(id: session["found_user_id"]).first
       emp_update.view_pref = params["view"]
@@ -291,6 +293,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event.name = params["event_name"]
 #   @event.random_number = rand(100000)
     @event.date_of_event = params["event_date"]
+    @event.quote_message = Florist.find(session["found_florist_id"]).quote_message_default
     @event.show_product_image =  Florist.find(session["found_florist_id"]).show_product_image_pref
     @event.show_display_name = 1
     if params["lead_designer"] != ""

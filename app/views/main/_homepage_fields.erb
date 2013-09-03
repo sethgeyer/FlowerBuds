@@ -8,16 +8,6 @@
           <%=text_field_tag "search_field", nil, placeholder: "a single letter will suffice"%>
           <%=button_tag "Search/Add", name: "search", class: "btn btn-small btn-primary"%>
         </div>
-        
-  
-        
-        
-        
-        
-        
-        
-        
-        
     </div>
     
     <div class="span4">
@@ -46,7 +36,7 @@
         </div>
       <h4>Events After:</h4>
         <div class="form-inline">
-        <input type="date" name="beg_date" class="span5" value=<%=@date%> ></i></input>
+        <input type="date" name="beg_date" class="span5" placeholder="yyyy-mm-dd" value=<%=@date%> ></i></input>
         <%=button_tag "Show Me", name: "date_range", class:"btn  btn-small btn-primary"%>
         <%=button_tag "Clear", name: "clear", class: "btn btn-small"%>
         </div>
@@ -54,8 +44,9 @@
   </div>
 
   <%if Florist.where(id: session["found_florist_id"]).first.company_id == "centerpiece"%>
-    <%=button_tag "Florists", name: "florists_access", class:"btn btn-small btn-warning"%>
-    <%=button_tag "Plans", name: "plans_access", class:"btn btn-small btn-warning"%><br>
+    <%=button_tag "Florists", name: "florists_access", class:"btn btn-small btn-warning"%>&nbsp&nbsp
+    <%=button_tag "Plans", name: "plans_access", class:"btn btn-small btn-warning"%>&nbsp&nbsp
+    <%=button_tag "Demo Products", name: "demo_products_access", class:"btn btn-small btn-warning"%><br>
   
   <%else%>
   <%end%>

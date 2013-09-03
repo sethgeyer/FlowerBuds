@@ -58,7 +58,8 @@ App::Application.routes.draw do
   
   get "/florists"                             => "admin#florists"
   post "/florists_post"                       => "admin#florists_post"
-  get "/florists/:florist_id"                 => "admin#florist"
+  get "/florists/:search_field"               => "admin#florists_search_results"
+  get "/florist/:florist_id"                  => "admin#florist"
   post "florist_updates/:florist_id"          => "admin#florist_updates"
   
   get "/setup"                                => "main#setup"
@@ -68,6 +69,9 @@ App::Application.routes.draw do
   post "/plans_post"                          => "admin#plans_post"
   get "/plans/:plan_id"                       => "admin#plan"
   post "plan_updates/:plan_id"                => "admin#plan_updates"
+
+  get "/demo_products"                        => "admin#demo_products"
+  post "/import"                              => "admin#import_demo_products"
 end
 
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130829161841) do
+ActiveRecord::Schema.define(:version => 20130903174937) do
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20130829161841) do
     t.integer  "quote_style_pref"
     t.integer  "custom_quote"
     t.integer  "show_product_image_pref"
+    t.string   "quote_message_default",   :limit => 1000
   end
 
   create_table "images", :force => true do |t|

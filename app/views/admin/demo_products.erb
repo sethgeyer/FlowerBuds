@@ -1,0 +1,25 @@
+  
+</h1> ADMIN VIEW </h1>
+  
+<br><th><%=link_to "Return to Home", home_path%></th> 
+
+<h3> Import Demo Products </h3>
+ <p>Under the Florist "Centerpiece" there are a handful of products each with "-demo" appended to the end of the Product Name.  These products will be used to "seed" a trial
+    customers product catalog so that they can be demo'd.  
+    
+  <%= form_tag("/import") do %>
+    
+
+    <div class="row-fluid">
+    
+    <div class="span5">
+      <div class="input-append">
+        <%= select_tag "import", options_for_select(Florist.order("company_id").uniq.pluck(:company_id))%> &npsb&npsb&npsb
+        <button class="btn" name= "import_products" data-disable-with="..." data-confirm="You are about to import demo products for the selected florist... OK?" value="import_products">Import Demo Products</button> 
+      </div>
+    </div>
+    
+    
+    
+    
+  <%end%>
