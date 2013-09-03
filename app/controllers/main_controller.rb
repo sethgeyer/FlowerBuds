@@ -666,7 +666,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     
  
     if params["save"]
-      redirect_to "/virtual_studio/#{event_id}" and return
+      redirect_to "/vs_spec_update/#{params["spec_id"]}" and return
     end
     specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
     spec_list = []

@@ -1,9 +1,13 @@
+ 
+    <p><b>Cust Name:</b> <%=@spec.event.customer.name%><br>
+       <b>Event Name:</b> <a href= "/event_edit/<%=@spec.event.id%>"> <%=@spec.event.name%></a><br>
+    <hr />
+      
 
-<h3>Virtual Studio - Step 2: Design an Individual Arrangement</h3>
+<h3>Virtual Studio - Design a <b><u>Single</b></u>: <%=@spec.item_name%></h3>
 
 <%= form_tag("/vs_spec_save") do %>
 
-<h4>You're Designing for a <b><u>single</b></u>: <%=@spec.item_name%></h4>
   <div class="row-fluid">
     <div class="span3">
     <div class="input-append">
@@ -30,9 +34,9 @@
 
 <div class="row-fluid">
 
-<p> <b>Save and Go To:</b>
+<p> <b>Save and Go to:</b>
           <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
-         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Summary</button> 
+         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">This Item</button> 
           <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
     
     
