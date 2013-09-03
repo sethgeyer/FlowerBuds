@@ -361,7 +361,10 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       each.updated_by = Employee.where(florist_id: session["found_florist_id"]).where(id: session["found_user_id"]).first.username
       each.save      
     end
-    if params["delete"]
+    if params["vs"]
+     redirect_to "/vs_spec_update/#{params["vs"]}" and return
+    
+    elsif params["delete"]
       spec_id = params["delete"]
       spec = Specification.where(id: spec_id).first
       spec.destroy
@@ -546,6 +549,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 =end
 
   #Generate dropdown list for adding new products to the Virtual Studio Page
+    @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => event_id).uniq
     products = Product.where(status: "Active").where(florist_id: session["found_florist_id"]).order("name")
     dropdown = []
     for product in products
@@ -587,7 +591,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 
     elsif params["update"]
       spec_id = params["update"]
-      redirect_to "/vs_spec_update/#{spec_id}"
+      redirect_to "/vs_spec_update/#{spec_id}" and return
     end
   end
   
@@ -601,6 +605,20 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @used_products = @products.order("name")
     @list_of_product_types = @products.uniq.pluck(:product_type).sort
     @list_of_product_ids = @products.uniq.pluck(:id) 
+    
+    
+    
+    
+  #Generate dropdown list for adding new products to the Virtual Studio Page
+    products = Product.where(status: "Active").where(florist_id: session["found_florist_id"]).order("name")
+    dropdown = []
+    for product in products
+      dropdown << product.name
+    end
+    for item in @products
+      dropdown = dropdown - [item.name]
+    end
+    @dropdown = dropdown
     render (:vs_spec_update) and return
   end
   
@@ -630,6 +648,23 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         new_dp.save!
       end
     end
+    
+  # Create a DP for the product assigned to the placeholder specification.
+    if params["add"]
+      new_item = params["new_item"]
+      specification = Specification.where(event_id: event_id).where(item_name: "X1Z2-PlaCeHoldEr").first
+      new_dp = DesignedProduct.new
+      new_dp.specification_id = specification.id
+      new_dp.product_qty = 0
+      new_dp.florist_id = session["found_florist_id"]
+      new_dp.product_id = Product.where(name: new_item).where(florist_id: session["found_florist_id"]).first.id
+      new_dp.event_id = event_id
+      new_dp.image_in_quote = 1
+      new_dp.save!         
+      redirect_to "/vs_spec_update/#{params["spec_id"]}" and return
+    end
+    
+ 
     if params["save"]
       redirect_to "/virtual_studio/#{event_id}" and return
     end
@@ -642,22 +677,15 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["save_previous"]
       if last_items_index - 1 >= 0 
         @spec =  Specification.where(id: spec_list[last_items_index - 1]).first
-        @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => @spec.event.id).uniq
-        @used_products = @products.order("name")
-        @list_of_product_types = @products.uniq.pluck(:product_type).sort
-        @list_of_product_ids = @products.uniq.pluck(:id) 
-        render (:vs_spec_update) and return
+        redirect_to "/vs_spec_update/#{@spec.id}" and return
       else
         redirect_to "/virtual_studio/#{event_id}" and return
       end
     elsif params["save_next"]
       if last_items_index + 1 < spec_list.size
         @spec =  Specification.where(id: spec_list[last_items_index + 1]).first
-        @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => @spec.event.id).uniq
-        @used_products = @products.order("name")
-        @list_of_product_types = @products.uniq.pluck(:product_type).sort
-        @list_of_product_ids = @products.uniq.pluck(:id) 
-        render (:vs_spec_update) and return
+        
+        redirect_to "/vs_spec_update/#{@spec.id}" and return
       else
         redirect_to "/virtual_studio/#{event_id}" and return
       end  
