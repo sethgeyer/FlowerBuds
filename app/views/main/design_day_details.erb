@@ -1,4 +1,16 @@
 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DDD-<%=@event.name.gsub("Wedding", "...")%></title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  
+  <body class="user_choice" >
+    <div class="container" >
+
 <div class="row-fluid">
   <div class="span12">
     <h2>Design Day Details </h2>  
@@ -188,7 +200,7 @@
 
 <hr />     
 
-<h3> Total Items per Arrangement </h3>     
+<h3> Total Items for a Single Arrangement </h3>     
   <% for product_type in @list_of_product_types%>
     <p><b><%=product_type%></b></p>
     <table class="table table-hover table-condensed table-bordered">
@@ -196,7 +208,7 @@
       <tr>
         <th class="span3">Products</th>
         <%for specification in @specifications%>
-          <th style="text-align:center"><%=specification.item_name%> (Tot:<%=specification.item_quantity / 100%>)</th>
+          <th style="text-align:center"><%=specification.item_name%><br> (Qty: <%=specification.item_quantity / 100%>)</th>
         <%end%>
       </tr>
       </thead>

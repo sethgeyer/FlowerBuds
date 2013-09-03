@@ -996,7 +996,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       flash[:error] = "D. You need to create a Quote before viewing the Design Day Details."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     end
-    render(:design_day_details) and return
+    render("design_day_details", layout:false) and return
   end
 
 
@@ -1033,7 +1033,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from post above on the "search".  (Necessary because pagination doesn't work right w/ search criteria)
   def image_gallery_search_results
       @name = params["search_field"]
-      @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+      search = @name.split("_")
+      @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").where("name ilike ?", "%#{search[0]}%").where("name ilike ?", "%#{search[1]}%").where("name ilike ?", "%#{search[2]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
       render(:image_gallery_search_results, layout:false) and return
   end 
 
@@ -1045,10 +1046,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["new"] 
       redirect_to "/product/new" and return
     elsif params["search"]
-     # @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{params["search_field"]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
-     # @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
       @name = params["search_field"].gsub(" ", "_")
-      #render (:products) and return
       redirect_to "/products/#{@name}" and return
     elsif params["clear"]
     redirect_to "/products" and return
@@ -1061,12 +1059,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ### GET Handler from post above on the "search".  (Necessary because pagination doesn't work right w/ search criteria)
   def products_search_results
     @name = params["search_field"]
-    @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
+    search = @name.split("_")
+    
+    @products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%#{search[0]}%").where("name ilike ?", "%#{search[1]}%").where("name ilike ?", "%#{search[2]}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
     @PRODUCT_UPDATE_MUST_HAVE = PRODUCT_UPDATE_MUST_HAVE
     render(:products_search_results) and return
-     # @name = params["search_field"]
-     # @products = Product.where(florist_id: session["found_florist_id"]).where("product_type not like '4. Labor'").where(status: "Active").where("name ilike ?", "%#{@name}%").order("status", "product_type", "name").paginate(:page => params[:page], :per_page => 25)
-     # render(:image_gallery_search) and return
   end 
 
 ### GET Handler from product_post function (above)

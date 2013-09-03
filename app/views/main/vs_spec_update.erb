@@ -9,21 +9,22 @@
 <%= form_tag("/vs_spec_save") do %>
 
   <div class="row-fluid">
-    <div class="span3">
-    <div class="input-append">
-      <%= select_tag "new_item", options_for_select(@dropdown)%> 
-      <button class="btn" name= "add" data-disable-with="..." value= "add">Add</button> 
+    <div class="span5">
+      <div class="input-append">
+        <%= select_tag "new_item", options_for_select(@dropdown)%> 
+        <button class="btn" name= "add" data-disable-with="..." value= "add">Add</button> 
+      </div>
     </div>
-  </div>
-  <div class="span2">
+    <div class="span3">
       <script type="text/javascript"> 
         function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
       </script>
-      
-        <a class="span12" href="JavaScript:newPopup('/image_gallery');">
-          <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Popup Gallery
-        </a>
-       
+      <b><a class="span12" href="JavaScript:newPopup('/image_gallery');">
+        <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Popup Gallery
+      </a></b> 
+    </div>
+    <div class="span3">
+      <b><a href= "/virtual_studio/<%=@spec.event.id%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>vStudio </a> &nbsp&nbsp&nbsp </b>
     </div>
   </div>
   
@@ -87,7 +88,7 @@
   <br>
       <p> <b>Save and Go To:</b>
           <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
-         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Summary</button> 
+         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">This Item</button> 
           <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
   <%end%>    
 </div>
@@ -110,22 +111,23 @@
                     <%if image != nil%>
                       <li class="image_align" >
                         <div class="thumbnail">    
-                          <%if designed_product.image_on_cover == 1 %>
-                            <img style="border: 2px solid #E01B5D; background-color:#FAFAFA; width: 65px; height: 61px" src="<%= image_data_path(image.id, image.extens) %>">
-                          <%else%>
                             <img class="image_size" src="<%= image_data_path(image.id, image.extens) %>">
-                          <%end%> 
                         </div>
+                        <%if @spec.event.show_display_name == 1 %>
+                          <%product = Product.where(id: designed_product.product.id).first%>
+                          <%if product.display_name == "" || product.display_name == nil %>
+                            <%display_name = product.name%>
+                          <%else%>
+                            <%display_name = product.display_name%>
+                          <%end%>
+                          <div class="display_name">
+                            <%=display_name%>
+                          </div>
+                        <%end%>
                       </li>
                     <%end%>
                   <%end%>
                 <%end%>                
-              
-              
-              
-              
-              
-              
               
               
               
