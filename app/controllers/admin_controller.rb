@@ -113,7 +113,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       @employee.view_pref = "all"
       @employee.save
       if @employee.save
-        redirect_to "/florists/#{@florist.id}" and return
+        redirect_to "/florist/#{@florist.id}" and return
       else
         render(:florist_updates) and return
       end
@@ -190,8 +190,8 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   
 ### POST Handler for importing demo products
   def import_demo_products
+    importee = Florist.where(company_id: params["import"]).first
     if params["import_products"]
-      importee = Florist.where(company_id: params["import"]).first
       import_products = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "%demo%")
       for each in import_products
         x = Product.new
@@ -205,23 +205,24 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
         if each.display_name != nil
           x.display_name = each.display_name
         end
+        x.updated_at = Time.now
         x.updated_by = Employee.where(id: session["found_user_id"]).first.name
         x.florist_id = importee.id
         x.save!
+      end
       
-      
-      #image = Image.new
-      #image.data = upload.read
-      #image.content_type = upload.content_type
-      #image.extens = upload.original_filename.downcase.split(".").last
-      #image.image_type = "product"
-      #image.product_id = params["p_id"]
-      #product = Product.where(id: params["p_id"]).first
-      #product.updated_at = Time.now
-      #product.updated_by = Employee.where(id: session["found_user_id"]).first.name
-      #product.save!
-      #image.save!
-      
+      imported_products = Product.where(florist_id: importee.id).where("name ilike ?", "%demo%")
+      for each in imported_products
+        item = Product.where(florist_id: session["found_florist_id"]).where("name ilike ?", "#{each.name}").first
+        if item.image != nil
+        import_image = Image.new
+        import_image.data = item.image.data
+        import_image.content_type = item.image.content_type
+        import_image.extens = item.image.extens
+        import_image.image_type = "product"
+        import_image.product_id = each.id
+        import_image.save!
+        end
       end
       redirect_to "/florists" and return
     else

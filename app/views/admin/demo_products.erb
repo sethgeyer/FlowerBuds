@@ -10,11 +10,26 @@
   <%= form_tag("/import") do %>
     
 
-    <div class="row-fluid">
+
+
+#Generate dropdown list for importing demo products
+  <%florist_ids = Product.order("florist_id").uniq.pluck(:florist_id)
+    florists_with_products = Florist.all
+    dropdown = []
+    for each in florists_with_products
+      dropdown << each.company_id
+    end
+    for f_id in florist_ids
+      florist = Florist.find(f_id)
+      dropdown = dropdown - [florist.company_id]
+    end
+    @dropdown = dropdown%>
     
+    
+    <div class="row-fluid">
     <div class="span5">
       <div class="input-append">
-        <%= select_tag "import", options_for_select(Florist.order("company_id").uniq.pluck(:company_id))%> &npsb&npsb&npsb
+        <%= select_tag "import", options_for_select(@dropdown)%> &npsb&npsb&npsb
         <button class="btn" name= "import_products" data-disable-with="..." data-confirm="You are about to import demo products for the selected florist... OK?" value="import_products">Import Demo Products</button> 
       </div>
     </div>

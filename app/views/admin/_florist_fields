@@ -32,7 +32,8 @@
       <th>Company ID: *</th>
       <th>Status: *</th>
       <th>Plan: *</th>
-      <th>Custom Template</th>
+      <th>Products:</th>
+      <th>Custom Template:</th>
       <th>Primary POC: *</th>
       <th>Email:</th>             
       <th>Phone (w):</th>
@@ -64,6 +65,11 @@
             <%plan_name = Plan.where(id: florist.plan_id).first.plan_name%>
             <%end%>
          <td><%=plan_name%></td>
+        <% if Product.where(florist_id: florist.id) != []%>
+          <td style="text-align:center"><%=Product.where(florist_id: florist.id).size%></td>
+         <%else%>
+          <td style="text-align:center">--</td>
+         <%end%>
          <% if florist.custom_quote != 1%>
             <%custom = "--"%>
          <%else%>
