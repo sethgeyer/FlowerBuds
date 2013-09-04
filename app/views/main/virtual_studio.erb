@@ -12,7 +12,9 @@
   </div>
   <div class="span6">
     <b>Other Event Details:</b><br>
+    <%if @event.other_notes != nil%>
     <%= raw(@event.other_notes.gsub("\n", "<br>"))%>
+    <%end%>
   </div>
 </div>
 
