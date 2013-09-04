@@ -5,16 +5,20 @@
       
 
 <h3>Virtual Studio - Design a <b><u>Single</b></u>: <%=@spec.item_name%></h3>
+          
 
 <%= form_tag("/vs_spec_save") do %>
 
+
   <div class="row-fluid">
     <div class="span5">
-      <div class="input-append">
-        <%= select_tag "new_item", options_for_select(@dropdown)%> 
-        <button class="btn" name= "add" data-disable-with="..." value= "add">Add</button> 
-      </div>
+    <b>Save and Go to:</b>
+         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">This Item</button> 
+          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
+          <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
     </div>
+
+
     <div class="span3">
       <script type="text/javascript"> 
         function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
@@ -34,11 +38,13 @@
 
 
 <div class="row-fluid">
-
-<p> <b>Save and Go to:</b>
-          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
-         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">This Item</button> 
-          <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
+    <div class="span5">
+      <div class="input-append">
+        <%= select_tag "new_item", options_for_select(@dropdown)%> 
+        <button class="btn" name= "add" data-disable-with="..." value= "add">Add</button> 
+      </div>
+    </div>
+</div>
     
     
          
@@ -87,8 +93,8 @@
   <%end%>
   <br>
       <p> <b>Save and Go To:</b>
-          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
          <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">This Item</button> 
+          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
           <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
   <%end%>    
 </div>
