@@ -74,10 +74,10 @@
     
     <thead>
       <tr>
-        
-        <th class="span3">Items to Include & Qty of Each for <u>One</u>...</th>
+        <th class="span1" ></th>
+        <th class="span5">Items to Include & Qty of Each for <u>One</u>...</th>
         <%for specification in @specifications%>
-          <th class= "span1" style="text-align:center">
+          <th style="text-align:center">
           
           <button class="btn btn-primary btn-mini" name= "update" data-disable-with="..." value= <%=specification.id%> data-toggle="tooltip" title="<%=design_text%>">Design</button> <br> 
            <%=specification.item_name%>
@@ -92,10 +92,10 @@
          
         <%if product.product_type != nil%>
           
-        <td><button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed from the design for this event... OK?" name= "remove" value= <%=product.id%> data-toggle="tooltip" title="<%=delete_text%>">x</button> 
-            &nbsp&nbsp&nbsp&nbsp 
-            <%=product.name%>
-        </td> 
+        <td style="text-align:center">
+          <button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed from the design for this event... OK?" name= "remove" value= <%=product.id%> data-toggle="tooltip" title="<%=delete_text%>">x</button> 
+        </td>    
+        <td><%=product.name%></td> 
         <% for specification in @specifications%>
           <td style="text-align:center"><%designed_product = DesignedProduct.where(product_id: product.id).where(specification_id: specification.id).first%>
           <%if designed_product != nil %>
