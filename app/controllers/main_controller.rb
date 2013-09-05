@@ -365,7 +365,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       each.save      
     end
     if params["vs"]
-     redirect_to "/vs_spec_update/#{params["vs"]}" and return
+     redirect_to "/virtual_studio/#{params["vs"]}" and return
     
     elsif params["delete"]
       spec_id = params["delete"]
@@ -498,7 +498,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ######### VIRTUAL STUDIO
 
 ###GET Handler from link on event_edit.erb
-  def virtual_studio
+  def stem_count
     event_id = params["event_id"]    
     @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
     @specifications = @event.specifications.where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
@@ -562,13 +562,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       dropdown = dropdown - [item.name]
     end
     @dropdown = dropdown
-    render(:virtual_studio) and return
+    render(:stem_count) and return
   end
 
   
-### POST Handler from virtual_studio.erb
+### POST Handler from stem_count.erb
   # Updates Virtual Studio Page based on updates made by user. 
-  def virtual_studio_update
+  def stem_count_update
     event_id = params["event_id"] 
     # Create a DP for the product assigned to the placeholder specification.
     if params["add"]
@@ -582,7 +582,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_dp.event_id = event_id
       new_dp.image_in_quote = 1
       new_dp.save!         
-      redirect_to "/virtual_studio/#{event_id}" and return
+      redirect_to "/stem_count/#{event_id}" and return
     
     elsif params["remove"]
       removed_product_id = params["remove"]
@@ -590,18 +590,18 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       for each_item in removed_items
         each_item.destroy
       end
-      redirect_to "/virtual_studio/#{event_id}" and return
+      redirect_to "/stem_count/#{event_id}" and return
 
     elsif params["update"]
       spec_id = params["update"]
-      redirect_to "/vs_spec_update/#{spec_id}" and return
+      redirect_to "/virtual_studio/#{spec_id}" and return
     end
   end
   
   
 ### GET Handler from virtual studio.erb
   # Pulls counts for the specification identified.
-  def vs_spec_update
+  def virtual_studio
     
     @spec = Specification.where(florist_id: session["found_florist_id"]).where(id: params["spec_id"]).first
     @products = Product.joins(:designed_products).where("designed_products.florist_id" => session["found_florist_id"]).where("designed_products.event_id" => @spec.event.id).uniq
@@ -622,10 +622,10 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       dropdown = dropdown - [item.name]
     end
     @dropdown = dropdown
-    render (:vs_spec_update) and return
+    render (:virtual_studio) and return
   end
   
-### POST Handler from the vs_spec_update.erb
+### POST Handler from the virtual_studio.erb
   # Processes the product.quantity counts for each individual arrangement.
   def vs_spec_save
     event_id = params["event_id"]
@@ -664,12 +664,12 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       new_dp.event_id = event_id
       new_dp.image_in_quote = 1
       new_dp.save!         
-      redirect_to "/vs_spec_update/#{params["spec_id"]}" and return
+      redirect_to "/virtual_studio/#{params["spec_id"]}" and return
     end
     
  
     if params["save"]
-      redirect_to "/vs_spec_update/#{params["spec_id"]}" and return
+      redirect_to "/virtual_studio/#{params["spec_id"]}" and return
     end
     specifications = Specification.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
     spec_list = []
@@ -680,17 +680,17 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     if params["save_previous"]
       if last_items_index - 1 >= 0 
         @spec =  Specification.where(id: spec_list[last_items_index - 1]).first
-        redirect_to "/vs_spec_update/#{@spec.id}" and return
+        redirect_to "/virtual_studio/#{@spec.id}" and return
       else
-        redirect_to "/virtual_studio/#{event_id}" and return
+        redirect_to "/stem_count/#{event_id}" and return
       end
     elsif params["save_next"]
       if last_items_index + 1 < spec_list.size
         @spec =  Specification.where(id: spec_list[last_items_index + 1]).first
         
-        redirect_to "/vs_spec_update/#{@spec.id}" and return
+        redirect_to "/virtual_studio/#{@spec.id}" and return
       else
-        redirect_to "/virtual_studio/#{event_id}" and return
+        redirect_to "/stem_count/#{event_id}" and return
       end  
     end
   end
@@ -706,7 +706,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
   
   
   
-### GET Handler from link on virtual_studio.erb 
+### GET Handler from link on stem_count.erb 
   def popup_specs
     event_id = params["event_id"]
     @event_id = event_id
@@ -732,7 +732,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
 ######### VIRTUAL STUDIO
 
 ###GET Handler from link on event_edit.erb
-  def virtual_studio
+  def stem_count
     event_id = params["event_id"]    
     @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
     @specifications = @event.specifications.order("id")
@@ -786,13 +786,13 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       dropdown = dropdown - [item]
     end
     @dropdown = dropdown
-    render(:virtual_studio) and return
+    render(:stem_count) and return
   end
 
   
-### POST Handler from virtual_studio.erb
+### POST Handler from stem_count.erb
   # Updates Virtual Studio Page based on updates made by user. 
-  def virtual_studio_update
+  def stem_count_update
     event_id = params["event_id"]
     specifications = Specification.where(event_id: event_id).order("id")
     designedproducts = DesignedProduct.where(event_id: event_id)
@@ -826,11 +826,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       end
     else # do nothing
     end
-      redirect_to "/virtual_studio/#{event_id}" and return
+      redirect_to "/stem_count/#{event_id}" and return
   end
   
   
-### GET Handler from link on virtual_studio.erb 
+### GET Handler from link on stem_count.erb 
   def popup_specs
     event_id = params["event_id"]
     @event_id = event_id

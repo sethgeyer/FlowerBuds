@@ -27,10 +27,10 @@ App::Application.routes.draw do
   get "/imaged:id.:ext"                       => "main#image_data", as: "image_data"
   post "/update_image"                        => "main#update_image", as: "update_image"
   
-  get "/virtual_studio/:event_id"             => "main#virtual_studio"
-  post "/virtual_studio_update"               => "main#virtual_studio_update"
+  get "/stem_count/:event_id"             => "main#stem_count"
+  post "/stem_count_update"               => "main#stem_count_update"
   get "/popup_specs/:event_id"                => "main#popup_specs"
-  get "/vs_spec_update/:spec_id"              => "main#vs_spec_update"
+  get "/virtual_studio/:spec_id"              => "main#virtual_studio"
   post "/vs_spec_save"                        => "main#vs_spec_save"
   
   get "/generate_quote/:event_id"             => "main#quote_generation"
