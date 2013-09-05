@@ -21,11 +21,16 @@
 <%=hidden_field_tag "event_id", @event.id%>
 <hr />
 
-<h3>Virtual Studio</h3>
-  <p>From the dropdown list, select the various flowers, vases, candles, type of labor, etc. that will be used 
-     in the arrangements for this event. If you need items that are not included in the drop down list, create it on the "Products" Tab.  Once you have added the items, press 
-     a blue button to design the individual arrangement using the items you've added from the drop down list. Your edits
-     will be summarized on this page once completed. </p>
+<%vs_text = "Shown below is a summary of the stem counts, hours, etc. to design a SINGLE arrangement for each type of arrangement.  (CenterpieceFMT will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process.) To modify the counts, press the design button for the particular arrangement."%>
+<%add_text = "Select items to include for this event, including any fresh goods, labor, rented goods, etc."%>
+<%design_text = "Design an individual arrangement."%>     
+<%delete_text = "Removes the item from the event."%>
+<%gallery_text = "Displays a searchable list of product images in your product catalog."%> 
+
+
+
+<h3 data-toggle="tooltip" title="<%=vs_text%>">Stem Count Summary</h3>
+ 
 
 
 <%= form_tag("/virtual_studio_update") do %>
@@ -36,31 +41,22 @@
     <div class="span5">
       <div class="input-append">
         <%= select_tag "new_item", options_for_select(@dropdown)%> 
-        <button class="btn" name= "add" data-disable-with="..." value= "add">Add</button> 
+        <button class="btn" name= "add" data-disable-with="..." value= "add", data-toggle="tooltip" title="<%=add_text%>">Add</button>
       </div>
     </div>
     
     <div class="span3">
       <script type="text/javascript"> 
-        function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
+        function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=800,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
       </script>
       <p>
-        <b><a class="span12" href="JavaScript:newPopup('/image_gallery');">
+        <b><a href="JavaScript:newPopup('/image_gallery');" data-toggle="tooltip" title="<%=gallery_text%>">
           <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Popup Gallery
         </a></b>
       </p> 
     </div>
     
-    <div class="span3">
-      <script type="text/javascript">
-        function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
-      </script>
-      <p>
-        <b><a href="JavaScript:newPopup('/popup_specs/<%=@event.id%>');">
-          <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Popup Details
-        </a></b>
-      </p> 
-    </div>
+    
     
     <br><br><br>
    
@@ -79,11 +75,12 @@
     <thead>
       <tr>
         
-        <th class="span3">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Items to Include:</th>
+        <th class="span3">Items to Include & Qty of Each for <u>One</u>...</th>
         <%for specification in @specifications%>
           <th class= "span1" style="text-align:center">
-           <%=specification.item_name%><br>
-          <button class="btn btn-primary btn-mini" name= "update" data-disable-with="..." value= <%=specification.id%>>+/-</button>  
+          
+          <button class="btn btn-primary btn-mini" name= "update" data-disable-with="..." value= <%=specification.id%> data-toggle="tooltip" title="<%=design_text%>">Design</button> <br> 
+           <%=specification.item_name%>
           </th>    
         <%end%>
       </tr>
@@ -95,7 +92,10 @@
          
         <%if product.product_type != nil%>
           
-        <td><button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed from the design for this event... OK?" name= "remove" value= <%=product.id%>>x</button> &nbsp&nbsp&nbsp&nbsp <%=product.name%></td> 
+        <td><button  tabindex=-1 class="btn btn-danger btn-mini"  data-disable-with="..." data-confirm="This item will be removed from the design for this event... OK?" name= "remove" value= <%=product.id%> data-toggle="tooltip" title="<%=delete_text%>">x</button> 
+            &nbsp&nbsp&nbsp&nbsp 
+            <%=product.name%>
+        </td> 
         <% for specification in @specifications%>
           <td style="text-align:center"><%designed_product = DesignedProduct.where(product_id: product.id).where(specification_id: specification.id).first%>
           <%if designed_product != nil %>

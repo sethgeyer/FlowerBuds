@@ -14,7 +14,7 @@
 
       
        <%if Florist.where(id: session["found_florist_id"]).first.quote_language == nil%>
-        <%=quote_language = "NOTE:  FLORIST.... AS PART OF YOUR FIRST TIME SETUP, YOU MUST CREATE THE QUOTE LANGUAGE OR SAVE THE DEFAULT QUOTE LANGUAGE BEFORE GENERATING A CUSTOMER QUOTE.  PERFORM THIS TASK BY CLICKING ON THE \"OTHER\" LINK IN THE NAVIGATION BAR."%>
+        <%=quote_language = "NOTE:  FLORIST.... AS PART OF YOUR FIRST TIME SETUP, YOU MUST CREATE THE QUOTE LANGUAGE OR SAVE THE DEFAULT QUOTE LANGUAGE BEFORE GENERATING A CUSTOMER QUOTE.  PERFORM THIS TASK BY CLICKING ON THE \"ADMIN/SETUP\" LINK IN THE NAVIGATION BAR."%>
       <%else%>
         <%quote_language = Florist.where(id: session["found_florist_id"]).first.quote_language%>
       <%end%>

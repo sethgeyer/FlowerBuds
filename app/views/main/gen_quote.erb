@@ -1,7 +1,7 @@
   
-
-
-
+<%quote_style_text = "Choose between 2 different quote styles for the customer facing quote.  Or, CenterpieceFMT can customize a personalized quote unique to your business."%>
+<%cust_quote_text = "Generates an electronic version of a customer facing quote (based on the style you chose above).  Print as a PDF to distribute to your customers."%>
+<%status_text = "Keep the status of each oustanding quote up-to-date so that the homepage appropriately reflects current activity.  Once a deal has been booked, you will need to schedule the 'Wholesale Order Date'.  See the 'Schedule Order Date' tab above."%>
 
 
 
@@ -20,7 +20,7 @@
         <a href= "/cust_edit/<%=@event.customer.id%>"> <%= @event.customer.name%></a>
     </div>
     <div class="span6">  
-      <h4 class="pull-right"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status), :tabindex=>2%>
+      <h4 class="pull-right" data-toggle="tooltip" title="<%=status_text%>"><b>Status:</b> <%= select_tag "status", options_for_select(["Open Proposal", "Booked", "Ordered", "Completed", "Lost"], @event.quote.status), :tabindex=>2%>
     </div>
   </div>
   <hr />  
@@ -66,7 +66,7 @@
         <%=@event.photographer%></p>   
       <p><label><b>Lead Designer: </b>
        <%=@event.employee.name%></p>
-      <label><b>Quote Style:</b>
+      <label data-toggle="tooltip" title="<%=quote_style_text%>"><b>Quote Style:</b>
         <% if @event.florist.custom_quote == 1 %>
           <%choices = [1, 2, session["found_florist_id"]]%>
         <%else%>
@@ -119,7 +119,7 @@
     <%     if (total_cost * 100).round(0) == @event.quote.total_cost%>
     <div class="span3">
       <script type="text/javascript">function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=700,width=1200,left=600,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')}</script>
-      <a tabindex=4  href="JavaScript:newPopup('/quote/<%=@event.id%>');"><img src="/images/button_all.jpeg" width="30" height="30" />  Create Customer Quote</a>
+      <a tabindex=4  href="JavaScript:newPopup('/quote/<%=@event.id%>');" data-toggle="tooltip" title="<%=cust_quote_text%>"><img src="/images/button_all.jpeg" width="30" height="30" />  Create Customer Quote</a>
     </div>  
     <%end%>
     <div class="span9">

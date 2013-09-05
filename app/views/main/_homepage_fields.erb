@@ -1,11 +1,17 @@
+<%ae_text = "A rolling summary of all of your active events, whether they be open proposals or booked events."%> 
+<%ae_search_text = "Search all active events or just the ones in which your the lead designer."%> 
+<%date_search_text = "Check your availability by searching active events by date."%> 
+<%customer_search_text = "Search for current or previous customers.  Or, add a new customer."%> 
+<%order_date_text = "See a compiled summary of all events (and items) for which you need to place a wholesale order on the specified date."%>
+
 
 <%= form_tag homepage_path do %>
 
   <div class= "row-fluid">
     <div class="span4">
       <h4>Customer Search:</h4>
-        <div class="form-inline">
-          <%=text_field_tag "search_field", nil, placeholder: "a single letter will suffice"%>
+        <div class="form-inline" data-toggle="tooltip" title="<%=customer_search_text%>">
+          <%=text_field_tag "search_field", nil%>
           <%=button_tag "Search/Add", name: "search", class: "btn btn-small btn-primary"%>
         </div>
     </div>
@@ -30,12 +36,12 @@
     
     <div class="span4">
       <h4>Active Events For:</h4>
-        <div class="form-inline">
+        <div class="form-inline" data-toggle="tooltip" title="<%=ae_search_text%>">
           <%= select_tag "view",  options_for_select(@view_prefs, Employee.where(id: session["found_user_id"]).first.view_pref), class: "input-medium"%>
           <%=button_tag "Show Me", name: "update_view", class:"btn  btn-small btn-primary"%>
         </div>
       <h4>Events After:</h4>
-        <div class="form-inline">
+        <div class="form-inline" data-toggle="tooltip" title="<%=date_search_text%>">
         <input type="date" name="beg_date" class="span5" placeholder="yyyy-mm-dd" value=<%=@date%> ></i></input>
         <%=button_tag "Show Me", name: "date_range", class:"btn  btn-small btn-primary"%>
         <%=button_tag "Clear", name: "clear", class: "btn btn-small"%>
@@ -52,7 +58,7 @@
   <%end%>
 <%end%>
 
-<h3>Active Events</h3>
+<h3 data-toggle="tooltip" title="<%=ae_text%>">Active Events</h3>
 <p>These are Active Events only and are organized by "Date of Event". This does not show already "delivered/fulfilled" events or "lost" proposals.</p>
  
   <table class="table table-striped table-hover ">
@@ -63,7 +69,7 @@
         <th>Date of Event</th>
         <th>Quote</th>
         <th>Quote Status</th>
-        <th>W'sale Order Date</th> 
+        <th data-toggle="tooltip" title="<%=order_date_text%>">W'sale Order Date</th> 
         <th>Phone</th>
         <th>Email</th>
         <th>Company</th>

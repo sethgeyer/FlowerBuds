@@ -1,3 +1,15 @@
+<%arrangements_text = "Itemize each arrangement that will be included in the customer's quote."%>
+<%vs_text = "Displays a summary of the stem counts, hours, etc. to design a SINGLE arrangement for each type of arrangement."%>
+<%quote_text = "Displays the quote-building worksheet where the compiled costs are used to generate a list price for each item"%>
+<%ddd_text = "Displays a printable summary of all design-day-relevant details for the event, including descriptions, total stem counts, etc. "%>     
+<%design_text = "Design the arrangement in the Virtual Studio.  Determine how many of each flower type (or vases, candles, hours, etc.) will be included in a SINGLE arrangement."%>
+<%image_text = "Add images to include in your proposal.  Or, customize how the images are displayed in the proposal and/or on the cover of the proposal.  Images bordered in red will appear on the cover page of the customer quote."%>
+<%show_product_text = "Choose to show the product images within the quote by checking this box."%>
+<%show_display_name_text = "Choose to show the product display names below the product images by checking this box."%> 
+ 
+
+
+
 
 <%= form_tag("/event_edit") do %>  
 
@@ -67,9 +79,9 @@
       </label>
       <%= text_area_tag "notes", @event.notes, class: "span12", placeholder: "These notes will not be reflected on customer quotes.  Limit: 1000 characters." , :rows=>9, :tabindex => 13 %>
      <% show_product = @event.show_product_image%>
-     <label class="checkbox"><%=check_box_tag "show_product_image", "1", show_product%>Show Product Images</label>
+     <label class="checkbox" data-toggle="tooltip" title="<%=show_product_text%>"><%=check_box_tag "show_product_image", "1", show_product%>Show Product Images</label>
      <%if show_product == 1%>
-      <label class="checkbox"><%=check_box_tag "display_name", "1", @event.show_display_name%>Show Product "Display Names"</label>
+      <label class="checkbox" data-toggle="tooltip" title="<%=show_display_name_text%>"><%=check_box_tag "display_name", "1", @event.show_display_name%>Show Product "Display Names"</label>
      <%else%>
      <%end%>
           </div>
@@ -103,16 +115,19 @@
  <br><br>
  <%= hidden_field_tag "ev_id", @event.id%>    
  
+ 
+ 
+
+ 
  <div class="row-fluid">
 
- <b><a href= "/virtual_studio/<%=@event.id%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>vStudio </a> &nbsp&nbsp&nbsp </b>
- <b><a href="/generate_quote/<%=@event.id%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded" />Quote </a> &nbsp&nbsp&nbsp</b> 
- <b><a href="/design_day_details/<%=@event.id%>"> <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded" />Design Day Details </a></b>  
+ <b><a href= "/virtual_studio/<%=@event.id%>" data-toggle="tooltip" title="<%=vs_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Stem Count </a> &nbsp&nbsp&nbsp </b>
+ <b><a href="/generate_quote/<%=@event.id%>" data-toggle="tooltip" title="<%=quote_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded" />Quote </a> &nbsp&nbsp&nbsp</b> 
+ <b><a href="/design_day_details/<%=@event.id%>" data-toggle="tooltip" title="<%=ddd_text%>"> <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded" />Design Day Details </a></b>  
  </div>
  <hr />
 
- <h3> Arrangements & Quotable Items for Event </h3>      
- <p> Note: Images bordered in red will appear on the cover page of the customer quote.</p>  
+ <h3 data-toggle="tooltip" title="<%=arrangements_text%>"> Arrangements & Quotable Items for Event </h3>        
   <table class="table table-hover table-striped table-condensed">
   <thead>
   <tr>
@@ -124,11 +139,20 @@
     <% for each in @specifications %>
       <tr style="vertical-align:middle">
         <td><%=check_box_tag "exclude-#{each.id}", "1", each.exclude_from_quote%></td>
-        <td><button class="btn btn-primary btn-mini" data-disable-with="..." name="vs" value= <%=each.id%>>vs</button></td>
+        <td style="text-align:center">
+          <div class= "btn-group">
+            <div>
+            <button class="btn btn-mini btn-primary" data-disable-with="..." name="vs" value= <%=each.id%> data-toggle="tooltip" title="<%=design_text%>">Design</button>
+            </div>
+            <div></div>
+            <div>
+            <button class="btn btn-info btn-mini" data-disable-with="..." name="add_image" value= <%=each.id%> data-toggle="tooltip" title="<%=image_text%>">+ Image</button>
+            </div>
+          </div>
+        </td>
         <td style="vertical-align:middle"><%= text_field_tag "spec_item-#{each.id}", each.item_name, class: "input-large", placeholder: "Item Name"%>&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp 
         <%x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,50]%>
         <%= select_tag "spec_qty-#{each.id}", options_for_select(x, each.item_quantity / 100), class: "input-mini"%>  &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp    
-        <button class="btn btn-primary btn-mini" data-disable-with="..." name="add_image" value= <%=each.id%>>+ Image</button>&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp
         <%= text_area_tag "spec_notes-#{each.id}", each.item_specs, class: "span11", placeholder: "Description & Details.  Limit: 1000 characters.", :rows=>2%>
         
         
@@ -188,7 +212,7 @@
             </ul>
         </td>
 <td>        
-       <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>Delete</button><br>
+       <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>x</button><br>
 </td>
         </div>
         
@@ -217,7 +241,7 @@
   <p><i>If you will be providing delivery services for this event, be sure to add it as the last item on this page.  That way, it will show up as a line item on the quote.
 
   <div class = 'label-spacer'></div>
-  <button class="btn btn-small btn-primary" data-disable-with="..." name="add" value= "add">Add New Item & Save</button>&nbsp&nbsp
+  <button class="btn btn-small btn-primary" data-disable-with="..." name="add" value= "add">Add New Item</button>&nbsp&nbsp
   <button class="btn btn-small btn-primary" data-disable-with="..." name= "save" value= "save" >Save</button> 
  <%end%>
  <br><br>

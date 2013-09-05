@@ -75,7 +75,7 @@
          
           <% if Employee.where(id: session["found_user_id"]).first.admin_rights == "All Admin Rights"%>
             <td> <div class = 'label-spacer'></div> 
-            <button class="btn btn-danger btn-mini" tabindex=-1 name="delete" data-disable-with="..." data-confirm="This event will be permanently deleted... OK?" value= <%=event.id%>>Delete</button></td>
+            <button class="btn btn-danger btn-mini" tabindex=-1 name="delete" data-disable-with="..." data-confirm="This event will be permanently deleted... OK?" value= <%=event.id%>>x</button></td>
           <%else%>
             <td></td>
           <%end%>     

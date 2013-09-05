@@ -2,7 +2,7 @@
 <h3>Customer Search Results</h3>
     
   <%= form_tag homepage_path do %>  
-    <p><%=text_field_tag "search_field", nil, placeholder: "a single letter will suffice", :tabindex => 1%><br> 
+    <p><%=text_field_tag "search_field", nil, :tabindex => 1%><br> 
     <button class="btn btn-small btn-primary" data-disable-with="..." name= "search" tabindex=2 value= "search">Search Again</button> </p>
   <%end%>
   
