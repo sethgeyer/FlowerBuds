@@ -484,7 +484,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     end
     
     if params["spec_id"] == "florist"
-    redirect_to "/florists/#{params["fl_id"]}" and return
+    redirect_to "/florist/#{params["fl_id"]}" and return
     elsif params["spec_id"] == "employee"
       redirect_to "/employee/#{params["emp_id"]}" and return
     elsif params["spec_id"] == "product"
