@@ -503,7 +503,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @event= Event.where(florist_id: session["found_florist_id"]).where(id: event_id).first  
     @specifications = @event.specifications.where("item_name not like 'X1Z2-PlaCeHoldEr'").order("id")
     if @specifications == []
-      flash[:error] = "A. You need to create arrangements below before designing them in Virtual Studio."
+      flash[:error] = "A. You need to create arrangements below before viewing the 'Product List' for the event.  Press the 'Add Item' button to create an arrangement for the event."
       redirect_to "/event_edit/#{params["event_id"]}" and return     
     else
     end  
@@ -852,7 +852,7 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
       count = count + (each.product_qty / 100.0)
     end
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: event_id).first == nil || count <= 0  
-      flash[:error] = "B. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
+      flash[:error] = "B. You need to create arrangements below and then 'design' them in the Virtual Studio before viewing the Quote or Design Day Details.  If you haven't already created an arrangement for the event, press the 'Add Item' button.  Then, press the 'Event Product List' icon or the 'design' button to begin designing the arrangements in the 'Virtual Studio'."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     else # do nothing
     end
@@ -992,11 +992,11 @@ use Rack::Session::Cookie, secret: SecureRandom.hex
     @list_of_product_types = @products.uniq.pluck(:product_type).sort
     @list_of_product_ids = @products.uniq.pluck(:id)     
     if DesignedProduct.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil # || count < 0.0
-      flash[:error] = "C. You need to create arrangements below and then design them in the Virtual Studio before viewing the Quote or Design Day Details."
+      flash[:error] = "B. You need to create arrangements below and then 'design' them in the Virtual Studio before viewing the Quote or Design Day Details.  If you haven't already created an arrangement for the event, press the 'Add Item' button.  Then, press the 'Event Product List' icon or the 'design' button to begin designing the arrangements in the 'Virtual Studio'."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     end
     if Quote.where(florist_id: session["found_florist_id"]).where(event_id: params["event_id"]).first == nil
-      flash[:error] = "D. You need to create a Quote before viewing the Design Day Details."
+      flash[:error] = "D. You need to create a Quote before viewing the Design Day Details.  Press the 'Quote' icon to build the quote for the event."
       redirect_to "/event_edit/#{params["event_id"]}" and return
     end
     render("design_day_details", layout:false) and return

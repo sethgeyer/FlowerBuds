@@ -4,7 +4,7 @@
     <hr />
  
  
- <%vs_text = "For the specified arrangement, determine how many of each item will be included in a SINGLE arrangement. (For fresh goods, this means number of stems; for labor, this means number of hours.)  CenterpieceFMT will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process."%>
+ <%vs_text = "For the specified arrangement, determine how many of each item will be included in a SINGLE arrangement. (For fresh goods, this means number of stems; for labor, this means number of hours.)  CenterpieceFMT will tally the costs, counts, quantities, etc. for each arrangement later in the quoting process.  And, it will be summarized in the design day details summary."%>
 <%add_text = "Select items to include for this item, including any fresh goods, labor, rented goods, etc."%>
 <%gallery_text = "Displays a searchable list of product images in your product catalog."%>
 <%vstudio_text = "Returns you to a summary display of products and arrangements for the event."%> 
@@ -16,15 +16,30 @@
 <%= form_tag("/vs_spec_save") do %>
 
 
+<% if @products.size > 6 %>
   <div class="row-fluid">
     <div class="span5">
-         <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Save</button> 
-          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
-          <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
+      <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Save</button> 
+      <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Arrangement </button>
+      <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Arrangement</button>
+    </div>   
+  </div>
+<%end%>
+  
+
+
+  <div class="row-fluid">
+    <div class="span5">
+    <div>
+      Pick an Item to Include for the Event
+    </div>  
+    <div class="input-append">
+      <%= select_tag "new_item", options_for_select(@dropdown)%> 
+      <button class="btn" name= "add" data-disable-with="..." value= "add" data-toggle="tooltip" title="<%=add_text%>">Add</button> 
     </div>
-
-
+   </div>
     <div class="span3">
+    <div><br></div>
       <script type="text/javascript"> 
         function newPopup(url) {popupWindow = window.open(url,'popUpWindow','height=800,width=400,left=900,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')}
       </script>
@@ -33,21 +48,12 @@
       </a></b> 
     </div>
     <div class="span3">
-      <b><a href= "/stem_count/<%=@spec.event.id%>" data-toggle="tooltip" title="<%=vstudio_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Stem Count </a> &nbsp&nbsp&nbsp </b>
+     <div><br></div>
+    <b><a href= "/stem_count/<%=@spec.event.id%>" data-toggle="tooltip" title="<%=vstudio_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Event Product List </a> &nbsp&nbsp&nbsp </b>
     </div>
+   
+   
   </div>
-  
-  
-
-
-<div class="row-fluid">
-    <div class="span5">
-      <div class="input-append">
-        <%= select_tag "new_item", options_for_select(@dropdown)%> 
-        <button class="btn" name= "add" data-disable-with="..." value= "add" data-toggle="tooltip" title="<%=add_text%>">Add</button> 
-      </div>
-    </div>
-</div>
     
     
          
@@ -97,8 +103,8 @@
   <br>
       <p>
          <button class="btn btn-small btn-primary" name= "save" data-disable-with="..." value= "save">Save</button> 
-          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Item </button>
-          <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Item</button>
+          <button class="btn btn-small btn-primary" name= "save_next" data-disable-with="..." value= "save_next"> Next Arrangement </button>
+          <button class="btn btn-small btn-primary" name= "save_previous" data-disable-with="..." value= "save_previous">Previous Arrangement</button>
   <%end%>    
 </div>
 

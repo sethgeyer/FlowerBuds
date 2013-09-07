@@ -121,13 +121,16 @@
  
  <div class="row-fluid">
 
- <b><a href= "/stem_count/<%=@event.id%>" data-toggle="tooltip" title="<%=vs_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Stem Count </a> &nbsp&nbsp&nbsp </b>
+ <b><a href= "/stem_count/<%=@event.id%>" data-toggle="tooltip" title="<%=vs_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded"/>Event Product List </a> &nbsp&nbsp&nbsp </b>
  <b><a href="/generate_quote/<%=@event.id%>" data-toggle="tooltip" title="<%=quote_text%>"><img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded" />Quote </a> &nbsp&nbsp&nbsp</b> 
  <b><a href="/design_day_details/<%=@event.id%>" data-toggle="tooltip" title="<%=ddd_text%>"> <img src="/images/button_all.jpeg" width="30" height="30" class="img-rounded" />Design Day Details </a></b>  
  </div>
  <hr />
 
  <h3 data-toggle="tooltip" title="<%=arrangements_text%>"> Arrangements & Quotable Items for Event </h3>        
+  
+  <%if @specifications != []%>
+  
   <table class="table table-hover table-striped table-condensed">
   <thead>
   <tr>
@@ -212,37 +215,24 @@
             </ul>
         </td>
 <td>        
-       <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This row will be permanently deleted... OK?" name="delete" value= <%=each.id%>>x</button><br>
+       <button tabindex=-1 class="btn btn-danger btn-mini" data-disable-with="..." data-confirm="This item will be permanently deleted... OK?" name="delete" value= <%=each.id%>>x</button><br>
 </td>
         </div>
         
-        
-      
-        
-        
-        
-    
-       
        <%= hidden_field_tag "spec_id", each.id%>
        
-      
-
-
-
 </tr>
-
-
-
-    
-         
+  
     <%end%>   
   </table>  
   <hr />  
   <p><i>If you will be providing delivery services for this event, be sure to add it as the last item on this page.  That way, it will show up as a line item on the quote.
-
+<%end%>
   <div class = 'label-spacer'></div>
-  <button class="btn btn-small btn-primary" data-disable-with="..." name="add" value= "add">Add New Item</button>&nbsp&nbsp
-  <button class="btn btn-small btn-primary" data-disable-with="..." name= "save" value= "save" >Save</button> 
+  <button class="btn btn-small btn-primary" data-disable-with="..." name="add" value= "add">Add Item</button>&nbsp&nbsp
+  <%if @specifications != []%>
+    <button class="btn btn-small btn-primary" data-disable-with="..." name= "save" value= "save" >Save</button> 
+  <%end%>
  <%end%>
  <br><br>
   </div>
