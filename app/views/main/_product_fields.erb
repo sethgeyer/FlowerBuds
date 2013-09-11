@@ -12,7 +12,7 @@ and "delivery van" expenses.
     <%=text_field_tag "search_field", @name, placeholder: "Product Name"%>
     <%=button_tag "Search", name: "search", class: "btn btn-small btn-primary"%>
     <%=button_tag "Clear", name: "clear", class: "btn btn-small"%><br>
-    <small> <i>Search up to 3 words (ie: garden rose peach)</i><small>
+    <small> <i>Search up to 3 words (ie: garden rose peach)</i></small>
   </div><br>    
   
     <%if @PRODUCT_UPDATE_MUST_HAVE.include?(Employee.where(id: session["found_user_id"]).first.admin_rights)%>
